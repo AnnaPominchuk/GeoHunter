@@ -1,0 +1,8 @@
+.purple_shadow {
+    box-shadow: inset 0px 0px 2px 2px rgba(133, 47, 214, 0.234);
+}
+
+body {
+    background: rgb(254,255,240);
+    background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%);
+}
