@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Provider from "../components/Provider"
 
 import Nav from "../components/Nav";
 
@@ -19,8 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Nav />
-        {children}
+        <Provider>
+          <div className='bg-gradient'>
+          <Nav />
+            {children}
+          </div>
+        </Provider>
       </body>
     </html>
   )

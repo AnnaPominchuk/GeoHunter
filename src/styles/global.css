@@ -6,3 +6,8 @@ body {
     background: rgb(254,255,240);
     background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%);
 }
+
+.bg-gradient {
+    background: rgb(254,255,240);
+    background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%);
+}
