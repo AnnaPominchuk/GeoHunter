@@ -2,12 +2,21 @@
     box-shadow: inset 0px 0px 2px 2px rgba(133, 47, 214, 0.234);
 }
 
-body {
-    background: rgb(254,255,240);
-    background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%);
+.bg-gradient {
+    background: rgb(245, 240, 255);
+    /* background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%); */
+    background-image: linear-gradient(to right top, #051937, rgba(159, 119, 208, 0.648), rgba(172, 137, 216, 0.456), white, white);
+/* background-image: linear-gradient(to right top, #051937, #142757, #2c3577, #4b4197, #6e4cb5); */
+/* background-image: linear-gradient(to right top, #6e4cb5, #9078ca, #b3a4dd, #d8d1ef, #ffffff, #ffffff,  #ffffff); */
 }
 
-.bg-gradient {
-    background: rgb(254,255,240);
-    background: radial-gradient(circle, rgba(254,255,240,1) 22%, rgba(186,148,233,0.6475183823529411) 100%);
+.text-gradient {
+    background: #4E4094;
+    background: linear-gradient(to right, #6E4CB5 0%, #CF0E7C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.txt-whitesmoke {
+    color: whitesmoke;
 }
