@@ -19,6 +19,7 @@ module.exports = {
         'additionalColor': config.additionalColor,
         'mainFontColor': config.fontColor,
         'additionalFontColor': config.additionalFontColor,
+        'headerColor': config.headerColor,
       }
     },
   },
