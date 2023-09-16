@@ -1,48 +1,105 @@
 'use client'
 
-import Link from "next/link";
+import {
+  AppBar, 
+  Toolbar, 
+  Button, 
+  ButtonGroup, 
+  IconButton, 
+  Menu, 
+  MenuItem, 
+  Typography, 
+  ThemeProvider,
+  Box
+} from "@mui/material";
+
 import Image from "next/image";
+import customTheme from "../utils/Theme";
+
+import Login from "../components/Login";
+
+import {useState} from "react";
+import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
+
+import MenuIcon from '@mui/icons-material/Menu';
+import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
+
 import '../styles/global.css'
 
-import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
 
 export default function Nav(){
 
   const { data: session } = useSession();
 
+  const [ profileAnchor, setProfileAnchor ] = useState<null | HTMLElement>(null);
+  const profileMenuOpen = Boolean(profileAnchor);
+
+  const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setProfileAnchor(event.currentTarget);
+  }
+
+  if (!session) 
+  {
+    return ( <Login /> );
+  }
+
   return (
-    /* Desktop Navigation */
-    <div className=''>
-      { !session ? (
-        <div className='flex h-screen w-screen gap-3 md:gap-5 items-center justify-center flex-col'>
+      <ThemeProvider theme={customTheme}>
+    
+       <div className='flex h-screen w-screen gap-3 md:gap-5 flex-col'>
 
-          <input className='purple_shadow rounded-lg p-3 w-1/5'
-            placeholder="Enter your email"
-            type={"text"}
-            id="name"
-            name="name"
-          />
+          <AppBar 
+            position="fixed"
+            sx = {{zIndex: "tooltip"}}
+          >
+            <Toolbar>
 
-          <input className='purple_shadow rounded-lg p-3 w-1/5'
-            placeholder="Enter password"
-            type={"text"}
-            id="name"
-            name="name"
-          />
+              <Box sx={{ flexGrow: 1}} >
+                <Image
+                  src="/../../logo_feher.png"
+                  alt='logo'
+                  width={70}
+                  height={70}
+                />
+              </Box>
 
-          <button type="button" className='bg-violet-800 px-7 py-2 rounded-lg text-white' onClick={() => signIn('auth0')}>
-            Sign In
-          </button>
+                <Typography variant="h6">
+                  <Button color="inherit" sx={{ mx:1 }} onClick={() => {}}>{"Item 1"}</Button>
+                </Typography>
+                <Typography variant="h6">
+                  <Button color="inherit" sx={{ mx:1 }} onClick={() => {}}>{"Item 2"}</Button>
+                </Typography>
+                <Typography variant="h6" >
+                  <Button color="inherit" sx={{ ml:1, mr:3 }} onClick={() => {}}>{"Item 3"}</Button>
+                </Typography>
 
-        </div>
-      )
-      : (
-       <div className='flex h-screen w-screen gap-3 md:gap-5 items-center justify-center flex-col'>
-        <button type="button" className='bg-violet-800 px-7 py-2 rounded-lg text-white' onClick={() => signOut()}>
-            Log Out
-          </button>
+              <IconButton 
+                    color="inherit" 
+                    size="large" 
+                    id="profile-button"
+                    onClick={handleProfileClick}
+              >
+                  <ProfileIcon />
+              </IconButton>
+
+              <Menu 
+                id="profile-menu" 
+                anchorEl={profileAnchor} 
+                open={profileMenuOpen}
+                onClose={() => {setProfileAnchor(null)}}
+              >
+                <MenuItem onClick={ () => {setProfileAnchor(null)} }>
+                  My Profile
+                </MenuItem>
+                <MenuItem onClick={() => signOut()}>
+                  Log Out
+                </MenuItem>
+              </Menu>
+
+            </Toolbar>
+          </AppBar>
+
        </div>
-      )}
-    </div>
+       </ThemeProvider>
   )
 }
