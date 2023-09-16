@@ -1,19 +1,20 @@
 'use client'
 
-import Link from "next/link";
 import Image from "next/image";
 import '../styles/global.css'
 
-import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 const Login = () => {
 
   return (
-    <div className='flex w-screen h-screen items-center justify-center flex-col'>
+    <div className='flex w-screen h-screen items-center justify-center flex-col bg-login'>
         <div className='z-10 ml-28 text-white'>
             <h1 className='font-bold text-4xl pb-2'>GeoHunter</h1>
             <h1 className='font-bold text-5xl pb-4'>Unveil the Hidden Truth</h1>
-            <p className='font-bold text-xl pb-11 max-w-2xl'>Join the Community of Truth-Seekers Discover, Document, & Dismantle Corruption</p>
+            <p className='font-bold text-xl pb-11 max-w-2xl'>
+                Join the Community of Truth-Seekers Discover, Document, & Dismantle Corruption
+            </p>
             <p className='w-1/2 pb-2 font-bold text-xl xs-hidden'>
                Join GeoHunter and become a beacon of truth in your community. Let’s build a world that values transparency and fairness, one discovery at a time.
             </p>
@@ -24,18 +25,12 @@ const Login = () => {
         </div>
 
         <Image
-            src='/../../parlament.jpg'
+            src='/../../parlament.png'
             fill={true}
             alt=''
             className="img-bg small-hidden"
         />
 
-        <Image
-            src='/../../paper.png'
-            fill={true}
-            alt=''
-            className="img-bg-texture"
-        />
     </div>
   )
 }
