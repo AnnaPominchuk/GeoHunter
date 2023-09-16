@@ -21,10 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <div className='bg-gradient'>
           <Nav />
             {children}
-          </div>
         </Provider>
       </body>
     </html>

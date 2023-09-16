@@ -9,14 +9,11 @@ import {
   Menu, 
   MenuItem, 
   Typography, 
-  ThemeProvider,
   Box
 } from "@mui/material";
 
 import Image from "next/image";
-import customTheme from "../utils/Theme";
-
-import Login from "../components/Login";
+import Link from "next/link";
 
 import {useState} from "react";
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
@@ -40,14 +37,10 @@ export default function Nav(){
 
   if (!session) 
   {
-    return ( <Login /> );
+    return <></>;
   }
 
   return (
-      <ThemeProvider theme={customTheme}>
-    
-       <div className='flex h-screen w-screen gap-3 md:gap-5 flex-col'>
-
           <AppBar 
             position="fixed"
             sx = {{zIndex: "tooltip"}}
@@ -63,14 +56,14 @@ export default function Nav(){
                 />
               </Box>
 
-                <Typography variant="h6">
-                  <Button color="inherit" sx={{ mx:1 }} onClick={() => {}}>{"Item 1"}</Button>
+                <Typography variant="button" sx={{ mx:1 }}>
+                  <Link href={"/map"}>{"Upload map"}</Link>
                 </Typography>
-                <Typography variant="h6">
-                  <Button color="inherit" sx={{ mx:1 }} onClick={() => {}}>{"Item 2"}</Button>
+                <Typography variant="button" sx={{ mx:1 }}>
+                  <Link href={"/"}>{"Item 2"}</Link>
                 </Typography>
-                <Typography variant="h6" >
-                  <Button color="inherit" sx={{ ml:1, mr:3 }} onClick={() => {}}>{"Item 3"}</Button>
+                <Typography variant="button" sx={{ ml:1, mr:5 }}>
+                  <Link href={"/"}>{"Item 3"}</Link>
                 </Typography>
 
               <IconButton 
@@ -98,8 +91,5 @@ export default function Nav(){
 
             </Toolbar>
           </AppBar>
-
-       </div>
-       </ThemeProvider>
   )
 }

@@ -5,6 +5,9 @@ const theme = createTheme({
     palette: {
         primary: {
             main: config.mainColor
+        },
+        secondary: {
+            main: "#FFFFFF"
         }
     }
 });
