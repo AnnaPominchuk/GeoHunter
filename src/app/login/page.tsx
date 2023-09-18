@@ -5,7 +5,6 @@ import '../../styles/global.css'
 
 import { redirect } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react'
-import { useEffect } from "react";
 
 const Login = () => {
   const { data: session } = useSession();
