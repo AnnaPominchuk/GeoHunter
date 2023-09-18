@@ -1,11 +1,19 @@
 'use client'
 
 import Image from "next/image";
-import '../styles/global.css'
+import '../../styles/global.css'
 
-import { signIn } from 'next-auth/react'
+import { redirect } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react'
+import { useEffect } from "react";
 
 const Login = () => {
+  const { data: session } = useSession();
+
+  if (session)
+  {
+    redirect("/");
+  }
 
   return (
     <div className='flex w-screen h-screen items-center justify-center flex-col bg-login'>

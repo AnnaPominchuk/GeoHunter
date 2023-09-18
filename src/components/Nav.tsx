@@ -23,21 +23,15 @@ import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import '../styles/global.css'
 
+import withAuth from './withAuth';
 
-export default function Nav(){
-
-  const { data: session } = useSession();
+const myNav = () => {
 
   const [ profileAnchor, setProfileAnchor ] = useState<null | HTMLElement>(null);
   const profileMenuOpen = Boolean(profileAnchor);
 
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setProfileAnchor(event.currentTarget);
-  }
-
-  if (!session) 
-  {
-    return <></>;
   }
 
   return (
@@ -93,3 +87,6 @@ export default function Nav(){
           </AppBar>
   )
 }
+
+const Nav = withAuth(myNav);
+export default Nav;
