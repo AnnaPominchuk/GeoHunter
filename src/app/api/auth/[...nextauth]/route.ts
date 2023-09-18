@@ -4,13 +4,15 @@ import { JWT } from "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
 
 async function sendTokenToBackend(message: {user: User, account: Account | null, profile? : Profile | undefined, isNewUser? : boolean | undefined }) {
-    const url = `${process.env.NEXT_PUBLIC_MOMENTUM_DEV_URL}/api/v1/user/login`;
+    const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/login`;
     const headers = new Headers({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${message.account?.access_token}`
     });
     const body =  {
-        'email': message.user.email
+        'email': message.user.email,
+        'name': message.user.email,
+        'lastname': message.user.email
     };
     return await fetch(url, {
         method: 'POST',
