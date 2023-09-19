@@ -72,9 +72,9 @@ const myNav = () => {
                       variant="body1"
                       underline="none" 
                       sx={{ display: { xs: 'none', sm: 'block' } }}
-                      onClick = {() => router.push("/map")}
+                      onClick = {() => router.push("/upload-map")}
                   >
-                    {"Upload map"}
+                    {"UPLOAD MAP"}
                   </Link>
                 </Typography>
                 <Typography variant="button" sx={{ mx:1 }}>
@@ -84,9 +84,9 @@ const myNav = () => {
                       variant="body1"
                       underline="none" 
                       sx={{ display: { xs: 'none', sm: 'block' } }}
-                      onClick = {() => router.push("/")}
+                      onClick = {() => router.push("/map")}
                   >
-                    {"Item 2"}
+                    {"VIEW MAP"}
                   </Link>
                 </Typography>
                 <Typography variant="button" sx={{ ml:1, mr:5 }}>
@@ -142,11 +142,11 @@ const myNav = () => {
                 onClose={() => {setMenuAnchor(null)}}
                 sx={{ display: { xs: 'block', sm: 'none' } }}
               >
-                <MenuItem onClick={ e => handleMenuItemClick(e, "/map") }>
+                <MenuItem onClick={ e => handleMenuItemClick(e, "/upload-map") }>
                   Upload map
                 </MenuItem>
-                <MenuItem onClick={ e => handleMenuItemClick(e, "/") }>
-                  Item 2
+                <MenuItem onClick={ e => handleMenuItemClick(e, "/map") }>
+                  View Map
                 </MenuItem>
                 <MenuItem onClick={ e => handleMenuItemClick(e, "/") }>
                   Item 3

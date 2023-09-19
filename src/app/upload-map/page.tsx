@@ -1,11 +1,11 @@
 'use client'
 
-import GoogleMap from '../../components/GoogleMap'
+import CsvInput from '../../components/CsvInput'
 import withAuth from '../../components/withAuth';
 
 const myPage = () => {
   return (
-    <GoogleMap />
+    <CsvInput />
   )
 }
 
