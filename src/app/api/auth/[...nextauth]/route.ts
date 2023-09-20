@@ -45,11 +45,20 @@ export const authOptions = {
   },
   callbacks: {
     async session(params: { session: Session, token: JWT, user: User | AdapterUser}) {
+
+      if (params.token?.roles) {
+        params.session.user.roles = params.token.roles
+      }
+  
       return params.session;
     },
     async jwt(params: { token: JWT, user?: User | AdapterUser | undefined; account?: Account | null | undefined; profile?: Profile | undefined; isNewUser?: boolean | undefined }) {
       if (params.account) {
         params.token.accessToken = params.account.access_token;
+      }
+
+      if (params.profile) {
+        params.token.roles = params.profile.appRoles;
       }
 
       return params.token;
