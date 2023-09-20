@@ -1,10 +1,10 @@
 'use client'
 
 import {useState, useEffect} from 'react'
-import Shop from '../app/model/Shop'
+import { Convert, Shop } from '../app/model/Shop'
 
 import { 
-    Map, GoogleApiWrapper, Marker, InfoWindowF, InfoWindow
+    Map, GoogleApiWrapper, Marker, InfoWindow
  } from "google-maps-react";
 
 import { styled } from '@mui/material/styles';
@@ -13,8 +13,8 @@ import { Button, Box, Typography } from '@mui/material';
 const mapStyles = {
     width: '70%',
     height: '70%',
-    "margin-top": '5%',
-    "margin-left": '15%',
+    marginTop: '5%',
+    marginLeft: '15%',
 };
 
 const GoogleMap = () => {
@@ -26,8 +26,20 @@ const GoogleMap = () => {
             const res = await fetch('/api/shop', {
                 method: 'GET'
                 });
-                const obj = await res.json();
-                console.log(obj)
+            const data = await res.json();
+
+            try {
+                let shopsList:Shop[] = []
+                for(let shopData of data.shops.shops) {
+                    let shop:Shop = Convert.toShop(JSON.stringify(shopData))
+                    shopsList.push(shop)
+                    //TO DO check loaded to db data
+                    break;
+                }
+                setShops(shopsList)
+            } catch (e) {
+                console.log("Handle error", e)
+            }   
         }
 
         getShops()
@@ -71,7 +83,7 @@ const GoogleMap = () => {
             }
             {
                 selectedShop && (
-                    <InfoWindowF
+                    <InfoWindow
                         position={{
                             lat: selectedShop.latitude,
                             lng: selectedShop.longtitude,
@@ -87,7 +99,7 @@ const GoogleMap = () => {
                     >
                         <div> {selectedShop.name} </div>
                         {/* <Typography zIndex={10}> {selectedShop.name} </Typography> */}
-                    </InfoWindowF>
+                    </InfoWindow>
                 )
             }
         </Map>

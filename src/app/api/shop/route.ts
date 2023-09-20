@@ -7,7 +7,7 @@ export const GET = async (req:NextRequest) => {
         if (!sessionToken)
             return new NextResponse(JSON.stringify({error: 'Authorization failed', status : 401}))
 
-        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/shop/create`;
+        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/shop`;
         const headers = new Headers({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${sessionToken.accessToken}`
@@ -19,8 +19,9 @@ export const GET = async (req:NextRequest) => {
         }
 
         const res = await fetch(url, obj);
+        const shops = await res.json()
 
-        return new NextResponse(JSON.stringify({status : res.status}))
+        return new NextResponse(JSON.stringify({status : res.status, shops: shops }))
     } catch(error) {
         return new NextResponse(JSON.stringify({error: 'Faild to fetch', status : 500}))
       }
