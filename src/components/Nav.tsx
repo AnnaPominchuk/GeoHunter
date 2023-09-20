@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 
 import {useState} from "react";
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 
 import { useRouter } from 'next/navigation'
 
@@ -29,6 +29,7 @@ import withAuth from './withAuth';
 
 const myNav = () => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   const [ profileAnchor, setProfileAnchor ] = useState<null | HTMLElement>(null);
   const profileMenuOpen = Boolean(profileAnchor);
