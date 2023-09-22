@@ -6,6 +6,7 @@ import Provider from "../components/Provider"
 import { getServerSession } from "next-auth";
 
 import Nav from "../components/Nav";
+import AdminMenu from "../components/AdminMenu";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
       <Provider session={session}>
         <body className={inter.className}>
           <Nav />
+          <AdminMenu />
             {children}
         </body>
        </Provider>

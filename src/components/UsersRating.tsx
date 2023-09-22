@@ -17,8 +17,6 @@ import theme from '../utils/Theme'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableRow, { tableRowClasses } from '@mui/material/TableRow';
 
-import { styled } from '@mui/material/styles';
-
 import StarIcon from '@mui/icons-material/Star';
 
 // const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -51,7 +49,7 @@ const UsersRating = () => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100vh', flexDirection:'column'}} bgcolor="secondary.main">
-          <TableContainer component={Paper} sx={{ width:'90%', mt:'100px' }}>
+          <TableContainer component={Paper} sx={{ width:'90%', mt:'20px' }}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
               <TableHead sx={{ backgroundColor: theme.palette.action.hover }}>
                 <TableRow sx={{ height:"50px" }}>
