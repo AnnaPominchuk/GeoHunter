@@ -20,6 +20,8 @@ import { signOut, useSession } from 'next-auth/react'
 
 import { useRouter } from 'next/navigation'
 
+import UserRole from '../utils/UserRole'
+
 import MenuIcon from '@mui/icons-material/Menu';
 import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
 
@@ -57,49 +59,51 @@ const myNav = () => {
           >
             <Toolbar>
 
-              <Box sx={{ flexGrow: 1}} >
+              <Box >
                 <Image
-                  src="/../../logo_feher.png"
+                  src="/../../logo-feher.png"
                   alt='logo'
-                  width={70}
+                  width={170}
                   height={70}
                 />
               </Box>
 
-                <Typography variant="button" sx={{ mx:1 }}>
+              { session?.user?.roles.includes(UserRole.ADMIN) && 
+                <Typography variant="button" sx={{ ml: 3, mr:1 }}>
                   <Link 
                       color="inherit" 
                       component="button"
-                      variant="body1"
+                      variant="body2"
                       underline="none" 
-                      sx={{ display: { xs: 'none', sm: 'block' } }}
+                      sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
                       onClick = {() => router.push("/upload-map")}
                   >
                     {"UPLOAD MAP"}
                   </Link>
-                </Typography>
+                </Typography> 
+              }
                 <Typography variant="button" sx={{ mx:1 }}>
                   <Link 
                       color="inherit" 
                       component="button"
-                      variant="body1"
+                      variant="body2"
                       underline="none" 
-                      sx={{ display: { xs: 'none', sm: 'block' } }}
+                      sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
                       onClick = {() => router.push("/map")}
                   >
                     {"VIEW MAP"}
                   </Link>
                 </Typography>
-                <Typography variant="button" sx={{ ml:1, mr:5 }}>
+                <Typography variant="button" sx={{ ml:1, mr:5, flexGrow: 1 }}>
                   <Link 
                       color="inherit" 
                       component="button"
-                      variant="body1"
+                      variant="body2"
                       underline="none" 
-                      sx={{ display: { xs: 'none', sm: 'block' } }}
-                      onClick = {() => router.push("/")}
+                      sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
+                      onClick = {() => router.push("/rating")}
                   >
-                    {"Item 3"}
+                    {"ACTIVISTS RATING"}
                   </Link>
                 </Typography>
 
@@ -131,7 +135,7 @@ const myNav = () => {
                     size="large" 
                     id="menu-mobile-button"
                     onClick={handleMenuClick}
-                    sx={{ display: { xs: 'block', sm: 'none' } }}
+                    sx={{ display: { xs: 'block', sm: 'block', md:'none' } }}
               >
                   <MenuIcon />
               </IconButton>
@@ -141,7 +145,7 @@ const myNav = () => {
                 anchorEl={menuAnchor} 
                 open={mobileMenuOpen}
                 onClose={() => {setMenuAnchor(null)}}
-                sx={{ display: { xs: 'block', sm: 'none' } }}
+                sx={{ display: { xs: 'block', sm: 'block', md:'none' } }}
               >
                 <MenuItem onClick={ e => handleMenuItemClick(e, "/upload-map") }>
                   Upload map
@@ -149,8 +153,8 @@ const myNav = () => {
                 <MenuItem onClick={ e => handleMenuItemClick(e, "/map") }>
                   View Map
                 </MenuItem>
-                <MenuItem onClick={ e => handleMenuItemClick(e, "/") }>
-                  Item 3
+                <MenuItem onClick={ e => handleMenuItemClick(e, "/rating") }>
+                  Activists rating
                 </MenuItem>
               </Menu>
 

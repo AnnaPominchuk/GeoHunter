@@ -29,7 +29,8 @@ export const authOptions = {
       issuer: process.env.AUTH0_ISSUER ?? '',
       authorization: {
         params: {
-          audience: encodeURI(process.env.AUTH0_AUDIENCE ?? '')
+          audience: encodeURI(process.env.AUTH0_AUDIENCE ?? ''),
+          prompt: "login"
         }
       },
     })

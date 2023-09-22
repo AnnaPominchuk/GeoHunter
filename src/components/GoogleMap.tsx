@@ -1,7 +1,7 @@
 'use client'
 
 import {useState, useEffect} from 'react'
-import { Convert, Shop } from '../app/model/Shop'
+import { Convert, Shop } from '../model/Shop'
 
 import { 
     Map, GoogleApiWrapper, Marker, InfoWindow
