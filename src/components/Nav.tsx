@@ -15,12 +15,10 @@ import {
 
 import Image from "next/image";
 
-import {useState} from "react";
+import { useState } from "react";
 import { signOut, useSession } from 'next-auth/react'
 
 import { useRouter } from 'next/navigation'
-
-import UserRole from '../utils/UserRole'
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -63,26 +61,12 @@ const myNav = () => {
                 <Image
                   src="/../../logo-feher.png"
                   alt='logo'
-                  width={170}
+                  width={150}
                   height={70}
                 />
               </Box>
-
-              { session?.user?.roles.includes(UserRole.ADMIN) && 
-                <Typography variant="button" sx={{ ml: 3, mr:1 }}>
-                  <Link 
-                      color="inherit" 
-                      component="button"
-                      variant="body2"
-                      underline="none" 
-                      sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
-                      onClick = {() => router.push("/upload-map")}
-                  >
-                    {"UPLOAD MAP"}
-                  </Link>
-                </Typography> 
-              }
-                <Typography variant="button" sx={{ mx:1 }}>
+  
+                <Typography variant="button" sx={{ ml:5, mr:1 }}>
                   <Link 
                       color="inherit" 
                       component="button"
@@ -147,9 +131,6 @@ const myNav = () => {
                 onClose={() => {setMenuAnchor(null)}}
                 sx={{ display: { xs: 'block', sm: 'block', md:'none' } }}
               >
-                <MenuItem onClick={ e => handleMenuItemClick(e, "/upload-map") }>
-                  Upload map
-                </MenuItem>
                 <MenuItem onClick={ e => handleMenuItemClick(e, "/map") }>
                   View Map
                 </MenuItem>
