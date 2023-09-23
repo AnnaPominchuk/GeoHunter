@@ -52,7 +52,7 @@ export default function Map() {
     const position:L.LatLngExpression = [47.497913, 19.040236]
     return (
         <Box bgcolor="secondary.main" sx={{ height: '100vh', width: '100vw', display: 'flex'}}>
-        <Box bgcolor="secondary.main" sx={{ height: '100vh', width: '100vw', flex:{sx:   '0' , sm: '2'}}}>
+        <Box bgcolor="secondary.main" sx={{ height: '100vh', width: '100vw', flex:{xs: selectedShop ? '0' : '2', sm: '2'}}}>
                 <MapContainer center={position} zoom={8} scrollWheelZoom={true} style={{height:'100%', width:'100%'}}>
                     <TileLayer
                         attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
