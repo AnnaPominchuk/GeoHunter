@@ -8,12 +8,14 @@
 // match the expected interface, even if the JSON is valid.
 
 export interface Shop {
-    adress?:    string;
-    amount?:    number;
-    county_id?: number;
-    m_id?:      number;
-    name?:      string;
-    t_id?:      number;
+    address:   string;
+    amount:    number;
+    county_id: number;
+    latitude:  number;
+    longitude: number;
+    m_id?:     number;
+    name:      string;
+    t_id?:     number;
 }
 
 // Converts JSON strings to/from your types
@@ -182,11 +184,13 @@ function r(name: string) {
 
 const typeMap: any = {
     "Shop": o([
-        { json: "adress", js: "adress", typ: u(undefined, "") },
-        { json: "amount", js: "amount", typ: u(undefined, 3.14) },
-        { json: "county_id", js: "county_id", typ: u(undefined, 3.14) },
+        { json: "address", js: "address", typ: "" },
+        { json: "amount", js: "amount", typ: 3.14 },
+        { json: "county_id", js: "county_id", typ: 3.14 },
+        { json: "latitude", js: "latitude", typ: 3.14 },
+        { json: "longitude", js: "longitude", typ: 3.14 },
         { json: "m_id", js: "m_id", typ: u(undefined, 3.14) },
-        { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "name", js: "name", typ: "" },
         { json: "t_id", js: "t_id", typ: u(undefined, 3.14) },
     ], "any"),
 };
