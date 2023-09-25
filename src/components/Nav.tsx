@@ -49,7 +49,6 @@ const myNav = () => {
     router.push(path);
     setMenuAnchor(null);
   }
-
   return (
           <AppBar 
             position="fixed"
