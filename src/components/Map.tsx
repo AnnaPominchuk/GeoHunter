@@ -7,9 +7,11 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import { Box, Typography, Button, LinearProgress } from '@mui/material';
+import { useRouter } from 'next/navigation'
 
 export default function Map() {
 
+    const router = useRouter()
     const [shops, setShops] = useState<Shop[]>([])
 
     useEffect(() => {
@@ -93,7 +95,7 @@ export default function Map() {
                     <Button onClick={closeDetails}>
                         Close
                     </Button>
-                    <Button onClick={closeDetails}>
+                    <Button onClick={() => router.push('/form')}>
                         Upload info
                     </Button>
                 </Box>

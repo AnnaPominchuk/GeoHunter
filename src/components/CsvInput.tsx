@@ -1,21 +1,9 @@
 'use client'
 
-import { styled } from '@mui/material/styles';
+import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { Button, Box, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState, ChangeEvent} from 'react'
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 const CsvInput = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
