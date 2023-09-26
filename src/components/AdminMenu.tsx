@@ -103,7 +103,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const myAdminMenu = ({children}: {children: React.ReactNode}) => {
+const AdminMenu = ({children}: {children: React.ReactNode}) => {
   const router = useRouter()
 
   const { data: session } = useSession()
@@ -181,5 +181,5 @@ const myAdminMenu = ({children}: {children: React.ReactNode}) => {
   )
 }
 
-const AdminMenu = withAuth(myAdminMenu);
+//const AdminMenu = withAuth(myAdminMenu);
 export default AdminMenu;
