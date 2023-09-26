@@ -29,8 +29,30 @@ import UserRole from '../utils/UserRole'
 
 import withAuth from './withAuth';
 
+import { makeStyles } from "@mui/styles";
+import { useTheme } from "@emotion/react";
+import clsx from "clsx";
+
 const drawerWidth = 240;
 const headerHeight = theme.mixins.toolbar.minHeight;
+
+const useStyles = makeStyles((theme: Theme) => {
+  return ({
+  content: {
+    transition: (theme) => theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: 500
+    }),
+    marginLeft:  `calc(${theme.spacing(7)} + 1px)` ,
+  },
+  contentOpenDrawer: {
+    transition: (theme) => theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: 500
+    }),
+    marginLeft:   drawerWidth,
+  }
+})});
 
 const openedMixin = (customTheme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -81,7 +103,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const myAdminMenu = () => {
+const AdminMenu = ({children}: {children: React.ReactNode}) => {
   const router = useRouter()
 
   const { data: session } = useSession()
@@ -95,7 +117,10 @@ const myAdminMenu = () => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
-  
+
+  const customTheme = useTheme();
+  const classes = useStyles(customTheme);
+
   const menuItems: { 
     text: string; 
     onClickHandler: React.MouseEventHandler<HTMLDivElement>;
@@ -108,9 +133,11 @@ const myAdminMenu = () => {
     },
   ]
 
-  if ( !session?.user?.roles?.includes(UserRole.ADMIN) ) return <></>
+  if ( !session?.user?.roles?.includes(UserRole.ADMIN) ) 
+    return ( <main> {children} </main> );
 
   return (
+    <>
       <Box sx={{ display: 'flex' }}>
         <Drawer variant="permanent" open={isDrawerOpen}>
           <DrawerHeader>
@@ -146,8 +173,13 @@ const myAdminMenu = () => {
           </List>
         </Drawer>
        </Box>
+
+       <main className= {clsx(classes.content, {[classes.contentOpenDrawer]: isDrawerOpen})} >
+        { children }
+       </main>
+    </>
   )
 }
 
-const AdminMenu = withAuth(myAdminMenu);
+//const AdminMenu = withAuth(myAdminMenu);
 export default AdminMenu;

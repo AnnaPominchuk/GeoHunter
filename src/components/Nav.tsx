@@ -27,7 +27,7 @@ import '../styles/global.css'
 
 import withAuth from './withAuth';
 
-const myNav = () => {
+const Nav = () => {
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -49,7 +49,6 @@ const myNav = () => {
     router.push(path);
     setMenuAnchor(null);
   }
-
   return (
           <AppBar 
             position="fixed"
@@ -144,5 +143,5 @@ const myNav = () => {
   )
 }
 
-const Nav = withAuth(myNav);
+//const Nav = withAuth(myNav);
 export default Nav;
