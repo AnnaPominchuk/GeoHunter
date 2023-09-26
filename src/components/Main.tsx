@@ -1,11 +1,13 @@
-
+'use client'
 
 import customTheme from "../utils/Theme";
 
 import Nav from "../components/Nav";
 import AdminMenu from "../components/AdminMenu";
 
-const Main = ({children}: {children: React.ReactNode}) => {
+import withAuth from './withAuth';
+
+const myMain = ({children}: {children: React.ReactNode}) => {
     return (
         <>
           <Nav />
@@ -14,4 +16,5 @@ const Main = ({children}: {children: React.ReactNode}) => {
 );
 }
 
+const Main = withAuth(myMain);
 export default Main;
