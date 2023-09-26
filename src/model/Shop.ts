@@ -16,6 +16,7 @@ export interface Shop {
     m_id?:     number;
     name:      string;
     t_id?:     number;
+    _id:       string;
 }
 
 // Converts JSON strings to/from your types
@@ -192,5 +193,6 @@ const typeMap: any = {
         { json: "m_id", js: "m_id", typ: u(undefined, 3.14) },
         { json: "name", js: "name", typ: "" },
         { json: "t_id", js: "t_id", typ: u(undefined, 3.14) },
+        { json: "_id", js: "_id", typ: ""}
     ], "any"),
 };

@@ -9,8 +9,6 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Box, Typography, Button, ButtonGroup, LinearProgress, ImageList, ImageListItem } from '@mui/material';
 import { useRouter } from 'next/navigation'
 
-import { divIcon } from "leaflet";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { styled } from '@mui/material/styles';
 import theme from '@/utils/Theme'
 
@@ -244,7 +242,7 @@ export default function Map() {
                         <Button onClick={closeDetails}>
                             Close
                         </Button>
-                        <Button onClick={() => router.push('/form')}>
+                        <Button onClick={() => router.push(`/form/${selectedShop._id}`)}>
                             Upload info
                         </Button>
                     </StyledButtonGroup>
