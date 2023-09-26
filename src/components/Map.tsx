@@ -7,6 +7,7 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import { Box, Typography, Button, ButtonGroup, LinearProgress, ImageList, ImageListItem } from '@mui/material';
+import { useRouter } from 'next/navigation'
 
 import { divIcon } from "leaflet";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -99,6 +100,7 @@ const itemData = [
 
 export default function Map() {
 
+    const router = useRouter()
     const [shops, setShops] = useState<Shop[]>([])
 
     const mapRef = useRef(null);
@@ -179,7 +181,7 @@ export default function Map() {
         {
             selectedShop &&
             <Box sx={{ height: '100%', zIndex: '1000', flex:'1', boxShadow: 10, display:"flex", overflowY: "scroll"}} >
-                <Box style={{height:'100%', width:'100%', padding: '10% 10%'}}>
+                <Box style={{height:'100%', width:'100%', padding: '15% 15%'}}>
 
                     {/* Images */}
                     <ImageList
@@ -242,7 +244,7 @@ export default function Map() {
                         <Button onClick={closeDetails}>
                             Close
                         </Button>
-                        <Button onClick={closeDetails}>
+                        <Button onClick={() => router.push('/form')}>
                             Upload info
                         </Button>
                     </StyledButtonGroup>
