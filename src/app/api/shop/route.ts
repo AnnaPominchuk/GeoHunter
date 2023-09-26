@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import getSessionHeader from "@/utils/SessionHeader";
 
 export const GET = async (req:NextRequest) => {
     try {
-        const sessionToken = await getToken({ req });
-        if (!sessionToken)
-            return new NextResponse(JSON.stringify({error: 'Authorization failed', status : 401}))
-
+        const headers = await getSessionHeader(req);
         const url = `${process.env.NEXT_PUBLIC_DEV_URL}/shop`;
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${sessionToken.accessToken}`
-        });
         
         const obj = {
             method: 'GET',
