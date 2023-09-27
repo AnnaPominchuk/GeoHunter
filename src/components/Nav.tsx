@@ -103,9 +103,13 @@ const Nav = () => {
                 id="profile-menu" 
                 anchorEl={profileAnchor} 
                 open={profileMenuOpen}
+                slotProps={{paper: {sx: {width: '150px'} } } }
                 onClose={() => {setProfileAnchor(null)}}
               >
-                <MenuItem onClick={ () => {setProfileAnchor(null)} }>
+                <MenuItem onClick={ () => {
+                  router.push("/my-profile");
+                  setProfileAnchor(null)
+                }}>
                   My Profile
                 </MenuItem>
                 <MenuItem onClick={() => signOut()}>
