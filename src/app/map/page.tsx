@@ -3,11 +3,11 @@
 import withAuth from '../../components/withAuth';
 import Map from '../../components/Map'
 
-const myProfile = () => {
+const myPage = () => {
   return (
     <Map />
   )
 }
 
-const Profile = withAuth(myProfile);
-export default Profile;
+const Page = withAuth(myPage);
+export default Page;
