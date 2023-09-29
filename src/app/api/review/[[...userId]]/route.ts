@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import getSessionHeader from "@/utils/SessionHeader";
 
-export const GET = async (req:NextRequest) => {
+export const GET = async (req:NextRequest, { params }: { params: { userId: string } }) => {
     try {
         const headers = await getSessionHeader(req);
-        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user`;
-        
+        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/review/${params.userId}`;
+
         const obj = {
             method: 'GET',
             headers: headers,

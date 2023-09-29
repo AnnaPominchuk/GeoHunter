@@ -11,7 +11,7 @@ async function sendTokenToBackend(message: {user: User, account: Account | null,
     });
     const body =  {
         'email': message.user.email,
-        'name': message.user.email,
+        'name': message.user.name,
         'lastname': message.user.email
     };
     return await fetch(url, {

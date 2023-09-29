@@ -1,11 +1,13 @@
 'use client'
 
-import { Stack, TextField, Typography, Button } from '@mui/material';
+import { Stack, TextField, Typography, Button, Alert } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import withAuth from '../../../components/withAuth';
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
+import { popup } from 'leaflet';
+import { useSession } from 'next-auth/react';
 
 type FormValues = {
     name: String,
@@ -16,6 +18,7 @@ type FormValues = {
 
 const ShopForm = ({ params }: { params: { shopid: String} }) => {
 
+    const { data: session } = useSession();
     const router = useRouter()
 
     const form = useForm<FormValues>({
@@ -26,19 +29,36 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
             review: ''
         }
     })
-    const { register, handleSubmit, formState, watch } = form
-    const { errors, dirtyFields } = formState
+    const { register, handleSubmit, formState, watch, resetField } = form
+    const { errors, dirtyFields, isSubmitted } = formState
 
     const watchLatitude = watch('latitude')
     const watchLongitude = watch('longitude')
 
     const onSubmit = async (data: FormValues) => {
+        const resUser = await fetch(`/api/user/${session?.user?.email}`, {
+            method: 'GET'
+        });
+                
+        const users = await resUser.json();
+
+        if (users.status != 200) return;
+
+        const userId = users.data.users._id;
+        console.log(userId)
+
         const res = await fetch('/api/review/upload', {
             method: 'POST',
-            body: JSON.stringify({ ...data, shopID: params.shopid, userID: ''})
+            body: JSON.stringify({ ...data, shopId: params.shopid, userId: userId || ''})
         })
-        const error = await res.json()
-        console.log(error)
+
+        const resJson = await res.json()
+        console.log(resJson)
+
+        resetField('latitude')
+        resetField('longitude')
+        resetField('name')
+        resetField('review')
     }
 
     const onError = (error: FieldErrors<FormValues>) => {
@@ -51,7 +71,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
-            <Stack sx={{ padding: '20px 20px' }} bgcolor={'secondary.main'} height={'100vh'} alignItems={'center'} justifyContent={'center'}>
+            <Stack sx={{ padding: '40px 20px' }} bgcolor={'secondary.main'} alignItems={'center'} justifyContent={'center'}>
                 <Stack
                     spacing={4}
                     alignItems={'stretch'}
@@ -62,6 +82,16 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                             {`Do you have any information about this object? Let us know and gain your points!`}
                         </Typography>
                     </Stack>
+
+                    { isSubmitted && <Alert
+                        action={
+                            <Button color="inherit" size="small" onClick={() => router.back()}>
+                                Go Back
+                            </Button>
+                        }
+                    >
+                        Form is submitted successfully 
+                    </Alert> }
 
                     <Stack
                         direction='row'
