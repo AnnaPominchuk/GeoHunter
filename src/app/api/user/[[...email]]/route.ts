@@ -4,7 +4,8 @@ import getSessionHeader from "@/utils/SessionHeader";
 export const GET = async (req:NextRequest, { params }: { params: { email: string } }) => {
     try {
         const headers = await getSessionHeader(req);
-        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${params.email}`;
+        headers.set('Content-Type', 'application/json')
+        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${params.email || ''}`;
 
         const obj = {
             method: 'GET',

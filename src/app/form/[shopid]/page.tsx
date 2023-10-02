@@ -6,8 +6,9 @@ import withAuth from '../../../components/withAuth';
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
-import { popup } from 'leaflet';
+import { MuiFileInput } from 'mui-file-input'
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 type FormValues = {
     name: String,
@@ -32,6 +33,12 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const { register, handleSubmit, formState, watch, resetField } = form
     const { errors, dirtyFields, isSubmitted } = formState
 
+    const [images, setImages] = useState<File[]>([])
+
+    const handleImagesChange = (newValue) => {
+        setImages(newValue)
+    }
+
     const watchLatitude = watch('latitude')
     const watchLongitude = watch('longitude')
 
@@ -45,6 +52,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
         if (users.status != 200) return;
 
         const userId = users.data.users._id;
+
         console.log(userId)
 
         const res = await fetch('/api/review/upload', {
@@ -53,7 +61,17 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
         })
 
         const resJson = await res.json()
-        console.log(resJson)
+
+        const formData = new FormData();
+        images.forEach((image) => {
+            formData.append('images', image);
+        })
+        formData.append('reviewId', resJson.reviewId);
+
+        const resIm = await fetch('/api/images/upload', {
+            method: 'POST',
+            body: formData
+        })
 
         resetField('latitude')
         resetField('longitude')
@@ -119,7 +137,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                                 },
                                 validate: {
                                     isLongitudeSet: (fieldValue) => {
-                                        console.log(fieldValue)
+                                     //   console.log(fieldValue)
                                         return fieldValue == 0 || watchLongitude != 0 || 'Longitude and latitude values should both be provided'
                                     }
                                 }
@@ -149,19 +167,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                             helperText={errors.longitude?.message} />
                     </Stack>
 
-                    <Stack
-                        direction='row'
-                        spacing={2}>
-                        <Button
-                            component="label"
-                            variant="contained"
-                            startIcon={<CloudUploadIcon />}>
-                            Select files
-                            <VisuallyHiddenInput type="file" />
-                        </Button>
-                        <Typography color='black'>
-                        </Typography>
-                    </Stack>
+                    <MuiFileInput multiple value={images} onChange={handleImagesChange} />
 
                     <Stack>
                         <TextField
