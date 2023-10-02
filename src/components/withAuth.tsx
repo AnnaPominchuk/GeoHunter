@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
+import Login from '@/app/login/page';
 
 const withAuth = <T extends Record<string, unknown>>(WrappedComponent: React.ComponentType<T>) => {
   return (props: T) => {
@@ -14,7 +15,7 @@ const withAuth = <T extends Record<string, unknown>>(WrappedComponent: React.Com
         redirect("/login");
       }
       
-      return null;
+      return <Login/>;
     }
 
     return <WrappedComponent {...props} />;
