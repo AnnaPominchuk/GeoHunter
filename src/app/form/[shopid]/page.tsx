@@ -61,23 +61,20 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
         })
 
         const resJson = await res.json()
-        console.log(resJson)
-
-        console.log(images)
 
         const formData = new FormData();
         formData.append('image', images);
-        formData.append('reviewId', "6516b75dc73b7420a427d469"); // hard coded
+        formData.append('reviewId', resJson.reviewId);
 
         const resIm = await fetch('/api/images/upload', {
             method: 'POST',
             body: formData
         })
 
-        // resetField('latitude')
-        // resetField('longitude')
-        // resetField('name')
-        // resetField('review')
+        resetField('latitude')
+        resetField('longitude')
+        resetField('name')
+        resetField('review')
     }
 
     const onError = (error: FieldErrors<FormValues>) => {

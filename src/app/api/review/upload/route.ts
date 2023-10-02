@@ -14,8 +14,9 @@ export const POST = async (req:NextRequest) => {
             body: JSON.stringify(data)
         }
         const res = await fetch(url, obj)
+        const json = await res.json()
 
-        return new NextResponse(JSON.stringify({status : res.status}))
+        return new NextResponse(JSON.stringify({status : res.status, reviewId: json.reviewId}))
     } catch(error) {
         return new NextResponse(JSON.stringify({error: 'Faild to fetch', status : 500}))
     }
