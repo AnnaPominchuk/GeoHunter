@@ -6,6 +6,7 @@ export const POST = async (req:NextRequest) => {
         const data = await req.json()
 
         const headers = await getSessionHeader(req)
+        headers.set('Content-Type', 'application/json')
         const url = `${process.env.NEXT_PUBLIC_DEV_URL}/review/upload`
         const obj = {
             method: 'POST',

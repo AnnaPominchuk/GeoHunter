@@ -100,6 +100,8 @@ export default function Map() {
 
     const router = useRouter()
     const [shops, setShops] = useState<Shop[]>([])
+    const [imageData, setImageData] = useState([])
+    const [selectedShop, setSelectedShop] = useState<Shop | undefined>(undefined);
 
     const mapRef = useRef(null);
 
@@ -122,14 +124,30 @@ export default function Map() {
             }   
         }
 
+        async function getImages() {
+            try{
+                if (!selectedShop)
+                    return setImageData([])
+
+                const res = await fetch(`/api/images/shop/${selectedShop?._id}`, {
+                    method: 'GET'
+                });
+
+                const data = await res.json();
+                if (data.data) setImageData(data.data)
+            } catch (e) {
+                console.log("Handle error", e)
+            }
+        }
+
         getShops()
-    },[])
+        getImages()
+
+    },[selectedShop])
 
     function openDetails(shop:Shop){
         setSelectedShop(shop)
         mapRef.current.closePopup();
-        
-        console.log(shop)
     }
 
     function closeDetails(){
@@ -141,7 +159,6 @@ export default function Map() {
         iconSize: [30, 30]
         });
 
-    const [selectedShop, setSelectedShop] = useState<Shop | undefined>(undefined);
     const position:L.LatLngExpression = [47.497913, 19.040236]
     return (
         // TO DO: sizing
@@ -188,21 +205,23 @@ export default function Map() {
                         cols={4}
                         rowHeight={121}
                     >
-                        {itemData && itemData.map((item, index) => {
+
+                        {imageData && imageData.map((item, index) => {
                             const pos = imagePosition[ index % imagePosition.length ];
 
                             return (
-                                <ImageListItem key={item.img} cols={pos.cols || 1} rows={pos.rows || 1}>
+                                <ImageListItem key={item} cols={pos.cols || 1} rows={pos.rows || 1}>
                                 <img
-                                    {...srcset(item.img, 121, pos.rows, pos.cols)}
-                                    alt={item.title}
+                                    src={`${process.env.NEXT_PUBLIC_DEV_URL}/images/${item}`}
+                                    // {...srcset(`${process.env.NEXT_PUBLIC_DEV_URL}/images/${item}`, 121, pos.rows, pos.cols)}
+                                    alt={item}
                                     loading="lazy"
                                 />
                                 </ImageListItem>
                             )
                         })}
 
-                        { !itemData.length && 
+                        { !imageData.length && 
                             <ImageListItem key={"../../nopic.jpeg"} cols={4} rows={2}>
                                 <img
                                     {...srcset("../../nopic.jpeg", 100)}
