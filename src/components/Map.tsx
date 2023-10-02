@@ -60,42 +60,6 @@ const imagePosition = [
     },
 ]
 
-// TO DO: hardcoded images
-const itemData = [
-  {
-    img: '../../shop1.jpeg',
-    title: 'Breakfast',
-  },
-  {
-    img: '../../shop2.jpeg',
-    title: 'Burger',
-  },
-  {
-    img: '../../shop3.jpeg',
-    title: 'Camera',
-  },
-  {
-    img: '../../shop1.jpeg',
-    title: 'Coffee',
-  },
-  {
-    img: '../../shop2.jpeg',
-    title: 'Hats',
-  },
-  {
-    img: '../../shop3.jpeg',
-    title: 'Honey',
-  },
-  {
-    img: '../../shop1.jpeg',
-    title: 'Basketball',
-  },
-  {
-    img: '../../shop2.jpeg',
-    title: 'Fern',
-  },
-];
-
 export default function Map() {
 
     const router = useRouter()
