@@ -4,11 +4,10 @@ import getSessionHeader from "@/utils/SessionHeader";
 export const POST = async (req:NextRequest) => {
     try {
         const formData = await req.formData()
-        console.log(formData)
 
-        for (var key of formData.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
+        // for (var key of formData.entries()) {
+        //     console.log(key[0] + ', ' + key[1]);
+        // }
 
         const headers = await getSessionHeader(req);
         const url = `${process.env.NEXT_PUBLIC_DEV_URL}/images`;

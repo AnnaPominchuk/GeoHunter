@@ -33,7 +33,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const { register, handleSubmit, formState, watch, resetField } = form
     const { errors, dirtyFields, isSubmitted } = formState
 
-    const [images, setImages] = useState<File | null>(null)
+    const [images, setImages] = useState<File[]>([])
 
     const handleImagesChange = (newValue) => {
         setImages(newValue)
@@ -63,7 +63,9 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
         const resJson = await res.json()
 
         const formData = new FormData();
-        formData.append('image', images);
+        images.forEach((image) => {
+            formData.append('images', image);
+        })
         formData.append('reviewId', resJson.reviewId);
 
         const resIm = await fetch('/api/images/upload', {
@@ -165,21 +167,7 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                             helperText={errors.longitude?.message} />
                     </Stack>
 
-                    <Stack
-                        direction='row'
-                        spacing={2}>
-                        <Button
-                            component="label"
-                            variant="contained"
-                            startIcon={<CloudUploadIcon />}>
-                            Select files
-                            <VisuallyHiddenInput type="file" />
-                        </Button>
-                        <Typography color='black'>
-                        </Typography>
-                    </Stack>
-
-                    <MuiFileInput value={images} onChange={handleImagesChange} />
+                    <MuiFileInput multiple value={images} onChange={handleImagesChange} />
 
                     <Stack>
                         <TextField
