@@ -1,18 +1,25 @@
 'use client'
 
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
-import { Button, Box, Typography, IconButton } from '@mui/material';
+import { Button, Box, Typography, IconButton, Alert } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete'
 import FileIcon from '@mui/icons-material/FilePresent'
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
+import { useRouter } from 'next/navigation'
+
 
 const CsvInput = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isError, setIsError] = useState(false)
+
+  const router = useRouter()
 
   const onDrop = useCallback((files: File[]) => {
     setSelectedFile(files[0])
+    setIsSubmitted(false)
   }, [])
   const { getRootProps, getInputProps } = useDropzone({onDrop})
 
@@ -25,11 +32,13 @@ const CsvInput = () => {
         method: 'POST',
         body: csvAsText,
       });
+      console.log(response)
+      console.log(response.ok)
 
       if (response.ok) {
-        alert('CSV file uploaded successfully');
+        setIsSubmitted(true)
       } else {
-        alert('Error uploading CSV file');
+        setIsError(true)
       }
     } catch (error) {
       console.error('Error:', error);
@@ -40,13 +49,13 @@ const CsvInput = () => {
     if (selectedFile) {
       await handleFileUpload(selectedFile);
       setSelectedFile(null)
-    } else {
-      alert('Please select a file to upload.');
     }
   }
 
   const clearSelectedFile = () => {
     setSelectedFile(null)
+    setIsSubmitted(false)
+    setIsError(false)
   }
 
   return (
@@ -55,6 +64,31 @@ const CsvInput = () => {
               alignItems: 'center', 
               flexDirection: 'column' }} 
               bgcolor="secondary.main">
+      {
+        (isSubmitted && !isError ) &&  
+                      <Alert
+                        action={
+                            <Button color="inherit" size="small" onClick={() => router.back()}>
+                                Go Back
+                            </Button>
+                        }
+                        sx={{marginTop:4}}
+                        >
+                        CSV file uploaded successfully
+                      </Alert> 
+      }
+      {            
+        isError && <Alert severity="error"
+                      action={
+                            <Button color="inherit" size="small" onClick={() => router.back()}>
+                                Go Back
+                            </Button>
+                        }
+                        sx={{marginTop:4}}
+                        >
+                        Error uploading file
+                      </Alert>
+      }
       <Box sx={{ display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center', 
@@ -66,7 +100,7 @@ const CsvInput = () => {
                 height: '65vh',
                 width: '80vw',
                 minHeight:'250px',
-                m: 5,
+                m: 4,
                 p: 5,
                 color:'primary.main',
                 '&:hover': {cursor: 'pointer',
@@ -80,8 +114,7 @@ const CsvInput = () => {
         <Box  sx={{ color:'inherit', 
                     width:'100%', 
                     height:'70%' }}>
-          <VisuallyHiddenInput accept='csv' 
-                                type="file" 
+          <VisuallyHiddenInput type="file" 
                                 {...getInputProps()}/>
           <CloudUploadOutlinedIcon sx={{ color:'inherit', 
                                           width:'100%', 
