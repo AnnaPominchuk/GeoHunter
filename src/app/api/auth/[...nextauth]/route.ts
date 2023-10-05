@@ -30,7 +30,7 @@ export const authOptions = {
       authorization: {
         params: {
           audience: encodeURI(process.env.AUTH0_AUDIENCE ?? ''),
-        //  prompt: "login"
+          prompt: "login"
         }
       },
     })

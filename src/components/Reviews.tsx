@@ -41,8 +41,7 @@ const myReviews = ( props ) => {
     const [reviews, setReviews] = useState<Review[]>([])
     const [isAdmin, setIsAdmin] = useState<Boolean>(false)
 
-    useEffect(() => {
-        async function getReviews() {
+    async function getReviews() {
             try {
                 console.log(props.userId)
 
@@ -58,43 +57,41 @@ const myReviews = ( props ) => {
                     let review:Review = Convert.toReview(JSON.stringify(reviewData))
                     reviewsList.push(review)
                 }
-                setReviews(reviewsList)
+
+                setReviews(reviewsList.filter((review:Review) => {
+                            if (!session?.user?.roles?.includes(UserRole.ADMIN)) return true;
+                            return props.filter?.includes(review.status)
+                        }))
             } catch (e) {
                 console.log("Handle error", e)
             }
         }
 
+    useEffect(() => {
         setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN))
-
         getReviews()
-    },[])
+    },[props.filter])
 
     const handleApprove = async (id: String) => {
         const res = await fetch(`/api/review/${id || ''}`, {
                         method: 'PATCH',
                         body: JSON.stringify({status: ReviewStatus.Approved})
-                    });
+                    }).then( () => getReviews() );
     }
 
     const handleReject = async (id: String) => {
         const res = await fetch(`/api/review/${id || ''}`, {
                         method: 'PATCH',
                         body: JSON.stringify({status: ReviewStatus.Rejected})
-                    });
+                    }).then( () => getReviews() );
     }
-
-    console.log(props.filter)
 
     return (
         <>
-            { reviews?.filter((review:Review) => {
-                            if (!isAdmin) return true;
-                            return props.filter?.includes(review.status)
-                        })
-                       .map((review:Review) => (
+            { reviews.length > 0 && reviews?.map((review:Review) => (
                         <Item key={review._id}>
                         <Stack 
-                            direction= { isAdmin? "column" :"row" }
+                            direction= "row"
                             justifyContent='space-between'
                         >
                             <Stack direction="column">
@@ -102,13 +99,33 @@ const myReviews = ( props ) => {
                                 <Typography>{review.review}</Typography>
                             </Stack>
 
-                            { !isAdmin &&
+                            { //!isAdmin &&
+                                review.status === ReviewStatus.Approved &&
                                 <Chip 
                                     size="small"
-                                    color={review.status === ReviewStatus.Approved? "success":"error"} 
-                                    label={review.status === ReviewStatus.Approved? "Approved":"Not Approved"} 
+                                    color="success" 
+                                    label="Approved" 
                                 />
                             }
+
+                             {   review.status === ReviewStatus.Rejected &&
+                                <Chip 
+                                    size="small"
+                                    color="error"
+                                    label="Rejected" 
+                                />
+                             }
+
+                            {
+                                review.status === ReviewStatus.InReview &&
+                                <Chip 
+                                    size="small"
+                                    color="primary"
+                                    label="In Review"
+                                />
+                            }
+
+                        </Stack>
 
                             {
                                 isAdmin && 
@@ -116,10 +133,12 @@ const myReviews = ( props ) => {
                                     <Button size='small' aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
                                         onClick={() => handleApprove(review._id)}
                                     >
+                                        Approve
                                      </Button>
                                     <Button size='small' aria-label="fingerprint" color="primary"  startIcon={<BlockIcon />}
                                         onClick={() => handleReject(review._id)}
                                     >
+                                        Reject
                                     </Button>
 
                                     <Button size='small' aria-label="fingerprint" color="primary" 
@@ -131,9 +150,15 @@ const myReviews = ( props ) => {
                                 </Stack>
                             }
 
-                        </Stack>
+                        
                         </Item>
                 )) 
+            }
+
+            { reviews.length <= 0 && 
+                <Typography variant='h6' color={grey['600']} sx={{marginBottom: '10px'}}>
+                    There is no review yet
+                </Typography>
             }
         </>
 );
