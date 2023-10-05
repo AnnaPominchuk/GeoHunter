@@ -4,7 +4,6 @@ import Login from '@/app/login/page';
 
 import { useSession } from 'next-auth/react';
 import { redirect, usePathname } from 'next/navigation';
-import Login from '@/app/login/page';
 
 import UserRole from '../utils/UserRole'
 
