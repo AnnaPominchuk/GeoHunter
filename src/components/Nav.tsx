@@ -25,8 +25,6 @@ import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import '../styles/global.css'
 
-import withAuth from './withAuth';
-
 const Nav = () => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -52,7 +50,7 @@ const Nav = () => {
   return (
           <AppBar 
             position="fixed"
-            sx = {{zIndex: "tooltip"}}
+            sx = {{zIndex: "tooltip", height:64}}
           >
             <Toolbar>
 

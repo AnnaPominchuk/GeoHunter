@@ -43,40 +43,42 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const watchLongitude = watch('longitude')
 
     const onSubmit = async (data: FormValues) => {
-        const resUser = await fetch(`/api/user/${session?.user?.email}`, {
+        fetch(`/api/user/${session?.user?.email}`, {
             method: 'GET'
-        });
-                
-        const users = await resUser.json();
-
-        if (users.status != 200) return;
-
-        const userId = users.data.users._id;
-
-        console.log(userId)
-
-        const res = await fetch('/api/review/upload', {
-            method: 'POST',
-            body: JSON.stringify({ ...data, shopId: params.shopid, userId: userId || ''})
         })
+        .then(res => res.json())
+        .then(users => {
+            if (users.status != 200) 
+                Promise.reject('No users found')
 
-        const resJson = await res.json()
+            const userId = users.data.users._id;
+            console.log(userId)
 
-        const formData = new FormData();
-        images.forEach((image) => {
+            return fetch('/api/review/upload', {
+                method: 'POST',
+                body: JSON.stringify({ ...data, shopId: params.shopid, userId: userId || ''})
+            })
+        })
+        .then(res => res.json())
+        .then(resJson => {
+            const formData = new FormData();
+            images.forEach((image) => {
             formData.append('images', image);
-        })
-        formData.append('reviewId', resJson.reviewId);
+            })
+            formData.append('reviewId', resJson.reviewId);
 
-        const resIm = await fetch('/api/images/upload', {
-            method: 'POST',
-            body: formData
+            return fetch('/api/images/upload', {
+                method: 'POST',
+                body: formData
+            })
         })
-
-        resetField('latitude')
-        resetField('longitude')
-        resetField('name')
-        resetField('review')
+        .catch(error => console.log(error))
+        .finally(() => {
+            resetField('latitude')
+            resetField('longitude')
+            resetField('name')
+            resetField('review')
+        })
     }
 
     const onError = (error: FieldErrors<FormValues>) => {
@@ -187,7 +189,8 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                         <Button
                             variant="contained"
                             type="submit"
-                            disabled={JSON.stringify(dirtyFields) === '{}'}>
+                            disabled={JSON.stringify(dirtyFields) === '{}'
+                                        && !images.length}>
                             Save
                         </Button>
                         <Button

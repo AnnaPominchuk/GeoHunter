@@ -14,7 +14,7 @@ export const GET = async (req:NextRequest, { params }: { params: { key: string }
 
         const res = await fetch(url, obj);
 
-        return new  NextResponse(JSON.stringify({status : res.status }))
+        return res
     } catch(error) {
         return new NextResponse(JSON.stringify({error: 'Faild to fetch', status : 500}))
       }
