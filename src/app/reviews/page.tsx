@@ -65,17 +65,17 @@ const myPage = () => {
               >
                 <FormGroup sx={{padding: '8px' }}>
                     <FormControlLabel 
-                        control={<Checkbox defaultChecked name={ReviewStatus.InReview} onChange={handleChange} 
+                        control={<Checkbox checked={filter.includes(ReviewStatus.InReview)} name={ReviewStatus.InReview} onChange={handleChange} 
                             size="small" />} 
                         label="In Review" 
                     />
                     <FormControlLabel 
-                        control={<Checkbox name={ReviewStatus.Approved} onChange={handleChange}
+                        control={<Checkbox checked={filter.includes(ReviewStatus.Approved)} name={ReviewStatus.Approved} onChange={handleChange}
                             size="small" />} 
                         label="Approved" 
                     />
                     <FormControlLabel 
-                        control={<Checkbox name={ReviewStatus.Rejected} onChange={handleChange}
+                        control={<Checkbox checked={filter.includes(ReviewStatus.Rejected)} name={ReviewStatus.Rejected} onChange={handleChange}
                             size="small" />} 
                         label="Rejected" 
                     />
