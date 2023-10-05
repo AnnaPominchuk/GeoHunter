@@ -16,11 +16,13 @@ import Image from "next/image";
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors'
 
-import withAuth from '../../components/withAuth';
+import {withAuth} from '../../components/withAuth';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import Review from '../../model/Review'
+import Reviews from '../../components/Reviews';
+
+import UserRole from '../../utils/UserRole'
 import User from '../../model/User'
 
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
@@ -32,16 +34,6 @@ const StyledButtonGroup = styled(ButtonGroup)({
   }
 });
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  //...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'left',
-  color: theme.palette.text.secondary,
-  paddingLeft:'20px',
-  //maxWidth: '400',
-  minWidth: '800',
-}));
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -54,12 +46,11 @@ const StyledRating = styled(Rating)({
 
 const myPage = () => {
     const { data: session } = useSession();
-    const [reviews, setReviews] = useState<Review[]>([])
 
     const [user, setUser] = useState<User|null>(null)
 
     useEffect(() => {
-        async function geUser() {
+        async function getUser() {
             try {
                 const resUser = await fetch(`/api/user/${session?.user?.email}`, {
                     method: 'GET'
@@ -69,37 +60,12 @@ const myPage = () => {
                 if (users.status == 200) 
                     setUser(users.data.users)
 
-                return users.data.users._id
             } catch (e) {
                 console.log("Handle error", e)
             }
         }
 
-        async function getReviews() {
-            try {
-                let id = await geUser()
-                console.log(id)
-
-                const res = await fetch(`/api/review/${id}`, {
-                    method: 'GET'
-                });
-                const data = await res.json();
-
-                // let reviewsList:Review[] = []
-                // for(let reviewpData of data.reviews.reviews) {
-                //     let review:Review = Convert.toReview(JSON.stringify(reviewpData))
-                //     reviewsList.push(review)
-                // }
-                //setReviews(reviewsList)
-
-                console.log(data)
-                if (data.status == 200) setReviews(data.data.reviews);
-            } catch (e) {
-                console.log("Handle error", e)
-            }
-        }
-
-        getReviews()
+        getUser()
     },[])
 
   return (
@@ -149,30 +115,17 @@ const myPage = () => {
         </Box>
 
         {/* Right */}
-        <Box sx={{ marginTop: "50px", marginX: {xs:"50px", sm:"50px", md:0}, minWidth:1/2, maxWidth:2/3 }} bgcolor="secondary.main">
+        { !session?.user?.roles?.includes(UserRole.ADMIN) &&
+            <Box sx={{ marginTop: "50px", marginX: {xs:"50px", sm:"50px", md:0}, minWidth:1/2, maxWidth:2/3 }} bgcolor="secondary.main">
 
-            <Typography variant='h4'color={grey['700']} sx={{ marginBottom: '30px' }}>
-                My Reviews
-            </Typography>
+                <Typography variant='h4'color={grey['700']} sx={{ marginBottom: '30px' }}>
+                    My Reviews
+                </Typography>
 
-            { reviews?.map((review:Review) => (
-                <Item>
-                <Stack direction="row" justifyContent='space-between'>
-                    <Stack direction="column">
-                        <Typography variant='h6' color={grey['800']} sx={{marginBottom: '10px'}}>{review.name}</Typography>
-                        <Typography>{review.review}</Typography>
-                    </Stack>
-                    <Chip 
-                        size="small"
-                        color={review.approved ? "success":"error"} 
-                        label={review.approved ? "Approved":"Not Approved"} 
-                    />
-                </Stack>
-                </Item>
-              )) 
-            }
+                { user ? <Reviews userId={user?._id} /> : 'loading...' }
 
-        </Box>
+            </Box>
+        }
     </Box>
   )
 }

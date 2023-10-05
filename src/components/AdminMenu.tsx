@@ -24,6 +24,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 
 import UserRole from '../utils/UserRole'
 
@@ -129,6 +130,11 @@ const AdminMenu = ({children}: {children: React.ReactNode}) => {
           onClickHandler: () => router.push("/upload-map"),
           renderIcon : <CloudUploadIcon />
     },
+     {
+          text: "Reviews",
+          onClickHandler: () => router.push("/reviews"),
+          renderIcon : <RateReviewIcon />
+    },
   ]
 
   if ( !session?.user?.roles?.includes(UserRole.ADMIN) ) 
@@ -179,5 +185,5 @@ const AdminMenu = ({children}: {children: React.ReactNode}) => {
   )
 }
 
-//const AdminMenu = withAuth(myAdminMenu);
+//const AdminMenu = withAuthAdmin(myAdminMenu);
 export default AdminMenu;

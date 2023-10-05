@@ -1,7 +1,7 @@
 'use client'
 
 import CsvInput from '../../components/CsvInput'
-import withAuth from '../../components/withAuth';
+import {withAuthAdmin} from '../../components/withAuth';
 
 const myPage = () => {
   return (
@@ -9,5 +9,5 @@ const myPage = () => {
   )
 }
 
-const Page = withAuth(myPage);
+const Page = withAuthAdmin(myPage);
 export default Page;

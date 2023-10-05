@@ -2,7 +2,7 @@
 
 import { Stack, TextField, Typography, Button, Alert } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import withAuth from '../../../components/withAuth';
+import {withAuth} from '../../../components/withAuth';
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
