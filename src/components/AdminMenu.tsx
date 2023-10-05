@@ -27,14 +27,12 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import UserRole from '../utils/UserRole'
 
-import withAuth from './withAuth';
-
 import { makeStyles } from "@mui/styles";
 import { useTheme } from "@emotion/react";
 import clsx from "clsx";
 
 const drawerWidth = 240;
-const headerHeight = theme.mixins.toolbar.minHeight;
+const headerHeight = 64
 
 const useStyles = makeStyles((theme: Theme) => {
   return ({
@@ -134,7 +132,7 @@ const AdminMenu = ({children}: {children: React.ReactNode}) => {
   ]
 
   if ( !session?.user?.roles?.includes(UserRole.ADMIN) ) 
-    return ( <main> {children} </main> );
+    return ( <main> <Box sx={{marginTop:`${headerHeight}px`}}> {children} </Box> </main> );
 
   return (
     <>

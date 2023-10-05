@@ -5,10 +5,6 @@ export const POST = async (req:NextRequest) => {
     try {
         const formData = await req.formData()
 
-        // for (var key of formData.entries()) {
-        //     console.log(key[0] + ', ' + key[1]);
-        // }
-
         const headers = await getSessionHeader(req);
         const url = `${process.env.NEXT_PUBLIC_DEV_URL}/images`;
 

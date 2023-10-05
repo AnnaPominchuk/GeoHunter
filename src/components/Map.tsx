@@ -134,10 +134,10 @@ export default function Map() {
                         url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=n0swbZslDTaWflzUvXMT"
                     />
                     {
-                        shops.map((shop) => (
+                        shops.map((shop, index) => (
                             <Marker position={[shop.latitude, shop.longitude]}
                                     icon={markerIcon}
-                                    key={`${shop.name}-${shop.amount}`}
+                                    key={`${shop.name}-${shop.amount}-${index}`}
                                     >
                                 <Popup>
                                     <Box>
@@ -176,8 +176,7 @@ export default function Map() {
                             return (
                                 <ImageListItem key={item} cols={pos.cols || 1} rows={pos.rows || 1}>
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_DEV_URL}/images/${item}`}
-                                    // {...srcset(`${process.env.NEXT_PUBLIC_DEV_URL}/images/${item}`, 121, pos.rows, pos.cols)}
+                                    src={`api/images/${item}`}
                                     alt={item}
                                     loading="lazy"
                                 />
