@@ -7,6 +7,8 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
+import { stat } from "fs";
+
 export enum ReviewStatus {
   InReview = 'InReview',
   Approved = 'Approved',
@@ -202,3 +204,32 @@ const typeMap: any = {
         { json: "_id", js: "_id", typ: "" },
     ], false),
 };
+
+
+export class ReviewStatusConvert {
+    public static toText(status: ReviewStatus): string {
+        switch (status) {
+            case ReviewStatus.InReview:
+                return 'In review'
+           case ReviewStatus.Approved:
+                return 'Approved'
+           case ReviewStatus.Rejected:
+               return 'Rejected'
+            default:
+                return 'Unknown status'
+        }
+    }
+
+    public static toColor(status: ReviewStatus): string {
+        switch (status) {
+            case ReviewStatus.InReview:
+                return 'primary'
+           case ReviewStatus.Approved:
+                return 'success'
+           case ReviewStatus.Rejected:
+               return 'error'
+            default:
+                return 'primary'
+        }
+    }
+}

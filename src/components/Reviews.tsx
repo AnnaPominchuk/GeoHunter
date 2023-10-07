@@ -3,6 +3,7 @@
 import {withAuth} from './withAuth';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import {useRouter} from 'next/navigation'
 
 import { 
     Typography,
@@ -16,14 +17,13 @@ import {
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors'
 
-import { Convert, Review, ReviewStatus } from '../model/Review'
+import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '../model/Review'
 
 import UserRole from '../utils/UserRole'
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import BlockIcon from '@mui/icons-material/Block';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -38,22 +38,19 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const myReviews = ( props ) => {
     const { data: session } = useSession();
+    const router = useRouter()
     const [reviews, setReviews] = useState<Review[]>([])
     const [isAdmin, setIsAdmin] = useState<Boolean>(false)
 
     async function getReviews() {
             try {
-                console.log(props.userId)
-
                 const res = await fetch(`/api/review/user/${props.userId || ''}`, {
                     method: 'GET'
                 });
                 const data = await res.json();
-                console.log(data.data)
 
                 let reviewsList:Review[] = []
                 for(let reviewData of data.data.reviews) {
-                    console.log(JSON.stringify(reviewData))
                     let review:Review = Convert.toReview(JSON.stringify(reviewData))
                     reviewsList.push(review)
                 }
@@ -100,28 +97,10 @@ const myReviews = ( props ) => {
                             </Stack>
 
                             { //!isAdmin &&
-                                review.status === ReviewStatus.Approved &&
                                 <Chip 
                                     size="small"
-                                    color="success" 
-                                    label="Approved" 
-                                />
-                            }
-
-                             {   review.status === ReviewStatus.Rejected &&
-                                <Chip 
-                                    size="small"
-                                    color="error"
-                                    label="Rejected" 
-                                />
-                             }
-
-                            {
-                                review.status === ReviewStatus.InReview &&
-                                <Chip 
-                                    size="small"
-                                    color="primary"
-                                    label="In Review"
+                                    color={ReviewStatusConvert.toColor(review.status)}
+                                    label={ReviewStatusConvert.toText(review.status)}
                                 />
                             }
 
@@ -143,9 +122,9 @@ const myReviews = ( props ) => {
 
                                     <Button size='small' aria-label="fingerprint" color="primary" 
                                         endIcon={<ArrowForwardIcon />}
-                                            onClick={() => {}}
+                                            onClick={() => router.push(`/reviews/${review._id}`)}
                                     >
-                                            See more
+                                        See more
                                     </Button>
                                 </Stack>
                             }
