@@ -1,9 +1,7 @@
 'use client'
 
 import { Stack, TextField, Typography, Button, Alert } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {withAuth} from '../../../components/withAuth';
-import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
 import { MuiFileInput } from 'mui-file-input'
@@ -43,13 +41,13 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const watchLongitude = watch('longitude')
 
     const onSubmit = async (data: FormValues) => {
-        fetch(`/api/user/${session?.user?.email}`, {
+        await fetch(`/api/user/${session?.user?.email}`, {
             method: 'GET'
         })
         .then(res => res.json())
         .then(users => {
             if (users.status != 200) 
-                Promise.reject('No users found')
+                return Promise.reject('No users found')
 
             const userId = users.data.users._id;
             console.log(userId)

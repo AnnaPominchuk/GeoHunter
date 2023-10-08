@@ -3,7 +3,14 @@ import Auth0Provider from "next-auth/providers/auth0";
 import { JWT } from "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
 
-async function sendTokenToBackend(message: {user: User, account: Account | null, profile? : Profile | undefined, isNewUser? : boolean | undefined }) {
+interface Message{
+  user: User,
+  account: Account | null,
+  profile? : Profile | undefined,
+  isNewUser? : boolean | undefined 
+}
+
+async function sendTokenToBackend(message:Message) {
     const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/login`;
     const headers = new Headers({
         'Content-Type': 'application/json',
@@ -12,7 +19,8 @@ async function sendTokenToBackend(message: {user: User, account: Account | null,
     const body =  {
         'email': message.user.email,
         'name': message.user.name,
-        'lastname': message.user.email
+        'lastname': message.user.email,
+        'photoURL': message.user.image
     };
     return await fetch(url, {
         method: 'POST',
@@ -37,7 +45,7 @@ export const authOptions = {
   ],
   events: {
     signIn:
-        async (message: {user: User, account: Account | null, profile? : Profile | undefined, isNewUser? : boolean | undefined }) => {
+        async (message:Message) => {
           const result = await sendTokenToBackend(message);
           if (result.status === 401) {
             console.error('Authorization failed');

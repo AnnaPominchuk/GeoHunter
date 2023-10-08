@@ -5,9 +5,6 @@ import {
     Button,
     ButtonGroup,
     Typography,
-    Paper,
-    Stack,
-    Chip,
     Rating
 } from '@mui/material';
 
@@ -27,6 +24,8 @@ import User from '../../model/User'
 
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
+
+import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 
 const StyledButtonGroup = styled(ButtonGroup)({
   "& .MuiButtonGroup-grouped:not(:last-of-type)": {
@@ -48,6 +47,42 @@ const myPage = () => {
     const { data: session } = useSession();
 
     const [user, setUser] = useState<User|null>(null)
+
+    const [profilePhotoKey, setProfilePhotoKey] = useState<{key: string} | null>(null)
+
+    useEffect(() => {
+        setProfilePhotoKey({ key: user?.profilePhoto ?? '' })
+    }, [user])
+
+    const handleProfilePhotoChange = async (event:React.ChangeEvent<HTMLInputElement>) => {
+        await fetch(`/api/user/${session?.user?.email}`, {
+            method: 'GET'
+        })
+        .then(res => res.json())
+        .then(users => {
+            if (users.status != 200) 
+                return Promise.reject('No users found')
+            
+            if(!event.target.files)
+                return Promise.reject('No users found')
+
+            const formData = new FormData()
+            formData.append('images', event.target.files[0])
+            formData.append('userId', users.data.users._id)
+
+            return fetch('/api/profile-photo', {
+                method: 'POST',
+                body: formData
+            })
+        })
+        .then(() => fetch(`/api/profile-photo/user/${user?._id}`, { method: 'GET' }))
+        .then(res => res.json())
+        .then(data => {
+            if (data.status == 200) 
+                setProfilePhotoKey({ key: data.data.key })
+        })
+        .catch(error => console.log(error))
+    }
 
     useEffect(() => {
         async function getUser() {
@@ -74,22 +109,48 @@ const myPage = () => {
         {/* Left */}
         <Box sx={{ margin: "50px"}} bgcolor="secondary.main">
             <div style={{ borderRadius: '50%', overflow: 'hidden', width: '200px', height: '200px' }}>
-                <Image
-                    src='/../../no-pic-prof.jpeg'
-                    alt=""
-                    width={200}
-                    height={200}    
-                />
+               {
+                user && 
+                (
+                    user.useGooglePhoto ? 
+                    <img
+                        src={`${user?.profilePhotoURL}`}
+                        alt=""
+                        width={200}
+                        height={200}    
+                        
+                    /> : 
+                    (
+                        profilePhotoKey && 
+                        ( 
+                        profilePhotoKey.key?.length ?
+                        <img
+                            src={`/api/profile-photo/${profilePhotoKey.key}`}
+                            alt=""
+                            width={200}
+                            height={200}    
+                            loading="lazy"
+                        /> 
+                        : <img
+                            src='/../../no-pic-prof.jpeg'
+                            alt=""
+                            width={200}
+                            height={200}    
+                            loading="lazy"
+                        />
+                        ) 
+                    )
+                )
+                }
             </div>
 
             <StyledButtonGroup
                 sx={{ marginTop:'10px' }}
                 variant="text"
             >
-                <Button 
-                    onClick={() => {}}
-                >
+                <Button component="label">
                     Update profile photo
+                    <VisuallyHiddenInput type='file' accept='image/png, image/gif, image/jpeg' onChange={(event:React.ChangeEvent<HTMLInputElement>)=>{handleProfilePhotoChange(event)}}></VisuallyHiddenInput>
                 </Button>
             </StyledButtonGroup>
 
