@@ -62,7 +62,7 @@ const myPage = ({ params }: { params: { reviewId: String} }) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around',  flexDirection: {xs:'column', sm:'column', md:'row'}}} bgcolor="secondary.main">
        
-        <Box sx={{ marginTop: "50px", marginX: {xs:"50px", sm:"50px", md:0}, minWidth:1/2, maxWidth:2/3 }} bgcolor="secondary.main">
+        <Box sx={{ marginTop: "10px", marginX: {xs:"50px", sm:"50px", md:0}, width:2/3 }} bgcolor="secondary.main">
             <Stack 
                 direction= "row"
                 justifyContent='space-between'
@@ -71,41 +71,43 @@ const myPage = ({ params }: { params: { reviewId: String} }) => {
                 <IconButton 
                     aria-label="back"
                     onClick={() => router.back()}
-                    sx={{marginLeft: "-40px"}} // TO DO: styles
+                    sx={{marginLeft: "-50px"}} // TO DO: styles
                  >
                     <ArrowBackIcon />
                 </IconButton>
 
-                <Typography variant='h6' color={grey['800']}>Review details</Typography>
+                {/* <Typography variant='h6' color={grey['800']}>Review details</Typography> */}
             </Stack>
 
             { review && <>
-                <Stack direction="column"  sx={{marginBottom: "30px"}}>
+                <Stack direction="column">
                     <Typography variant='h6' color={grey['800']} sx={{marginBottom: "2px"}} >{review?.name}</Typography>
 
-                    <Typography variant='subtitle' color={ReviewStatusConvert.toColor(review?.status)}>
+                    <Typography color={ReviewStatusConvert.toColor(review?.status)}>
                         {ReviewStatusConvert.toText(review?.status)}
                     </Typography>
 
                 <Typography sx={{marginTop: "20px"}} >{review?.review}</Typography>
                 </Stack>   
 
-                <Stack alignItems={'center'}>
+                {/* <Typography sx={{marginTop: "50px"}} color={grey['700']}>Images</Typography> */}
+                <Stack alignItems={'center'} sx={{marginTop: "50px", maxHeight: "400px", overflow: 'auto'}}>
                     <Stack sx={{ maxWidth:2/3}}>
                         <Images reviewId={review?._id} />
                     </Stack>
                 </Stack>        
 
-                <Stack direction="row" sx={{marginTop: '30px'}} justifyContent={'flex-end'} >
-                    <Button size='small' aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
+                <Stack direction="row" spacing={2} sx={{marginTop: '30px', marginBottom: '30px'}} justifyContent={'flex-end'} >
+                    <Button size='small' aria-label="fingerprint" color="primary"  startIcon={<BlockIcon />}
+                        onClick={() => handleReject(review?._id)}
+                        variant="outlined"
+                    >
+                        Reject
+                    </Button>
+                    <Button size='small' variant="contained" aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
                         onClick={() => handleApprove(review?._id)}
                     >
                         Approve
-                    </Button>
-                    <Button size='small' aria-label="fingerprint" color="primary"  startIcon={<BlockIcon />}
-                        onClick={() => handleReject(review?._id)}
-                    >
-                        Reject
                     </Button>
 
                 </Stack>

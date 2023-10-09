@@ -21,6 +21,7 @@
     "autoprefixer": "10.4.15",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "fslightbox-react": "^1.7.6",
     "leaflet": "^1.9.4",
     "mui-file-input": "^3.0.2",
     "next": "13.4.19",
