@@ -103,11 +103,11 @@ export default function Map() {
         {
             selectedShop &&
             <Box sx={{ height: '100%', zIndex: '1000', flex:'1', boxShadow: 10, display:"flex", overflowY: "scroll"}} >
-                <Box style={{height:'100%', width:'100%', padding: '15% 15%'}}>
+                <Box style={{height:'100%', width:'100%', padding: '7% 15%'}}>
 
                     {/* Images */}
                     <Images shopId={selectedShop._id} />
-                    
+
                     {/* Text */}
                     <Typography variant='h5' color={grey['800']}>{selectedShop.name}</Typography>
                     <Typography variant='subtitle1' color={grey['700']} sx={{ marginBottom: '10px' }}>

@@ -25,3 +25,12 @@
     display: none;
   }
 }
+
+.fslightbox-full-dimension {
+  margin: 10px !important;
+}
+
+.fslightbox-container {
+    background: linear-gradient(rgba(68, 60, 76, 0.9),#8173a9 1810%) !important;
+    z-index: 0 !important;
+}

@@ -2,7 +2,8 @@
 
 import {useState, useEffect} from 'react'
 
-import { ImageList, ImageListItem } from '@mui/material';
+import { ImageList, ImageListItem, Box } from '@mui/material';
+import FsLightbox from "fslightbox-react";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -16,36 +17,29 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
 const imagePosition = [
     {
         rows: 2,
-        cols: 2,
-    },
-    {
-        rows: 1,
-        cols: 1,
-    },
-    {
-        rows: 1,
-        cols: 1,
-    },
-    {
-        rows: 1,
-        cols: 2,
+        cols: 4,
     },
     {
         rows: 2,
         cols: 2,
     },
     {
-        rows: 1,
-        cols: 1,
-    },
-    {
-        rows: 1,
-        cols: 1,
+        rows: 2,
+        cols: 2,
     },
 ]
 
 export default function Images( props ) {
-    const [imageData, setImageData] = useState([])
+    const [imageData, setImageData] = useState<String[]>([])
+
+    const [toggle, setToggle] =  useState<Boolean>(false);
+	const [sIndex, setSIndex] =  useState(0);
+
+	// Handler
+	const  lightBoxHandler  = (state, sIndex) => {
+		setToggle(state);
+		setSIndex(sIndex);
+	};
 
     useEffect(() => {
         async function getImages() {
@@ -56,7 +50,10 @@ export default function Images( props ) {
                     });
 
                     const data = await res.json();
-                    if (data.data) setImageData(data.data)
+
+                    let imageURLs: String[] = []
+                    data.data.map((item) => {imageURLs.push(`/api/images/${item}`)})
+                    setImageData(imageURLs)
                 }
                 else if (props.reviewId) {
                     const res = await fetch(`/api/images/review/${props.reviewId}`, {
@@ -64,7 +61,10 @@ export default function Images( props ) {
                     });
 
                     const data = await res.json();
-                    if (data.data) setImageData(data.data)
+
+                    let imageURLs: String[] = []
+                    data.data.map((item) => {imageURLs.push(`/api/images/${item}`)})
+                    setImageData(imageURLs)
                 }
             } catch (e) {
                 console.log("Handle error", e)
@@ -78,7 +78,7 @@ export default function Images( props ) {
         <>
             {/* Images */}
             <ImageList
-                sx={{ width: 1, height: 1/2, marginBottom: '20px' }}
+                sx={{ width: 1, height: 1/2, marginBottom: '20px'}}
                 variant="quilted"
                 cols={4}
                 rowHeight={121}
@@ -90,9 +90,10 @@ export default function Images( props ) {
                     return (
                         <ImageListItem key={item} cols={pos.cols || 1} rows={pos.rows || 1}>
                         <img
-                            src={`../api/images/${item}`}
+                            src={item}
                             alt={item}
                             loading="lazy"
+                            onClick={lightBoxHandler}
                         />
                         </ImageListItem>
                     )
@@ -109,7 +110,14 @@ export default function Images( props ) {
                 }
 
             </ImageList>
-                    
+
+            <Box>
+            <FsLightbox
+                    toggler={toggle}
+                    sources={imageData}
+                    type="image"
+                />
+            </Box> 
         </>
     );
 }

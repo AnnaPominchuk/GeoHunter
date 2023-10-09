@@ -42,7 +42,7 @@ const myPage = () => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around',  flexDirection: {xs:'column', sm:'column', md:'row'}}} bgcolor="secondary.main">
        
-        <Box sx={{ marginTop: "50px", marginX: {xs:"50px", sm:"50px", md:0}, minWidth:1/2, maxWidth:2/3 }} bgcolor="secondary.main">
+        <Box sx={{ marginTop: "50px",  marginBottom: "30px", marginX: {xs:"50px", sm:"50px", md:0}, minWidth:1/2, maxWidth:2/3 }} bgcolor="secondary.main">
             <Stack 
                 direction= "row"
                 justifyContent='space-between'
