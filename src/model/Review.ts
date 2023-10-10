@@ -24,7 +24,8 @@ export interface Review{
     userId: String,
     status: ReviewStatus,
     images: String[]
-    _id:    String
+    _id:    String,
+    rating: number
 }
 
 // Converts JSON strings to/from your types
@@ -202,6 +203,7 @@ const typeMap: any = {
         { json: "status", js: "status", typ: "" },
         { json: "images", js: "images", typ: a("string") },
         { json: "_id", js: "_id", typ: "" },
+        { json: "rating", js: "rating", typ: u(null, undefined,0) },
     ], false),
 };
 
@@ -220,12 +222,12 @@ export class ReviewStatusConvert {
         }
     }
 
-    public static toColor(status: ReviewStatus): string {
+    public static toColor(status: ReviewStatus, isText:Boolean): string {
         switch (status) {
             case ReviewStatus.InReview:
                 return 'primary'
            case ReviewStatus.Approved:
-                return 'success'
+                return isText? 'green': 'success'
            case ReviewStatus.Rejected:
                return 'error'
             default:

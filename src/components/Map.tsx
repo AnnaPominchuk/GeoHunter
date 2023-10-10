@@ -11,22 +11,26 @@ import Images from '../components/Images'
 import { Box, Typography, Button, ButtonGroup, LinearProgress } from '@mui/material';
 import { useRouter } from 'next/navigation'
 
+import { useSession } from 'next-auth/react'
+
+import UserRole from '../utils/UserRole'
+
 import { styled } from '@mui/material/styles';
 import theme from '@/utils/Theme'
 
 import { grey } from '@mui/material/colors'
 
 const StyledButtonGroup = styled(ButtonGroup)({
-  "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+  "& .MuiButtonGroup-grouped": {
     borderColor: "white"
   }
 });
 
 export default function Map() {
-
     const router = useRouter()
     const [shops, setShops] = useState<Shop[]>([])
     const [selectedShop, setSelectedShop] = useState<Shop | undefined>(undefined);
+    const { data: session } = useSession()
 
     const mapRef = useRef(null);
 
@@ -136,9 +140,10 @@ export default function Map() {
                         <Button onClick={closeDetails}>
                             Close
                         </Button>
-                        <Button onClick={() => router.push(`/form/${selectedShop._id}`)}>
-                            Upload info
-                        </Button>
+                        { !session?.user?.roles?.includes(UserRole.ADMIN) && <Button onClick={() => router.push(`/form/${selectedShop._id}`)}>
+                                Upload info
+                            </Button>
+                        }
                     </StyledButtonGroup>
                 </Box>
             </Box>

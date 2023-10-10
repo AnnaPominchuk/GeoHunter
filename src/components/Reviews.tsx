@@ -109,7 +109,7 @@ const myReviews = ( props ) => {
                             {
                                 isAdmin && 
                                 <Stack direction="row" spacing={1} sx={{marginTop: '10px'}} justifyContent={'flex-end'} >
-                                    <Button size='small' aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
+                                    {/* <Button size='small' aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
                                         onClick={() => handleApprove(review._id)}
                                     >
                                         Approve
@@ -118,7 +118,7 @@ const myReviews = ( props ) => {
                                         onClick={() => handleReject(review._id)}
                                     >
                                         Reject
-                                    </Button>
+                                    </Button> */}
 
                                     <Button size='small' aria-label="fingerprint" color="primary" 
                                         endIcon={<ArrowForwardIcon />}
