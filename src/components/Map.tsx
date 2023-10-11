@@ -140,7 +140,7 @@ export default function Map() {
                         <Button onClick={closeDetails}>
                             Close
                         </Button>
-                        { !session?.user?.roles?.includes(UserRole.ADMIN) && <Button onClick={() => router.push(`/form/${selectedShop._id}`)}>
+                        { session?.user?.roles?.includes(UserRole.ADMIN) && <Button onClick={() => router.push(`/form/${selectedShop._id}`)}>
                                 Upload info
                             </Button>
                         }

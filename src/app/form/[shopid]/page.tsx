@@ -1,18 +1,21 @@
 'use client'
 
-import { Stack, TextField, Typography, Button, Alert } from '@mui/material';
+import { Stack, TextField, Typography, Button, Alert, Box } from '@mui/material';
 import {withAuth} from '../../../components/withAuth';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
 import { MuiFileInput } from 'mui-file-input'
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+
+import L from 'leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 
 type FormValues = {
     name: String,
-    latitude: Number,
-    longitude: Number,
-    review: String
+    address: String,
+    review: String,
+    userId: String
 }
 
 const ShopForm = ({ params }: { params: { shopid: String} }) => {
@@ -23,22 +26,21 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const form = useForm<FormValues>({
         defaultValues: {
             name: '',
-            latitude: '',
-            longitude: '',
+            address: '',
             review: ''
         }
     })
-    const { register, handleSubmit, formState, watch, resetField } = form
+    const { register, handleSubmit, formState, resetField } = form
     const { errors, dirtyFields, isSubmitted } = formState
 
     const [images, setImages] = useState<File[]>([])
+    const [marker, setMarker] = useState(null)
+
+    const map = useRef(null);
 
     const handleImagesChange = (newValue) => {
         setImages(newValue)
     }
-
-    const watchLatitude = watch('latitude')
-    const watchLongitude = watch('longitude')
 
     const onSubmit = async (data: FormValues) => {
         await fetch(`/api/user/${session?.user?.email}`, {
@@ -51,10 +53,21 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
 
             const userId = users.data.users._id;
             console.log(userId)
+            data.userId = users.data.users._id || ''
+        })
+        .then(() => {
+            return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${data.address}`, {
+                method: 'GET'
+            })
+        })
+        .then(res => res.json())
+        .then((coord) => {
+            if (!coord.length)
+                return Promise.reject('No coord found')
 
             return fetch('/api/review/upload', {
                 method: 'POST',
-                body: JSON.stringify({ ...data, shopId: params.shopid, userId: userId || ''})
+                body: JSON.stringify({ ...data, latitude: coord[0].lat, longitude: coord[0].lon, shopId: params.shopid})
             })
         })
         .then(res => res.json())
@@ -72,10 +85,10 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
         })
         .catch(error => console.log(error))
         .finally(() => {
-            resetField('latitude')
-            resetField('longitude')
+            resetField('address')
             resetField('name')
             resetField('review')
+            setImages([])
         })
     }
 
@@ -86,6 +99,58 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
     const onCancel = () => {
         router.push('/map')
     }
+
+    const markerIcon:L.Icon = new L.Icon ({
+        iconUrl: '/marker.png', 
+        iconSize: [30, 30]
+    });
+
+    const updateAddress = async (lat: number, lon: number) => {
+        const header = new Headers({'Accept-Language': 'hu, en;q=0.9'})
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
+            method: 'GET',
+            headers: header
+        })
+
+        const resJson = await res.json()
+        form.setValue('address', resJson.display_name);
+    }
+
+    const handleMarkerDrag = async (event) => {
+        var newMarker = event.target;
+        var position = newMarker.getLatLng();
+        newMarker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
+        map.current?.panTo(new L.LatLng(position.lat, position.lng))
+
+        setMarker(newMarker)
+
+        await updateAddress(position.lat, position.lng);
+    }
+
+    const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`, {
+                method: 'GET'
+            })
+
+        const resJson = await res.json()
+
+        if (marker) {
+            map.current?.removeLayer(marker);
+        }
+
+        if (resJson.length) {
+            const mar = new L.marker([resJson[0].lat, resJson[0].lon], {draggable:'true', icon: markerIcon});
+            mar.on('dragend', handleMarkerDrag);
+
+            map.current?.addLayer(mar);
+            setMarker(mar)
+        }
+        else {
+            setMarker(null)
+        }
+    }
+
+    const position:L.LatLngExpression = [47.497913, 19.040236]
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
@@ -118,54 +183,39 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                             label='Name'
                             variant='outlined'
                             color='primary'
+                            type='text'
                             {...register('name')}
+                            required
                         />
                     </Stack>
 
                     <Stack
                         direction='row'
                         spacing={2}>
-                        <TextField
-                            label='Latitude'
-                            variant='outlined'
-                            color='primary'
-                            type='number'
-                            {...register('latitude', {
-                                pattern: {
-                                    value: /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/,
-                                    message: 'Enter a valid number from -90 to 90'
-                                },
-                                validate: {
-                                    isLongitudeSet: (fieldValue) => {
-                                     //   console.log(fieldValue)
-                                        return fieldValue == 0 || watchLongitude != 0 || 'Longitude and latitude values should both be provided'
-                                    }
-                                }
-                            })
-                            }
-                            error={!!errors.latitude}
-                            helperText={errors.latitude?.message} />
 
                         <TextField
-                            label='Longitude'
+                            label='Address'
                             variant='outlined'
                             color='primary'
-                            type='number'
-                            {...register('longitude', {
-                                pattern: {
-                                    value: /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/,
-                                    message: 'Enter a valid number from -180 to 180'
-                                },
-                                validate: {
-                                    isLatitudeSet: (fieldValue) => {
-                                        return fieldValue == 0 || watchLatitude != 0 || 'Longitude and latitude values should both be provided'
-                                    }
-                                }
-                            }
-                            )}
+                            type='text'
+                            {...register('address')}
                             error={!!errors.longitude}
-                            helperText={errors.longitude?.message} />
+                            helperText={errors.longitude?.message}
+                            onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
+                            sx={{width:'100%'}}
+                            required
+                        />
+
                     </Stack>
+
+                    <Box bgcolor="secondary.main" sx={{ height: "50vh", display: 'flex'}}> 
+                        <MapContainer center={position} zoom={8} scrollWheelZoom={true} style={{height:'100%', width:'100%'}} ref={map}>
+                        <TileLayer
+                            attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+                            url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=n0swbZslDTaWflzUvXMT"
+                        />
+                        </MapContainer>
+                    </Box>
 
                     <MuiFileInput multiple value={images} onChange={handleImagesChange} />
 
@@ -177,9 +227,11 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                             multiline
                             minRows='8'
                             maxRows='8'
-                            {...register('review')} />
+                            {...register('review')}
+                            required
+                        />
                     </Stack>
-
+ 
                     <Stack
                         direction='row'
                         spacing={2}
@@ -187,8 +239,8 @@ const ShopForm = ({ params }: { params: { shopid: String} }) => {
                         <Button
                             variant="contained"
                             type="submit"
-                            disabled={JSON.stringify(dirtyFields) === '{}'
-                                        && !images.length}>
+                            disabled={!(dirtyFields.name && dirtyFields.address && dirtyFields.review && marker)} 
+                        >
                             Save
                         </Button>
                         <Button
