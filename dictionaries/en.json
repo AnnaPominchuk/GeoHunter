@@ -1,0 +1,62 @@
+{
+    "adminMenu": {
+        "mapUploadButton": "Upload map",
+        "reviewsButton": "Reviews"
+    },
+    "csvUploadComponent": {
+        "successMessage": "CSV file uploaded successfully",
+        "errorMessage": "Error uploading file",
+        "capture": "Browse file to upload",
+        "uploadButton": "Upload data",
+        "supportedFiles": "Supported Files"
+    },
+    "map": {
+        "uploadInfoButton": "Upload info",
+        "progressBar": "Progress Bar",
+        "requestor": "Requestor"
+    },
+    "reviews": {
+        "reviewsCaption": "Reviews",
+        "approveButton": "Approve",
+        "rejectButton": "Reject",
+        "applyButton": "Apply",
+        "inReview": "In Review",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "seeMore": "See more",
+        "noReviews": "There is no review yet",
+        "reviewDetails": "Review details"
+    },
+    "rating": {
+        "rate": "Rate"
+    },
+    "form": {
+        "submittedMessage": "Form is submitted successfully",
+        "save": "Save",
+        "cancel": "Cancel",
+        "review": "Review"
+    },
+    "login": {
+        "appName": "GeoHunter",
+        "slogan": "Unveil the Hidden Truth",
+        "joinUs": "Join the Community of Truth-Seekers Discover, Document, & Dismantle Corruption",
+        "joinUsLong": "Join GeoHunter and become a beacon of truth in your community. Let’s build a world that values transparency and fairness, one discovery at a time.",
+        "logIn": "Log In"
+    }, 
+    "profile": {
+        "uploadPhotobButton": "Update profile photo",
+        "myReviews": "My Reviews"
+    },
+    "navigation": {
+        "goBackButton": "Go Back",
+        "closeButtob": "Close",
+        "detailsButton": "Open details",
+        "profile": "My Profile",
+        "logOut": "Log Out",
+        "openMapButton": "View Map",
+        "openRatingButton": "Activists rating"
+    },
+    "common": {
+        "name": "Name"
+    }
+}
