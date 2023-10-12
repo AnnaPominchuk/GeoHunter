@@ -19,13 +19,17 @@
         "reviewsCaption": "Reviews",
         "approveButton": "Approve",
         "rejectButton": "Reject",
+        "cancelButton": "Cancel",
         "applyButton": "Apply",
         "inReview": "In Review",
         "approved": "Approved",
         "rejected": "Rejected",
         "seeMore": "See more",
         "noReviews": "There is no review yet",
-        "reviewDetails": "Review details"
+        "reviewDetails": "Review details",
+        "rateReview": "Please rate this review ",
+        "saveAddress": "Save address",
+        "hint": "The content of the Popup"
     },
     "rating": {
         "rate": "Rate"
