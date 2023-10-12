@@ -25,7 +25,8 @@ export interface Review{
     status: ReviewStatus,
     images: String[]
     _id:    String,
-    rating: number
+    rating: number,
+    address: String
 }
 
 // Converts JSON strings to/from your types
@@ -203,7 +204,8 @@ const typeMap: any = {
         { json: "status", js: "status", typ: "" },
         { json: "images", js: "images", typ: a("string") },
         { json: "_id", js: "_id", typ: "" },
-        { json: "rating", js: "rating", typ: u(null, undefined,0) },
+        { json: "rating", js: "rating", typ: u(null, undefined, 0) },
+        { json: "address", js: "address", typ: u(undefined, "") },
     ], false),
 };
 

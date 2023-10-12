@@ -61,7 +61,7 @@ const myReviews = ({
 
     async function getReviews() {
             try {
-                const res = await fetch(`../api/review/user/${props.userId || ''}`, {
+                const res = await fetch(`../api/review/user/${userId || ''}`, {
                     method: 'GET'
                 });
                 const data = await res.json();
@@ -74,7 +74,7 @@ const myReviews = ({
 
                 setReviews(reviewsList.filter((review:Review) => {
                             if (!session?.user?.roles?.includes(UserRole.ADMIN)) return true;
-                            return props.filter?.includes(review.status)
+                            return filter?.includes(review.status)
                         }))
             } catch (e) {
                 console.log("Handle error", e)

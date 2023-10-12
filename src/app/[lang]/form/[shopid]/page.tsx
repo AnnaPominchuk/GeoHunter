@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
 
 import L from 'leaflet'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 
 import { getDictionary } from '@/lib/dictionary'
 import { Locale } from '../../../../../i18n.config'
@@ -21,20 +21,42 @@ type FormValues = {
     userId: String
 }
 
+class Location {
+    lat: number;
+    lon: number;
+
+    constructor(latitude: number, longitude: number) {
+        this.lat = latitude;
+        this.lon = longitude;
+    }
+}
+
 const ShopForm = ({
     params : { lang, shopId }
   }: {
-    params: { lang: Locale, shopId: string}
+    params: { lang: Locale, shopId: String}
   }) => {
 
     const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
         const setDict = async() => {
-        const dict = await getDictionary(lang)
-        setDictionary(dict)
+            const dict = await getDictionary(lang)
+            setDictionary(dict)
         }   
 
+        const setUserLoc = async () => {
+            await navigator.geolocation.getCurrentPosition( 
+                position => setLocation(new Location(
+                    position.coords.latitude, 
+                    position.coords.longitude
+                )),
+                err => console.log(err)
+            )
+        }
+
         setDict()
+        const interval = setInterval(() => { setUserLoc() }, 1000); 
+        return () => clearInterval(interval);
     }, [])
 
     const { data: session } = useSession();
@@ -52,6 +74,9 @@ const ShopForm = ({
 
     const [images, setImages] = useState<File[]>([])
     const [marker, setMarker] = useState(null)
+    const [userLocation, setLocation] = useState<Location|null>(null)
+
+    const position:L.LatLngExpression = [47.497913, 19.040236]
 
     const map = useRef(null);
 
@@ -60,7 +85,7 @@ const ShopForm = ({
     }
 
     const onSubmit = async (data: FormValues) => {
-        await fetch(`../api/user/${session?.user?.email}`, {
+        await fetch(`../../../api/user/${session?.user?.email}`, {
             method: 'GET'
         })
         .then(res => res.json())
@@ -82,20 +107,22 @@ const ShopForm = ({
             if (!coord.length)
                 return Promise.reject('No coord found')
 
-            return fetch('../api/review/upload', {
+            console.log({shopId: shopId, lang: lang})
+
+            return fetch('../../../api/review/upload', {
                 method: 'POST',
-                body: JSON.stringify({ ...data, latitude: coord[0].lat, longitude: coord[0].lon, shopId: params.shopid})
+                body: JSON.stringify({ ...data, latitude: coord[0].lat, longitude: coord[0].lon, shopId: shopId})
             })
         })
         .then(res => res.json())
         .then(resJson => {
             const formData = new FormData();
             images.forEach((image) => {
-            formData.append('images', image);
+                formData.append('images', image);
             })
             formData.append('reviewId', resJson.reviewId);
 
-            return fetch('../api/images/upload', {
+            return fetch('../../../api/images/upload', {
                 method: 'POST',
                 body: formData
             })
@@ -121,6 +148,15 @@ const ShopForm = ({
         iconUrl: '/marker.png', 
         iconSize: [30, 30]
     });
+
+    const userMarkerIcon:L.Icon = new L.Icon ({
+        iconUrl: '/user_l.png', 
+        iconSize: [30, 30]
+    });
+
+    const handleUserClick = () => {
+        map.current?.setView([userLocation?.lat, userLocation?.lon], 15 /* zoom */)
+    }
 
     const updateAddress = async (lat: number, lon: number) => {
         const header = new Headers({'Accept-Language': 'hu, en;q=0.9'})
@@ -166,8 +202,6 @@ const ShopForm = ({
             setMarker(null)
         }
     }
-
-    const position:L.LatLngExpression = [47.497913, 19.040236]
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
@@ -231,6 +265,17 @@ const ShopForm = ({
                             attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                             url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=n0swbZslDTaWflzUvXMT"
                         />
+
+                        { userLocation &&
+                            <Marker 
+                                position={[userLocation.lat, userLocation.lon]}
+                                icon={userMarkerIcon}
+                                key={`user-location`}
+                                eventHandlers={{
+                                    click: handleUserClick
+                                }}
+                            ></Marker>
+                        }
                         </MapContainer>
                     </Box>
 

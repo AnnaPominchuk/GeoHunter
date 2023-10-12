@@ -53,7 +53,7 @@ export default function Images( props ) {
                     setImageData(imageURLs)
                 }
                 else if (props.reviewId) {
-                    const res = await fetch(`../api/images/review/${props.reviewId}`, {
+                    const res = await fetch(`../../api/images/review/${props.reviewId}`, {
                         method: 'GET'
                     });
 

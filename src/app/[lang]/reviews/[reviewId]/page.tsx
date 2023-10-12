@@ -9,7 +9,9 @@ import {
     Stack,
     IconButton,
     Input,
-    Button
+    Button,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
 
 import Dialog from '@mui/material/Dialog';
@@ -74,12 +76,13 @@ const myPage = ({
     const [review, setReview] = useState<Review|null>(null)
     const [openDialog, setOpen] = useState(false);
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null);
-    const [rate, setRate] =  useState(0);
+    const [rate, setRate] = useState(0);
+    const [saveAddress, setSaveAddress] = useState<Boolean>(true);
     const openHint = Boolean(hintAnchor);
 
     async function getReview() {
             try {
-                const res = await fetch(`../api/review/${params.reviewId || ''}`, {
+                const res = await fetch(`../../api/review/${reviewId || ''}`, {
                     method: 'GET'
                 });
                 const data = await res.json();
@@ -96,16 +99,20 @@ const myPage = ({
     },[])
 
     const handleApprove = async (id: String) => {
-        const res = await fetch(`../api/review/${id || ''}`, {
+        const res = await fetch(`../../api/review/${id || ''}`, {
                         method: 'PATCH',
-                        body: JSON.stringify({status: ReviewStatus.Approved, rating: rate || 0 })
+                        body: JSON.stringify({
+                            status: ReviewStatus.Approved, 
+                            rating: rate || 0, 
+                            options: {saveAddress: saveAddress} 
+                        })
                     }).then( () => getReview() );
 
         setOpen(false);
     }
 
     const handleReject = async (id: String) => {
-        const res = await fetch(`../api/review/${id || ''}`, {
+        const res = await fetch(`../../api/review/${id || ''}`, {
                         method: 'PATCH',
                         body: JSON.stringify({status: ReviewStatus.Rejected})
                     }).then( () => getReview() );
@@ -125,6 +132,10 @@ const myPage = ({
 
         setRate(e.target.value)
     }
+
+    const handleChangCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSaveAddress(event.target.checked)
+    };
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around',  flexDirection: {xs:'column', sm:'column', md:'row'}}} bgcolor="secondary.main">
@@ -159,7 +170,8 @@ const myPage = ({
                         </Typography>
                     }
 
-                <Typography sx={{marginTop: "20px"}} >{review?.review}</Typography>
+                <Typography color={grey['700']} sx={{marginTop: "20px"}} >{review?.address}</Typography>
+                <Typography sx={{marginTop: "5px"}} >{review?.review}</Typography>
                 </Stack>   
 
                 <Stack alignItems={'center'} sx={{marginTop: "50px", maxHeight: "350px", overflow: 'auto'}}>
@@ -191,7 +203,7 @@ const myPage = ({
                 >
                     <DialogContent sx={{padding:"30px"}}>
                         <DialogContentText>
-                            <span>Please rate this review </span>
+                            <span>{ dictionary ? dictionary.reviews.rateReview : '' }</span>
                             <HelpOutlineIcon 
                                 onMouseEnter={e => setAnchor(e.currentTarget)}
                                 onMouseLeave={() => setAnchor(null)}
@@ -210,12 +222,20 @@ const myPage = ({
                             inputProps={{ min:1, max:10 }}
                         />
                         <Popup id='hint' open={openHint} anchor={hintAnchor}>
-                            <StyledPopperDiv>The content of the Popup</StyledPopperDiv>
+                            <StyledPopperDiv>{ dictionary ? dictionary.reviews.hint : '' }</StyledPopperDiv>
                         </Popup>
+
+                    <FormControlLabel control={<Checkbox checked={saveAddress} onChange={handleChangCheckbox}/>}
+                        label={ dictionary ? dictionary.reviews.saveAddress : '' }
+                    />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={() => handleApprove(review?._id)} variant="contained">Approve</Button>
+                        <Button onClick={handleClose}>
+                            { dictionary ? dictionary.reviews.cancelButton : '' }
+                        </Button>
+                        <Button onClick={() => handleApprove(review?._id)} variant="contained">
+                            { dictionary ? dictionary.reviews.approveButton : '' }
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </>}
