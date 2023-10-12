@@ -21,16 +21,6 @@ type FormValues = {
     userId: String
 }
 
-class Location {
-    lat: number;
-    lon: number;
-
-    constructor(latitude: number, longitude: number) {
-        this.lat = latitude;
-        this.lon = longitude;
-    }
-}
-
 const ShopForm = ({
     params : { lang, shopId }
   }: {
@@ -46,17 +36,20 @@ const ShopForm = ({
 
         const setUserLoc = async () => {
             await navigator.geolocation.getCurrentPosition( 
-                position => setLocation(new Location(
-                    position.coords.latitude, 
-                    position.coords.longitude
-                )),
+                position => { 
+                    updateAddress(
+                        position.coords.latitude, 
+                        position.coords.longitude)
+
+                    updateMarker(position.coords.latitude, 
+                        position.coords.longitude)
+                },
                 err => console.log(err)
             )
         }
 
         setDict()
-        const interval = setInterval(() => { setUserLoc() }, 1000); 
-        return () => clearInterval(interval);
+        setUserLoc(); 
     }, [])
 
     const { data: session } = useSession();
@@ -74,7 +67,6 @@ const ShopForm = ({
 
     const [images, setImages] = useState<File[]>([])
     const [marker, setMarker] = useState(null)
-    const [userLocation, setLocation] = useState<Location|null>(null)
 
     const position:L.LatLngExpression = [47.497913, 19.040236]
 
@@ -93,8 +85,6 @@ const ShopForm = ({
             if (users.status != 200) 
                 return Promise.reject('No users found')
 
-            const userId = users.data.users._id;
-            console.log(userId)
             data.userId = users.data.users._id || ''
         })
         .then(() => {
@@ -106,8 +96,6 @@ const ShopForm = ({
         .then((coord) => {
             if (!coord.length)
                 return Promise.reject('No coord found')
-
-            console.log({shopId: shopId, lang: lang})
 
             return fetch('../../../api/review/upload', {
                 method: 'POST',
@@ -149,15 +137,6 @@ const ShopForm = ({
         iconSize: [30, 30]
     });
 
-    const userMarkerIcon:L.Icon = new L.Icon ({
-        iconUrl: '/user_l.png', 
-        iconSize: [30, 30]
-    });
-
-    const handleUserClick = () => {
-        map.current?.setView([userLocation?.lat, userLocation?.lon], 15 /* zoom */)
-    }
-
     const updateAddress = async (lat: number, lon: number) => {
         const header = new Headers({'Accept-Language': 'hu, en;q=0.9'})
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
@@ -187,12 +166,19 @@ const ShopForm = ({
 
         const resJson = await res.json()
 
+        if (resJson.length)
+            updateMarker(resJson[0].lat, resJson[0].lon)
+        else
+            updateMarker(null, null)
+    }
+
+    const updateMarker = (lat: number|null, lon: number|null) => {
         if (marker) {
             map.current?.removeLayer(marker);
         }
 
-        if (resJson.length) {
-            const mar = new L.marker([resJson[0].lat, resJson[0].lon], {draggable:'true', icon: markerIcon});
+        if (lat != null && lon != null) {
+            const mar = new L.marker([lat, lon], {draggable:'true', icon: markerIcon});
             mar.on('dragend', handleMarkerDrag);
 
             map.current?.addLayer(mar);
@@ -245,7 +231,7 @@ const ShopForm = ({
                         spacing={2}>
 
                         <TextField
-                            label='Address'
+                            label=''
                             variant='outlined'
                             color='primary'
                             type='text'
@@ -265,17 +251,6 @@ const ShopForm = ({
                             attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                             url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=n0swbZslDTaWflzUvXMT"
                         />
-
-                        { userLocation &&
-                            <Marker 
-                                position={[userLocation.lat, userLocation.lon]}
-                                icon={userMarkerIcon}
-                                key={`user-location`}
-                                eventHandlers={{
-                                    click: handleUserClick
-                                }}
-                            ></Marker>
-                        }
                         </MapContainer>
                     </Box>
 
@@ -301,7 +276,7 @@ const ShopForm = ({
                         <Button
                             variant="contained"
                             type="submit"
-                            disabled={!(dirtyFields.name && dirtyFields.address && dirtyFields.review && marker)} 
+                            disabled={!(dirtyFields.name && dirtyFields.review && marker)} 
                         >
                             { dictionary ? dictionary.form.save : '' }
                         </Button>

@@ -219,14 +219,17 @@ const myPage = ({
                             type='number'
                             placeholder="Enter rating"
                             onChange={handleChange}
+                            defaultValue={1}
                             inputProps={{ min:1, max:10 }}
                         />
                         <Popup id='hint' open={openHint} anchor={hintAnchor}>
                             <StyledPopperDiv>{ dictionary ? dictionary.reviews.hint : '' }</StyledPopperDiv>
                         </Popup>
 
-                    <FormControlLabel control={<Checkbox checked={saveAddress} onChange={handleChangCheckbox}/>}
-                        label={ dictionary ? dictionary.reviews.saveAddress : '' }
+                    <FormControlLabel 
+                        control={<Checkbox checked={saveAddress} onChange={handleChangCheckbox}/>}
+                        label={<Typography color={grey['700']}>{dictionary ? dictionary.reviews.saveAddress : ''}</Typography> }
+                        sx={{marginTop:"20px"}}
                     />
                     </DialogContent>
                     <DialogActions>
