@@ -104,7 +104,10 @@ const ShopForm = ({
 
             return fetch('../../../api/review/upload', {
                 method: 'POST',
-                body: JSON.stringify({ ...data, latitude: coord[0].lat, longitude: coord[0].lon, shopId: shopId})
+                body: JSON.stringify({ 
+                    review: data.review, name: data.name, userId: data.userId, address: currentAddress,
+                    latitude: coord[0].lat, longitude: coord[0].lon, shopId: shopId
+                })
             })
         })
         .then(res => res.json())
