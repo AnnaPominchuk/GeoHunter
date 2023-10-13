@@ -157,7 +157,7 @@ export default function Map({
                         <Button onClick={closeDetails}>
                             { dictionary ? dictionary.navigation.goBackButton : '' }
                         </Button>
-                        { session?.user?.roles?.includes(UserRole.ADMIN) && 
+                        { !session?.user?.roles?.includes(UserRole.ADMIN) && 
                             <Button onClick={() => router.push(`/${lang}/form/${selectedShop._id}`)}>
                                 { dictionary ? dictionary.map.uploadInfoButton : '' }
                             </Button>
