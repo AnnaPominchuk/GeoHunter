@@ -29,6 +29,20 @@ async function sendTokenToBackend(message:Message) {
     });
 }
 
+async function patchUser(token: string, email: string, roles: string[]) {
+    const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${email}`;
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    });
+    const body =  {'roles': roles};
+    await fetch(url, {
+        method: 'PATCH',
+        headers: headers,
+        body: JSON.stringify(body)
+    });
+}
+
 export const authOptions = {
   providers: [
     Auth0Provider({
@@ -57,6 +71,8 @@ export const authOptions = {
 
       if (params.token?.roles) {
         params.session.user.roles = params.token.roles
+        // TO DO: change this with Auth0 action after deploing
+        await patchUser(params.token.accessToken, params.session.user.email, params.token.roles)
       }
   
       return params.session;

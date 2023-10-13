@@ -1,6 +1,6 @@
 'use client'
 
-import { Stack, TextField, Typography, Button, Alert, Box } from '@mui/material';
+import { Stack, TextField, Typography, Button, Alert, Box, Autocomplete } from '@mui/material';
 import {withAuth} from '../../components/withAuth';
 import { useForm, FieldErrors } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
@@ -20,6 +20,8 @@ type FormValues = {
     review: String,
     userId: String
 }
+
+const header = new Headers({'Accept-Language': 'hu'})
 
 const ShopForm = ({
     params : { lang, shopId }
@@ -67,6 +69,8 @@ const ShopForm = ({
 
     const [images, setImages] = useState<File[]>([])
     const [marker, setMarker] = useState(null)
+    const [addressList, setAddressList] = useState<String[]>([])
+    const [currentAddress, setCurrentAddress] = useState<String>('')
 
     const position:L.LatLngExpression = [47.497913, 19.040236]
 
@@ -88,8 +92,9 @@ const ShopForm = ({
             data.userId = users.data.users._id || ''
         })
         .then(() => {
-            return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${data.address}`, {
-                method: 'GET'
+            return fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${currentAddress}`, {
+                method: 'GET',
+                headers: header
             })
         })
         .then(res => res.json())
@@ -138,14 +143,14 @@ const ShopForm = ({
     });
 
     const updateAddress = async (lat: number, lon: number) => {
-        const header = new Headers({'Accept-Language': 'hu, en;q=0.9'})
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
             method: 'GET',
             headers: header
         })
 
         const resJson = await res.json()
-        form.setValue('address', resJson.display_name);
+        setCurrentAddress(resJson.display_name)
+        setAddressList([resJson.display_name])
     }
 
     const handleMarkerDrag = async (event) => {
@@ -161,7 +166,8 @@ const ShopForm = ({
 
     const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`, {
-                method: 'GET'
+                method: 'GET',
+                headers: header
             })
 
         const resJson = await res.json()
@@ -187,6 +193,21 @@ const ShopForm = ({
         else {
             setMarker(null)
         }
+    }
+
+    const handleAutocomplete = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`, {
+                method: 'GET',
+                headers: header
+            })
+
+        const resJson = await res.json()
+        console.log({resJson:resJson})
+        if (resJson.length) {
+            setAddressList( Array.from( new Set(resJson.map((item) => item.display_name )) ) )
+        }
+
+        setCurrentAddress(e.target.value || '')
     }
 
     return (
@@ -230,17 +251,33 @@ const ShopForm = ({
                         direction='row'
                         spacing={2}>
 
-                        <TextField
-                            label=''
-                            variant='outlined'
-                            color='primary'
-                            type='text'
-                            {...register('address')}
-                            error={!!errors.longitude}
-                            helperText={errors.longitude?.message}
-                            onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
-                            sx={{width:'100%'}}
-                            required
+                       <Autocomplete
+                            freeSolo
+                            filterOptions={(x) => x}
+                            options={addressList}
+                            value={currentAddress}
+                            onKeyUp={handleAutocomplete}
+                            onBlur={handleLocationChange}
+                            sx={{ width: '100%' }}
+                            renderOption={(props, option) => {
+                                return (
+                                    <li {...props} key={option}>
+                                    {option}
+                                    </li>
+                                )
+                            }}
+                            renderInput={(params) => 
+                                <TextField
+                                    {...params}
+                                    label=''
+                                    variant='outlined'
+                                    color='primary'
+                                    type='text'
+                                    {...register('address')}
+                                   // onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
+                                    sx={{width:'100%'}}
+                                    required
+                                />}
                         />
 
                     </Stack>

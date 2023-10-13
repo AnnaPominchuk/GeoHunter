@@ -19,6 +19,8 @@ import TableRow, { tableRowClasses } from '@mui/material/TableRow';
 import { getDictionary } from '@/lib/dictionary'
 import { Locale } from '../../../../i18n.config'
 
+import UserRole from '../../../utils/UserRole'
+
 import StarIcon from '@mui/icons-material/Star';
 
 // const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -52,7 +54,10 @@ const UsersRating = ({
             const obj = await res.json();
             console.log(obj)
 
-            if (obj.status == 200) setUsers(obj.data.users);
+            if (obj.status == 200) 
+              setUsers(obj.data.users.filter((user:User) => {
+                return !user.roles.includes(UserRole.ADMIN)
+              }));
         }
 
         geUsers()
