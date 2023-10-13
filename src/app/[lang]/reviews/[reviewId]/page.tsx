@@ -226,11 +226,12 @@ const myPage = ({
                             <StyledPopperDiv>{ dictionary ? dictionary.reviews.hint : '' }</StyledPopperDiv>
                         </Popup>
 
-                    <FormControlLabel 
+                    { review.address && <FormControlLabel 
                         control={<Checkbox checked={saveAddress} onChange={handleChangCheckbox}/>}
                         label={<Typography color={grey['700']}>{dictionary ? dictionary.reviews.saveAddress : ''}</Typography> }
                         sx={{marginTop:"20px"}}
-                    />
+                    /> }
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>
