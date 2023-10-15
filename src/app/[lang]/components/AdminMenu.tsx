@@ -1,58 +1,59 @@
 'use client'
 
-import React from 'react';
+import React from 'react'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
+import { PropsWithChildren } from 'react'
 
 import {
   IconButton, Box,
-} from "@mui/material";
+} from "@mui/material"
 
-import { styled, Theme, CSSObject } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { styled, Theme, CSSObject } from '@mui/material/styles'
+import MuiDrawer from '@mui/material/Drawer'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import RateReviewIcon from '@mui/icons-material/RateReview';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import RateReviewIcon from '@mui/icons-material/RateReview'
 
-import UserRole from '../../../utils/UserRole'
+import UserRole from '@/utils/UserRole'
 
-import { makeStyles } from "@mui/styles";
-import { useTheme } from "@emotion/react";
-import clsx from "clsx";
+import { makeStyles } from "@mui/styles"
+import useTheme from "@mui/material/styles/useTheme"
+import clsx from "clsx"
 
-const drawerWidth = 240;
+const drawerWidth = 240
 const headerHeight = 64
 
 const useStyles = makeStyles((theme: Theme) => {
   return ({
   content: {
-    transition: (theme) => theme.transitions.create("margin", {
+    transition: (theme: Theme) => theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: 500
     }),
     marginLeft:  `calc(${theme.spacing(7)} + 1px)` ,
   },
   contentOpenDrawer: {
-    transition: (theme) => theme.transitions.create("margin", {
+    transition: (theme: Theme) => theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: 500
     }),
     marginLeft:   drawerWidth,
   }
-})});
+})})
 
 const openedMixin = (customTheme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -62,7 +63,7 @@ const openedMixin = (customTheme: Theme): CSSObject => ({
   }),
   overflowX: 'hidden',
   marginTop: headerHeight,
-});
+})
 
 const closedMixin = (customTheme: Theme): CSSObject => ({
   transition: customTheme.transitions.create('width', {
@@ -75,7 +76,7 @@ const closedMixin = (customTheme: Theme): CSSObject => ({
     width: `calc(${customTheme.spacing(8)} + 1px)`,
   },
   marginTop: headerHeight, // necessary for content to be below app bar
-});
+})
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -84,7 +85,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-}));
+}))
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -101,62 +102,56 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       '& .MuiDrawer-paper': closedMixin(theme),
     }),
   }),
-);
+)
 
-const AdminMenu = ({
-  children,
-  params : { lang }
-}: {
-  children: React.ReactNode,
-  params: { lang: Locale}
-}) => {
+const AdminMenu = ({params, children} :  PropsWithChildren<Props>) => {
 
   const [ dictionary, setDictionary ] = useState<any>()
   useEffect(() => {
     const setDict = async() => {
-      const dict = await getDictionary(lang)
+      const dict = await getDictionary(params.lang)
       setDictionary(dict)
     }
 
     setDict()
-  }, [])
+  }, [params.lang])
 
   const router = useRouter()
 
   const { data: session } = useSession()
 
-  const [ isDrawerOpen, setDrawerOpen ] = useState(false);
+  const [ isDrawerOpen, setDrawerOpen ] = useState(false)
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(!isDrawerOpen);
-  };
+    setDrawerOpen(!isDrawerOpen)
+  }
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+    setDrawerOpen(false)
+  }
 
-  const customTheme = useTheme();
-  const classes = useStyles(customTheme);
+  const customTheme = useTheme()
+  const classes = useStyles(customTheme)
 
   const menuItems: { 
-    text: string; 
-    onClickHandler: React.MouseEventHandler<HTMLDivElement>;
+    text: string
+    onClickHandler: React.MouseEventHandler<HTMLDivElement>
     renderIcon: React.ReactNode
   }[] = dictionary ? [
     {
           text: dictionary.adminMenu.mapUploadButton,
-          onClickHandler: () => router.push(`/${lang}/upload-map`),
+          onClickHandler: () => router.push(`/${params.lang}/upload-map`),
           renderIcon : <CloudUploadIcon />
     },
     {
           text: dictionary.adminMenu.reviewsButton,
-          onClickHandler: () => router.push(`/${lang}/reviews`),
+          onClickHandler: () => router.push(`/${params.lang}/reviews`),
           renderIcon : <RateReviewIcon />
     },
   ] : []
 
   if ( !session?.user?.roles?.includes(UserRole.ADMIN) ) 
-    return ( <main> <Box sx={{marginTop:`${headerHeight}px`}}> {children} </Box> </main> );
+    return ( <main> <Box sx={{marginTop:`${headerHeight}px`}}> {children} </Box> </main> )
 
   return (
     <>
@@ -203,5 +198,5 @@ const AdminMenu = ({
   )
 }
 
-//const AdminMenu = withAuthAdmin(myAdminMenu);
-export default AdminMenu;
+//const AdminMenu = WithAuthAdmin(myAdminMenu)
+export default AdminMenu

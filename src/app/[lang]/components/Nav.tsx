@@ -3,66 +3,60 @@
 import {
   AppBar, 
   Toolbar, 
-  Button, 
-  ButtonGroup, 
   IconButton, 
   Menu, 
   MenuItem, 
   Typography, 
   Box,
   Link
-} from "@mui/material";
+} from "@mui/material"
 
-import Image from "next/image";
+import Image from "next/image"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { signOut, useSession } from 'next-auth/react'
 
 import { useRouter } from 'next/navigation'
 
-import MenuIcon from '@mui/icons-material/Menu';
-import ProfileIcon from '@mui/icons-material/AccountCircleOutlined';
-import { Locale } from '../../../../i18n.config'
+import MenuIcon from '@mui/icons-material/Menu'
+import ProfileIcon from '@mui/icons-material/AccountCircleOutlined'
+import { Props } from '@/utils/Props'
 import { getDictionary } from '@/lib/dictionary'
 import LangSwitch from './LangSwitch'
 
-import '../../../styles/global.css'
+import '@/styles/global.css'
 
-const Nav = ({
-  params : { lang }
-}: {
-  params: { lang: Locale}
-}) => {
+const Nav = ( { params } : Props ) => {
   const [ dictionary, setDictionary ] = useState<any>()
   useEffect(() => {
       const setDict = async() => {
-      const dict = await getDictionary(lang)
+      const dict = await getDictionary(params.lang)
       setDictionary(dict)
       }   
 
       setDict()
-  }, [])
+  }, [params.lang])
 
   const router = useRouter()
   const { data: session } = useSession()
 
-  const [ profileAnchor, setProfileAnchor ] = useState<null | HTMLElement>(null);
-  const profileMenuOpen = Boolean(profileAnchor);
+  const [ profileAnchor, setProfileAnchor ] = useState<null | HTMLElement>(null)
+  const profileMenuOpen = Boolean(profileAnchor)
 
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setProfileAnchor(event.currentTarget);
+    setProfileAnchor(event.currentTarget)
   }
 
-  const [ menuAnchor, setMenuAnchor ] = useState<null | HTMLElement>(null);
-  const mobileMenuOpen = Boolean(menuAnchor);
+  const [ menuAnchor, setMenuAnchor ] = useState<null | HTMLElement>(null)
+  const mobileMenuOpen = Boolean(menuAnchor)
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setMenuAnchor(event.currentTarget);
+    setMenuAnchor(event.currentTarget)
   }
 
   const handleMenuItemClick = (event: React.MouseEvent<HTMLLIElement>, path: string) => {
-    router.push(path);
-    setMenuAnchor(null);
+    router.push(path)
+    setMenuAnchor(null)
   }
   return (
           <AppBar 
@@ -87,9 +81,9 @@ const Nav = ({
                       variant="body2"
                       underline="none" 
                       sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
-                      onClick = {() => router.push(`/${lang}/map`)}
+                      onClick = {() => router.push(`/${params.lang}/map`)}
                   >
-                    {"VIEW MAP"}
+                    { dictionary ? dictionary.navigation.openMapButton : '' }
                   </Link>
                 </Typography>
                 <Typography variant="button" sx={{ ml:1, mr:5, flexGrow: 1 }}>
@@ -99,9 +93,9 @@ const Nav = ({
                       variant="body2"
                       underline="none" 
                       sx={{ display: { xs: 'none', sm: 'none', md:'block' } }}
-                      onClick = {() => router.push(`/${lang}/rating`)}
+                      onClick = {() => router.push(`/${params.lang}/rating`)}
                   >
-                    {"ACTIVISTS RATING"}
+                    { dictionary ? dictionary.navigation.openRatingButton : '' }
                   </Link>
                 </Typography>
 
@@ -124,7 +118,7 @@ const Nav = ({
                 onClose={() => {setProfileAnchor(null)}}
               >
                 <MenuItem onClick={ () => {
-                  router.push(`/${lang}/my-profile`);
+                  router.push(`/${params.lang}/my-profile`)
                   setProfileAnchor(null)
                 }}>
                   { dictionary ? dictionary.navigation.profile : '' }
@@ -151,7 +145,7 @@ const Nav = ({
                 onClose={() => {setMenuAnchor(null)}}
                 sx={{ display: { xs: 'block', sm: 'block', md:'none' } }}
               >
-                <MenuItem onClick={ e => handleMenuItemClick(e, `/${lang}/map`) }>
+                <MenuItem onClick={ e => handleMenuItemClick(e, `/${params.lang}/map`) }>
                   { dictionary ? dictionary.navigation.openMapButton : '' }
                 </MenuItem>
                 <MenuItem onClick={ e => handleMenuItemClick(e, "/rating") }>
@@ -164,5 +158,5 @@ const Nav = ({
   )
 }
 
-//const Nav = withAuth(myNav);
-export default Nav;
+//const Nav = WithAuth(myNav)
+export default Nav

@@ -2,9 +2,9 @@ import UserRole from "@/utils/UserRole";
 
 export default interface User{
     _id: string,
-    email: String,
-    name: String,
-    lastname: String,
+    email: string,
+    name: string,
+    lastname: string,
     rating: number,
     useGooglePhoto: boolean,
     profilePhoto: string,

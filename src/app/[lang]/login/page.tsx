@@ -1,35 +1,31 @@
 'use client'
 
 import Image from "next/image";
-import '../../../styles/global.css'
+import '@/styles/global.css'
 
 import { redirect } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react'
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
 import { useState, useEffect } from 'react'
 
-const Login = ({
-  params : { lang }
-}: {
-  params: { lang: Locale }
-}) => {
+const Login = ({params} : Props) => {
 
   const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
       const setDict = async() => {
-      const dict = await getDictionary(lang)
+      const dict = await getDictionary(params.lang)
       setDictionary(dict)
       }   
 
       setDict()
-  }, [])
+  }, [params.lang])
 
   const { data: session } = useSession();
-
+  
   if (session)
   {
-    redirect(`/${lang}/`);
+    redirect(`/${params.lang}/`);
   }
 
   return (

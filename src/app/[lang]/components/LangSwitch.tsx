@@ -2,22 +2,14 @@
 
 import { usePathname } from 'next/navigation'
 
-import { Link, Stack } from "@mui/material";
+import { Link, Stack } from "@mui/material"
 
-import { i18n } from '../../../../i18n.config'
+import { i18n } from '@/config/i18n.config'
 
 import { useRouter } from 'next/navigation'
 
 export default function LangSwitch() {
   const pathName = usePathname()
-
-  const redirectedPathName = (locale: string) => {
-    const segments = pathName.split('/')
-    segments[1] = locale
-    console.log(segments.join('/'))
-    return segments.join('/')
-  }
-
   const router = useRouter()
 
   return (
@@ -26,8 +18,14 @@ export default function LangSwitch() {
         return (
           <Stack key={locale}>
             <Link
-              href={redirectedPathName(locale)}
               color='#FFFFFF'
+              onClick={ () => {
+                  const segments = pathName.split('/')
+                  segments[1] = locale
+                  const path = segments.join('/')
+                  router.push(path)
+                }
+              }
             >
               {locale}
             </Link>

@@ -2,8 +2,8 @@
 
 import {useState, useEffect} from 'react'
 
-import { ImageList, ImageListItem, Box } from '@mui/material';
-import FsLightbox from "fslightbox-react";
+import { ImageList, ImageListItem, Box } from '@mui/material'
+import FsLightbox from "fslightbox-react"
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
   return {
@@ -11,7 +11,7 @@ function srcset(image: string, size: number, rows = 1, cols = 1) {
     srcSet: `${image}?w=${size * cols}&h=${
       size * rows
     }&fit=crop&auto=format&dpr=2 2x`,
-  };
+  }
 }
 
 const imagePosition = [
@@ -29,15 +29,15 @@ const imagePosition = [
     },
 ]
 
-export default function Images( props ) {
-    const [imageData, setImageData] = useState<String[]>([])
-    const [toggle, setToggle] =  useState<Boolean>(false);
-	const [sIndex, setSIndex] =  useState(0);
+export default function Images( props:any ) {
+    const [imageData, setImageData] = useState<string[]>([])
+    const [toggle, setToggle] =  useState<boolean>(false)
+	const [sIndex, setSIndex] =  useState(0)
 	// Handler
-	const  lightBoxHandler  = (state, sIndex) => {
-		setToggle(state);
-		setSIndex(sIndex);
-	};
+	const  lightBoxHandler  = (state:any, sIndex:any) => {
+		setToggle(state)
+		setSIndex(sIndex)
+	}
 
     useEffect(() => {
         async function getImages() {
@@ -45,30 +45,30 @@ export default function Images( props ) {
                 if (props.shopId) {
                     const res = await fetch(`../../api/images/shop/${props.shopId}`, {
                         method: 'GET'
-                    });
+                    })
 
-                    const data = await res.json();
-                    let imageURLs: String[] = []
-                    data.data.map((item) => {imageURLs.push(`../../api/images/${item}`)})
+                    const data = await res.json()
+                    let imageURLs: string[] = []
+                    data.data.map((item:string) => {imageURLs.push(`../../api/images/${item}`)})
                     setImageData(imageURLs)
                 }
                 else if (props.reviewId) {
                     const res = await fetch(`../../api/images/review/${props.reviewId}`, {
                         method: 'GET'
-                    });
+                    })
 
-                    const data = await res.json();
-                    let imageURLs: String[] = []
-                    data.data.map((item) => {imageURLs.push(`../../api/images/${item}`)})
+                    const data = await res.json()
+                    let imageURLs: string[] = []
+                    data.data.map((item:string) => {imageURLs.push(`../../api/images/${item}`)})
                     setImageData(imageURLs)
                 }
             } catch (e) {
-                console.log("Handle error", e)
+                console.error("Handle error", e)
             }
         }
 
         getImages()
-    },[])
+    },[props.reviewId, props.shopId])
 
     return (
         <>
@@ -81,7 +81,7 @@ export default function Images( props ) {
             >
 
                 {imageData && imageData.map((item, index) => {
-                    const pos = imagePosition[ index % imagePosition.length ];
+                    const pos = imagePosition[ index % imagePosition.length ]
 
                     return (
                         <ImageListItem key={item} cols={pos.cols || 1} rows={pos.rows || 1}>
@@ -115,5 +115,5 @@ export default function Images( props ) {
             </Box> 
                     
         </>
-    );
+    )
 }

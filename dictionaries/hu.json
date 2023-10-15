@@ -1,66 +1,61 @@
 {
     "adminMenu": {
-        "mapUploadButton": "Upload map",
-        "reviewsButton": "Reviews"
+        "mapUploadButton": "Térkép feltöltése",
+        "reviewsButton": "Vélemények"
     },
     "csvUploadComponent": {
-        "successMessage": "CSV file uploaded successfully",
-        "errorMessage": "Error uploading file",
-        "capture": "Browse file to upload",
-        "uploadButton": "Upload data",
-        "supportedFiles": "Supported Files"
+        "successMessage": "A CSV fájl feltöltése sikeres volt",
+        "errorMessage": "Hiba a fájl feltöltése közben",
+        "capture": "Fájl tallózása a feltöltéshez",
+        "uploadButton": "Adat feltöltése",
+        "supportedFiles": "Támogatott fájlok"
     },
     "map": {
-        "uploadInfoButton": "Upload info",
-        "progressBar": "Progress Bar",
-        "requestor": "Requestor"
+        "uploadInfoButton": "Információ feltöltése",
+        "requestor": "Kérelmező"
     },
     "reviews": {
-        "reviewsCaption": "Reviews",
-        "approveButton": "Approve",
-        "rejectButton": "Reject",
-        "cancelButton": "Cancel",
-        "applyButton": "Apply",
-        "inReview": "In Review",
-        "approved": "Approved",
-        "rejected": "Rejected",
-        "seeMore": "See more",
-        "noReviews": "There is no review yet",
-        "reviewDetails": "Review details",
-        "rateReview": "Please rate this review ",
-        "saveAddress": "Save address",
-        "hint": "The content of the Popup"
+        "reviewsCaption": "Vélemények",
+        "approveButton": "Jóváhagyás",
+        "rejectButton": "Visszautasítás",
+        "applyButton": "Alkalmaz",
+        "inReview": "Felülvizsgálat alatt",
+        "approved": "Jóváhagyva",
+        "rejected": "Elutasítva",
+        "seeMore": "További részletek",
+        "noReviews": "Nincs még értékelés",
+        "reviewDetails": "Vélemények áttekintése"
     },
     "rating": {
-        "rate": "Rate"
+        "rate": "Értékelés"
     },
     "form": {
-        "submittedMessage": "Form is submitted successfully",
-        "save": "Save",
-        "cancel": "Cancel",
-        "review": "Review"
+        "submittedMessage": "Az űrlap sikeresen elküldésre került",
+        "save": "Mentés",
+        "cancel": "Mégsem",
+        "review": "Áttekintés"
     },
     "login": {
         "appName": "GeoHunter",
-        "slogan": "Unveil the Hidden Truth",
-        "joinUs": "Join the Community of Truth-Seekers Discover, Document, & Dismantle Corruption",
-        "joinUsLong": "Join GeoHunter and become a beacon of truth in your community. Let’s build a world that values transparency and fairness, one discovery at a time.",
-        "logIn": "Log In"
+        "slogan": "Fedjük fel a rejtett igazságot",
+        "joinUs": "Csatlakozz az Igazságkeresők Közösségéhez - Fedezd fel, Dokumentáld & Számolj le a Korrupcióval",
+        "joinUsLong": "Csatlakozz a GeoHunter-hez és légy az igazság jelzőfénye a közösségedben. Építsünk egy világot, amely értékeli az átláthatóságot és a méltányosságot, egy felfedezés lépésről lépésre",
+        "logIn": "Bejelentkezés"
     }, 
     "profile": {
-        "uploadPhotobButton": "Update profile photo",
-        "myReviews": "My Reviews"
+        "uploadPhotobButton": "Profilkép frissítése",
+        "myReviews": "Saját értékeléseim"
     },
     "navigation": {
-        "goBackButton": "Go Back",
-        "closeButtob": "Close",
-        "detailsButton": "Open details",
-        "profile": "My Profile",
-        "logOut": "Log Out",
-        "openMapButton": "View Map",
-        "openRatingButton": "Activists rating"
+        "goBackButton": "Vissza",
+        "closeButtob": "Bezárás",
+        "detailsButton": "Részletek",
+        "profile": "Profilom",
+        "logOut": "Kilépés",
+        "openMapButton": "TÉRKÉP MEGNYITÁSA",
+        "openRatingButton": "AKTIVISTA ÉRTÉKELÉSEK"
     },
     "common": {
-        "name": "Name"
+        "name": "Név"
     }
 }

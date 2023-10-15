@@ -1,7 +1,7 @@
 'use client'
 
 import {useState, useEffect} from 'react'
-import User from '../../../model/User'
+import User from '@/model/User'
 
 import { 
     Box, 
@@ -12,14 +12,14 @@ import {
     TableHead
 } from '@mui/material';
 
-import theme from '../../../utils/Theme'
+import theme from '@/utils/Theme'
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableRow, { tableRowClasses } from '@mui/material/TableRow';
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
 
-import UserRole from '../../../utils/UserRole'
+import UserRole from '@/utils/UserRole'
 
 import StarIcon from '@mui/icons-material/Star';
 
@@ -27,21 +27,17 @@ import StarIcon from '@mui/icons-material/Star';
 
 // }));
 
-const UsersRating = ({
-  params : { lang }
-}: {
-  params: { lang: Locale}
-}) => {
+const UsersRating = ({params} : Props) => {
 
     const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
         const setDict = async() => {
-        const dict = await getDictionary(lang)
+        const dict = await getDictionary(params.lang)
         setDictionary(dict)
       }   
 
       setDict()
-    }, [])
+    }, [params.lang])
 
     const [users, setUsers] = useState<User[]>([])
 
@@ -52,7 +48,6 @@ const UsersRating = ({
             });
                 
             const obj = await res.json();
-            console.log(obj)
 
             if (obj.status == 200) 
               setUsers(obj.data.users.filter((user:User) => {
@@ -66,7 +61,7 @@ const UsersRating = ({
             if (l.rating === r.rating) return 0;
             return (l.rating > r.rating ? 1 : -1) 
         })
-    },[])
+    },[users])
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100vh', flexDirection:'column'}} bgcolor="secondary.main">

@@ -1,12 +1,13 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Provider from "./components/Provider"
-import { Locale, i18n } from '../../../i18n.config'
+import Provider from "@/components/Provider"
+import { i18n } from '@/config/i18n.config'
+import { Props } from '@/utils/Props'
+import { PropsWithChildren } from 'react'
 
-import { getServerSession } from "next-auth";
 
-import Main from "./components/Main";
+import Main from "@/components/Main"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,20 +20,13 @@ export const metadata: Metadata = {
   description: 'Unveil the Hidden Truth',
 }
 
-export default async function RootLayout({
-  children,
-  params
-}: {
-  children: React.ReactNode,
-  params: { lang: Locale }
-}) {
-  const session = await getServerSession();
+export default async function RootLayout({params, children} :  PropsWithChildren<Props>) {
 
   return (
     <html lang={params.lang}>
-      <Provider session={session}>
+      <Provider>
         <body className={`${inter.className} bg-color`}>
-          <Main params={{lang: params.lang}} children={children} />
+          <Main params={params}>{children}</Main>
         </body>
        </Provider>
     </html>
