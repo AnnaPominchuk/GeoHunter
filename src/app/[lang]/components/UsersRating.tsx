@@ -51,7 +51,7 @@ const UsersRating = ({params} : Props) => {
 
             if (obj.status == 200) 
               setUsers(obj.data.users.filter((user:User) => {
-                return !user.roles.includes(UserRole.ADMIN)
+                return !user.roles?.includes(UserRole.ADMIN)
               }));
         }
 
