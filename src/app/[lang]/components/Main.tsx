@@ -1,26 +1,19 @@
 'use client'
 
-import customTheme from "../../../utils/Theme";
+import Nav from "./Nav"
+import AdminMenu from "./AdminMenu"
+import { WithAuthComponent } from './WithAuth'
+import { PropsWithChildren } from 'react'
+import { Props } from '@/utils/Props'
 
-import Nav from "./Nav";
-import AdminMenu from "./AdminMenu";
-import { Locale } from '../../../../i18n.config'
-import {withAuth} from './withAuth';
-
-const myMain = ({
-  children,
-  params : { lang }
-}: {
-  children: React.ReactNode,
-  params: { lang: Locale}
-}) => {
+const myMain = (props: PropsWithChildren<Props>) => {
     return (
         <>
-          <Nav params={{lang}}/>
-          <AdminMenu children={children} params={{lang}}/>
+          <Nav {...props}/>
+          <AdminMenu {...props}>{props.children}</AdminMenu>
         </>
-);
+)
 }
 
-const Main = withAuth(myMain);
-export default Main;
+const Main = WithAuthComponent(myMain)
+export default Main

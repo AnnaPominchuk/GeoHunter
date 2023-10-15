@@ -1,13 +1,9 @@
 'use client'
 
-import {withAuth} from './components/withAuth';
-import { Locale } from '../../../i18n.config'
+import { WithAuth } from '@/components/WithAuth'
+import { Props } from '@/utils/Props'
 
-const myHome = ({
-  params : { lang }
-}: {
-  params: { lang: Locale}
-}) => {
+const myHome = (props: Props) => {
   
   return (
     <div >
@@ -16,5 +12,5 @@ const myHome = ({
   )
 }
 
-const Home = withAuth(myHome);
-export default Home;
+const Home = WithAuth(myHome)
+export default Home

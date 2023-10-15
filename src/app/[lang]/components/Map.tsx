@@ -1,63 +1,55 @@
 'use client'
 
 import {useState, useEffect, useRef} from 'react'
-import { Convert, Shop } from '../../../model/Shop'
+import { Convert, Shop } from '@/model/Shop'
 
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import Images from './Images'
 
-import { Box, Typography, Button, ButtonGroup, LinearProgress } from '@mui/material';
+import { Box, Typography, Button, ButtonGroup } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
 import { getDictionary } from '@/lib/dictionary'
 
 import { useSession } from 'next-auth/react'
 
-import UserRole from '../../../utils/UserRole'
-
-import { styled } from '@mui/material/styles';
-import theme from '@/utils/Theme'
-
+import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 
 const StyledButtonGroup = styled(ButtonGroup)({
   "& .MuiButtonGroup-grouped": {
     borderColor: "white"
   }
-});
+})
 
-export default function Map({
-    params : { lang }
-  }: {
-    params: { lang: Locale}
-  }) {
+export default function Map({params} : Props) {
 
     const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
         const setDict = async() => {
-        const dict = await getDictionary(lang)
+        const dict = await getDictionary(params.lang)
         setDictionary(dict)
         }   
 
         setDict()
-    }, [])
+    }, [params.lang])
 
     const router = useRouter()
     const [shops, setShops] = useState<Shop[]>([])
-    const [selectedShop, setSelectedShop] = useState<Shop | undefined>(undefined);
+    const [selectedShop, setSelectedShop] = useState<Shop | undefined>(undefined)
     const { data: session } = useSession()
 
-    const mapRef = useRef(null);
+    const mapRef = useRef(null)
 
     useEffect(() => {
         async function getShops() {
             try {
                 const res = await fetch('../api/shop', {
                     method: 'GET'
-                    });
-                const data = await res.json();
+                    })
+                const data = await res.json()
 
                 let shopsList:Shop[] = []
                 for(let shopData of data.shops.shops) {
@@ -66,7 +58,7 @@ export default function Map({
                 }
                 setShops(shopsList)
             } catch (e) {
-                console.log("Handle error", e)
+                console.error("Handle error", e)
             }   
         }
         getShops()
@@ -75,7 +67,7 @@ export default function Map({
 
     function openDetails(shop:Shop){
         setSelectedShop(shop)
-        mapRef.current.closePopup();
+        mapRef.current.closePopup()
     }
 
     function closeDetails(){
@@ -85,7 +77,7 @@ export default function Map({
     const markerIcon:L.Icon = new L.Icon ({
         iconUrl: '../marker.png', 
         iconSize: [30, 30]
-        });
+        })
 
     const position:L.LatLngExpression = [47.497913, 19.040236]
     return (
@@ -137,18 +129,6 @@ export default function Map({
                     <Typography variant='subtitle2'color={grey['700']} sx={{ marginBottom: '30px' }}>
                         {selectedShop.name}
                     </Typography>
-
-                    <Typography 
-                        variant='subtitle1' 
-                        color={theme.palette.primary.main} 
-                        sx={{ marginBottom: '8px' }}
-                    >
-                        { dictionary ? dictionary.map.progressBar : '' }
-                    </Typography>
-                    <LinearProgress 
-                      color='primary' variant='determinate' value={70} 
-                       sx={{ marginBottom: '20px' }}
-                     />
                     
                     <StyledButtonGroup
                         sx={{ marginBottom:5 }}
@@ -158,7 +138,7 @@ export default function Map({
                             { dictionary ? dictionary.navigation.goBackButton : '' }
                         </Button>
                         { !session?.user?.roles?.includes(UserRole.ADMIN) && 
-                            <Button onClick={() => router.push(`/${lang}/form/${selectedShop._id}`)}>
+                            <Button onClick={() => router.push(`/${params.lang}/form/${selectedShop._id}`)}>
                                 { dictionary ? dictionary.map.uploadInfoButton : '' }
                             </Button>
                         }
@@ -167,5 +147,5 @@ export default function Map({
             </Box>
         }
         </Box>
-    );
+    )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import {withAuthAdmin} from '../components/withAuth';
+import {WithAuthAdmin} from '@/components/WithAuth';
 
 import { 
     Box,
@@ -16,16 +16,16 @@ import {
 
 import { useState, useEffect } from 'react';
 
-import Reviews from '../components/Reviews';
+import Reviews from '@/components/Reviews';
 
-import { ReviewStatus } from '../../../model/Review'
+import { ReviewStatus } from '@/model/Review'
 
 import { grey } from '@mui/material/colors'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Locale } from '@/config/i18n.config'
 
-const myPage = ({
+const ReviewsPage = ({
     params : { lang, reviewId }
   }: {
     params: { lang: Locale, reviewId: String}
@@ -39,7 +39,7 @@ const myPage = ({
       }
   
       setDict()
-    }, [])
+    }, [lang])
 
     const [filter, setFilter] = useState<String[]>(['InReview'])
     const [filterAnchor, setFilterAnchor] = useState<null | HTMLElement>(null);
@@ -105,5 +105,5 @@ const myPage = ({
     </Box>
   )
 }
-const Page = withAuthAdmin(myPage);
+const Page = WithAuthAdmin(ReviewsPage);
 export default Page;

@@ -1,18 +1,15 @@
 'use client'
 
-import {withAuth} from '../components/withAuth';
-import Map from '../components/Map'
-import { Locale } from '../../../../i18n.config'
+import { WithAuth } from '@/components/WithAuth'
+import { Props } from '@/utils/Props'
+const Map = dynamic (() => import('@/components/Map'))
+import dynamic from 'next/dynamic'
 
-const myPage = ({
-  params : { lang }
-}: {
-  params: { lang: Locale}
-}) => {
+const MapPage = (props : Props) => {
   return (
-    <Map params={{lang}}/>
+    <Map {...props}/>
   )
 }
 
-const Page = withAuth(myPage);
+const Page = WithAuth(MapPage);
 export default Page;

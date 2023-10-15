@@ -1,7 +1,7 @@
 'use client'
 
-import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
-import { Button, Box, Typography, IconButton, Alert } from '@mui/material';
+import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput'
+import { Button, Box, Typography, IconButton, Alert } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FileIcon from '@mui/icons-material/FilePresent'
 import { useState, useCallback, useEffect } from 'react'
@@ -9,24 +9,20 @@ import { useDropzone } from 'react-dropzone'
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
 import { useRouter } from 'next/navigation'
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
 
 
-const CsvInput = ({
-  params : { lang }
-}: {
-  params: { lang: Locale }
-}) => {
+const CsvInput = ( {params} : Props ) => {
 
   const [ dictionary, setDictionary ] = useState<any>()
   useEffect(() => {
     const setDict = async() => {
-      const dict = await getDictionary(lang)
+      const dict = await getDictionary(params.lang)
       setDictionary(dict)
     }
 
     setDict()
-  }, [])
+  }, [params.lang])
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -42,15 +38,13 @@ const CsvInput = ({
 
   const handleFileUpload = async (file: File) => {
     try {
-      const formData = new FormData();
-      formData.append('csvFile', file);
+      const formData = new FormData()
+      formData.append('csvFile', file)
       const csvAsText = await file.text()
       const response = await fetch('../api/shop/upload-csv', {
         method: 'POST',
         body: csvAsText,
-      });
-      console.log(response)
-      console.log(response.ok)
+      })
 
       if (response.ok) {
         setIsSubmitted(true)
@@ -58,13 +52,13 @@ const CsvInput = ({
         setIsError(true)
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
     }
-  };
+  }
 
   const handleUpload = async () => {
     if (selectedFile) {
-      await handleFileUpload(selectedFile);
+      await handleFileUpload(selectedFile)
       setSelectedFile(null)
     }
   }
@@ -189,7 +183,7 @@ const CsvInput = ({
         { dictionary ? dictionary.csvUploadComponent.uploadButton : '' }
       </Button>
     </Box>
-  );
+  )
 }
 
-export default CsvInput;
+export default CsvInput

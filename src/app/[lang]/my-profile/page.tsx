@@ -8,26 +8,24 @@ import {
     Rating
 } from '@mui/material';
 
-import Image from "next/image";
-
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors'
 
-import {withAuth} from '../components/withAuth';
+import { WithAuth } from '@/components/WithAuth';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import Reviews from '../components/Reviews';
+import Reviews from '@/components/Reviews';
 
-import UserRole from '../../../utils/UserRole'
-import User from '../../../model/User'
+import UserRole from '@/utils/UserRole'
+import User from '@/model/User'
 
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
 
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Props } from '@/utils/Props'
 
 const StyledButtonGroup = styled(ButtonGroup)({
   "& .MuiButtonGroup-grouped:not(:last-of-type)": {
@@ -45,21 +43,17 @@ const StyledRating = styled(Rating)({
   },
 });
 
-const myPage = ({
-    params : { lang }
-  }: {
-    params: { lang: Locale}
-  }) => {
+const Profile = ({params} : Props) => {
 
     const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
       const setDict = async() => {
-      const dict = await getDictionary(lang)
+      const dict = await getDictionary(params.lang)
       setDictionary(dict)
       }   
 
       setDict()
-    }, [])
+    }, [params.lang])
 
     const { data: session } = useSession();
 
@@ -98,7 +92,7 @@ const myPage = ({
             if (data.status == 200) 
                 setProfilePhotoKey({ key: data.data.key })
         })
-        .catch(error => console.log(error))
+        .catch(error => console.error(error))
     }
 
     useEffect(() => {
@@ -113,12 +107,12 @@ const myPage = ({
                     setUser(users.data.users)
 
             } catch (e) {
-                console.log("Handle error", e)
+                console.error("Handle error", e)
             }
         }
 
         getUser()
-    },[])
+    },[session?.user?.email])
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around',  flexDirection: {xs:'column', sm:'column', md:'row'}}} bgcolor="secondary.main">
@@ -200,7 +194,7 @@ const myPage = ({
                     { dictionary ? dictionary.profile.myReviews : '' }           
                 </Typography>
 
-                { user ? <Reviews params={{lang, filter:[], userId:user?._id}}/> : 'loading...' }
+                { user ? <Reviews params={{lang: params.lang, filter:[], userId:user?._id}}/> : 'loading...' }
 
             </Box>
         }
@@ -208,5 +202,5 @@ const myPage = ({
   )
 }
 
-const Page = withAuth(myPage);
+const Page = WithAuth(Profile);
 export default Page;

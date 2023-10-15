@@ -1,7 +1,7 @@
 'use client'
 
-import {withAuthAdmin} from '../../components/withAuth';
-import Images from '../../components/Images'
+import { WithAuthAdmin } from '@/components/WithAuth'
+import Images from '@/components/Images'
 
 import { 
     Box,
@@ -24,10 +24,10 @@ import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup';
 import { useState, useEffect, useRef } from 'react';
 import {useRouter} from 'next/navigation'
 
-import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '../../../../model/Review'
+import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '@/model/Review'
 
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../../i18n.config'
+import { Locale } from '@/config/i18n.config'
 
 import { grey } from '@mui/material/colors'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -55,7 +55,7 @@ const StyledPopperDiv = styled('div')(
   `,
 );
 
-const myPage = ({
+const ReviewPage = ({
     params : { lang, reviewId }
   }: {
     params: { lang: Locale, reviewId: String}
@@ -69,7 +69,7 @@ const myPage = ({
       }
   
       setDict()
-    }, [])
+    }, [lang])
 
     const router = useRouter()
 
@@ -77,7 +77,7 @@ const myPage = ({
     const [openDialog, setOpen] = useState(false);
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null);
     const [rate, setRate] = useState(0);
-    const [saveAddress, setSaveAddress] = useState<Boolean>(true);
+    const [saveAddress, setSaveAddress] = useState<boolean>(true);
     const openHint = Boolean(hintAnchor);
 
     async function getReview() {
@@ -90,13 +90,13 @@ const myPage = ({
                 let r:Review = Convert.toReview(JSON.stringify(data.review))
                 setReview(r)
             } catch (e) {
-                console.log("Handle error", e)
+                console.error("Handle error", e)
             }
     }
 
     useEffect(() => {
         getReview()
-    },[])
+    },[getReview])
 
     const handleApprove = async (id: String) => {
         const res = await fetch(`../../api/review/${id || ''}`, {
@@ -126,7 +126,7 @@ const myPage = ({
         setOpen(false);
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e:any) => {
         if (e.target.value > 10) e.target.value = 10
         if (e.target.value < 1) e.target.value = 1
 
@@ -189,7 +189,7 @@ const myPage = ({
                         </Button>
                     }
                     { review.status != 'Approved' && <Button size='small' variant="contained" aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
-                            onClick={e => handleClickOpen(e)}
+                            onClick={handleClickOpen}
                         >
                             { dictionary ? dictionary.reviews.approveButton : '' }
                         </Button>
@@ -248,5 +248,5 @@ const myPage = ({
     </Box>
   )
 }
-const Page = withAuthAdmin(myPage);
+const Page = WithAuthAdmin(ReviewPage);
 export default Page;

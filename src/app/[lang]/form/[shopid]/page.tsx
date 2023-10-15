@@ -1,18 +1,18 @@
 'use client'
 
-import { Stack, TextField, Typography, Button, Alert, Box, Autocomplete } from '@mui/material';
-import {withAuth} from '../../components/withAuth';
-import { useForm, FieldErrors } from 'react-hook-form';
+import { Stack, TextField, Typography, Button, Alert, Box, Autocomplete } from '@mui/material'
+import { WithAuth } from '@/components/WithAuth'
+import { Props } from '@/utils/Props'
+import { useForm, FieldErrors } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { MuiFileInput } from 'mui-file-input'
-import { useSession } from 'next-auth/react';
-import { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react'
+import { useState, useEffect, useRef } from 'react'
 
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../../i18n.config'
 
 type FormValues = {
     name: String,
@@ -23,16 +23,51 @@ type FormValues = {
 
 const header = new Headers({'Accept-Language': 'hu'})
 
-const ShopForm = ({
-    params : { lang, shopId }
-  }: {
-    params: { lang: Locale, shopId: String}
-  }) => {
+function ShopForm ({params} : Props) {
+
+    const updateAddress = async (lat: number, lon: number) => {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
+            method: 'GET',
+            headers: header
+        })
+
+        const resJson = await res.json()
+        setCurrentAddress(resJson.display_name)
+        setAddressList([resJson.display_name])
+    }
+
+    const handleMarkerDrag = async (event:any) => {
+        var newMarker = event.target;
+        var position = newMarker.getLatLng();
+        newMarker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
+        map.current?.panTo(new L.LatLng(position.lat, position.lng))
+
+        setMarker(newMarker)
+
+        await updateAddress(position.lat, position.lng);
+    }
+
+    const updateMarker = (lat: number|null, lon: number|null) => {
+        if (marker) {
+            map.current?.removeLayer(marker);
+        }
+
+        if (lat != null && lon != null) {
+            const mar = L.marker([lat, lon], {draggable:true, icon: markerIcon});
+            mar.on('dragend', handleMarkerDrag);
+
+            map.current?.addLayer(mar);
+            setMarker(mar)
+        }
+        else {
+            setMarker(null)
+        }
+    }
 
     const [ dictionary, setDictionary ] = useState<any>()
     useEffect(() => {
         const setDict = async() => {
-            const dict = await getDictionary(lang)
+            const dict = await getDictionary(params.lang)
             setDictionary(dict)
         }   
 
@@ -46,13 +81,13 @@ const ShopForm = ({
                     updateMarker(position.coords.latitude, 
                         position.coords.longitude)
                 },
-                err => console.log(err)
+                err => console.error(err)
             )
         }
 
         setDict()
         setUserLoc(); 
-    }, [])
+    }, [params.lang, updateAddress, updateMarker])
 
     const { data: session } = useSession();
     const router = useRouter()
@@ -68,7 +103,7 @@ const ShopForm = ({
     const { errors, dirtyFields, isSubmitted } = formState
 
     const [images, setImages] = useState<File[]>([])
-    const [marker, setMarker] = useState(null)
+    const [marker, setMarker] = useState<L.Marker | null>(null)
     const [addressList, setAddressList] = useState<String[]>([])
     const [currentAddress, setCurrentAddress] = useState<String>('')
 
@@ -76,7 +111,7 @@ const ShopForm = ({
 
     const map = useRef(null);
 
-    const handleImagesChange = (newValue) => {
+    const handleImagesChange = (newValue:File[]) => {
         setImages(newValue)
     }
 
@@ -106,7 +141,7 @@ const ShopForm = ({
                 method: 'POST',
                 body: JSON.stringify({ 
                     review: data.review, name: data.name, userId: data.userId, address: currentAddress,
-                    latitude: coord[0].lat, longitude: coord[0].lon, shopId: shopId
+                    latitude: coord[0].lat, longitude: coord[0].lon, shopId: params.shopId
                 })
             })
         })
@@ -123,7 +158,7 @@ const ShopForm = ({
                 body: formData
             })
         })
-        .catch(error => console.log(error))
+        .catch(error => console.error(error))
         .finally(() => {
             resetField('address')
             resetField('name')
@@ -133,39 +168,17 @@ const ShopForm = ({
     }
 
     const onError = (error: FieldErrors<FormValues>) => {
-        console.log(error)
+        console.error(error)
     }
 
     const onCancel = () => {
-        router.push(`/${lang}/map`)
+        router.push(`/${params.lang}/map`)
     }
 
     const markerIcon:L.Icon = new L.Icon ({
-        iconUrl: '/marker.png', 
+        iconUrl: '../../marker.png', 
         iconSize: [30, 30]
     });
-
-    const updateAddress = async (lat: number, lon: number) => {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
-            method: 'GET',
-            headers: header
-        })
-
-        const resJson = await res.json()
-        setCurrentAddress(resJson.display_name)
-        setAddressList([resJson.display_name])
-    }
-
-    const handleMarkerDrag = async (event) => {
-        var newMarker = event.target;
-        var position = newMarker.getLatLng();
-        newMarker.setLatLng(new L.LatLng(position.lat, position.lng),{draggable:'true'});
-        map.current?.panTo(new L.LatLng(position.lat, position.lng))
-
-        setMarker(newMarker)
-
-        await updateAddress(position.lat, position.lng);
-    }
 
     const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`, {
@@ -181,22 +194,7 @@ const ShopForm = ({
             updateMarker(null, null)
     }
 
-    const updateMarker = (lat: number|null, lon: number|null) => {
-        if (marker) {
-            map.current?.removeLayer(marker);
-        }
 
-        if (lat != null && lon != null) {
-            const mar = new L.marker([lat, lon], {draggable:'true', icon: markerIcon});
-            mar.on('dragend', handleMarkerDrag);
-
-            map.current?.addLayer(mar);
-            setMarker(mar)
-        }
-        else {
-            setMarker(null)
-        }
-    }
 
     const handleAutocomplete = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`, {
@@ -207,7 +205,7 @@ const ShopForm = ({
         const resJson = await res.json()
         console.log({resJson:resJson})
         if (resJson.length) {
-            setAddressList( Array.from( new Set(resJson.map((item) => item.display_name )) ) )
+            setAddressList( Array.from( new Set(resJson.map((item:any) => item.display_name )) ) )
         }
 
         setCurrentAddress(e.target.value || '')
@@ -264,7 +262,7 @@ const ShopForm = ({
                             sx={{ width: '100%' }}
                             renderOption={(props, option) => {
                                 return (
-                                    <li {...props} key={option}>
+                                    <li {...props} key={option.toString()}>
                                     {option}
                                     </li>
                                 )
@@ -277,7 +275,7 @@ const ShopForm = ({
                                     color='primary'
                                     type='text'
                                     {...register('address')}
-                                   // onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
+                                    onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
                                     sx={{width:'100%'}}
                                     required
                                 />}
@@ -332,5 +330,5 @@ const ShopForm = ({
     )
 }
 
-const Form = withAuth(ShopForm)
+const Form = WithAuth(ShopForm)
 export default Form

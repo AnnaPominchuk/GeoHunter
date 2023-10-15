@@ -1,18 +1,14 @@
 'use client'
 
-import UsersRating from '../components/UsersRating'
-import {withAuth} from '../components/withAuth';
-import { Locale } from '../../../../i18n.config'
+import UsersRating from '@/components/UsersRating'
+import { WithAuth } from '@/components/WithAuth';
+import { Props } from '@/utils/Props'
 
-const myPage = ({
-  params : { lang }
-}: {
-  params: { lang: Locale}
-}) => {
+const Raiting = (props : Props) => {
   return (
-    <UsersRating params={{lang}}/>
+    <UsersRating {...props}/>
   )
 }
 
-const Page = withAuth(myPage);
+const Page = WithAuth(Raiting);
 export default Page;

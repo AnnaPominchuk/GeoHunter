@@ -36,7 +36,6 @@ export const GET = async (req:NextRequest, { params }: { params: { reviewId: str
 
         const res = await fetch(url, obj);
         const data = await res.json();
-        console.log(data)
 
         return new NextResponse(JSON.stringify({status : res.status, review: data }))
     } catch(error) {
