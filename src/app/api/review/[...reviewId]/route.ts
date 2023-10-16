@@ -20,7 +20,7 @@ export const PATCH = async (req:NextRequest, { params }: { params: { reviewId: s
         return new NextResponse(JSON.stringify({status : res.status }))
     } catch(error) {
         return new NextResponse(JSON.stringify({error: 'Faild to fetch', status : 500}))
-      }
+    }
 }
 
 export const GET = async (req:NextRequest, { params }: { params: { reviewId: string } }) => {

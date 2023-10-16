@@ -27,7 +27,7 @@
         "reviewDetails": "Vélemények áttekintése"
     },
     "rating": {
-        "rate": "Értékelés"
+        "leaderboard": "leaderboard"
     },
     "form": {
         "submittedMessage": "Az űrlap sikeresen elküldésre került",
