@@ -4,25 +4,25 @@ import type { NextRequest } from 'next/server'
 import { i18n, Locale } from '@/config/i18n.config'
 
 export function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname
-  const pathnameIsMissingLocale = i18n.locales.every(
-    ( locale: Locale ) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  )
-
-  // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
-    const locale = 'hu'
-    return NextResponse.redirect(
-      new URL(
-        `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
-        request.url
-      )
+    const pathname = request.nextUrl.pathname
+    const pathnameIsMissingLocale = i18n.locales.every(
+        (locale: Locale) =>
+            !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
     )
-  }
+
+    // Redirect if there is no locale
+    if (pathnameIsMissingLocale) {
+        const locale = 'hu'
+        return NextResponse.redirect(
+            new URL(
+                `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
+                request.url
+            )
+        )
+    }
 }
 
 export const config = {
-  // Matcher ignoring `/_next/` and `../api/`
-  //matcher: ['/((?!api|login|_next/static|_next/image|favicon.ico|marker.png|user_l.png|nopic.jpeg\).*)']
-  matcher: ['/((?!api|login|_next/static|_next/image|favicon.ico|marker.png\).*)']
+    // Matcher ignoring `/_next/` and `../api/`
+    matcher: ['/((?!api|login|_next/static|_next/image|favicon.ico|images).*)'],
 }
