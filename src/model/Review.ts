@@ -16,17 +16,17 @@ export enum ReviewStatus {
 }
 
 export interface Review{
-    name: String,
+    name: string,
     latitude?: Number,
     longitude?: Number,
-    review: String,
-    shopId: String,
-    userId: String,
+    review: string,
+    shopId: string,
+    userId: string,
     status: ReviewStatus,
-    images: String[]
-    _id:    String,
+    images: string[]
+    _id:    string,
     rating: number,
-    address: String
+    address: string
 }
 
 // Converts JSON strings to/from your types
@@ -224,12 +224,13 @@ export class ReviewStatusConvert {
         }
     }
 
-    public static toColor(status: ReviewStatus, isText:Boolean): string {
+    public static toColor(status: ReviewStatus, isText:Boolean): "default" | "primary" | "secondary" | "success" | "error" | "info" | "warning" | undefined {
         switch (status) {
             case ReviewStatus.InReview:
                 return 'primary'
            case ReviewStatus.Approved:
-                return isText? 'green': 'success'
+                return 'success'
+                //return isText? 'green': 'success'
            case ReviewStatus.Rejected:
                return 'error'
             default:

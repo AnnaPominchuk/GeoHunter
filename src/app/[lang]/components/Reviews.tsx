@@ -1,31 +1,28 @@
 'use client'
 
-import {withAuth} from './withAuth';
+import { WithAuth } from './WithAuth'
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import { 
     Typography,
     Paper,
     Stack,
     Chip,
-    Button,
-    IconButton
+    Button
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors'
 
-import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '../../../model/Review'
+import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '@/model/Review'
 
-import UserRole from '../../../utils/UserRole'
+import UserRole from '@/utils/UserRole'
 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import BlockIcon from '@mui/icons-material/Block';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { getDictionary } from '@/lib/dictionary'
-import { Locale } from '../../../../i18n.config'
+import { Locale } from '@/config/i18n.config'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -38,7 +35,7 @@ const Item = styled(Paper)(({ theme }) => ({
   minWidth: '800',
 }));
 
-const myReviews = ({
+const MyReviews = ({
     params : { lang, filter, userId }
   }: {
     params: { lang: Locale, filter: String[], userId: String}
@@ -52,7 +49,7 @@ const myReviews = ({
         }   
 
         setDict()
-    }, [])
+    }, [lang])
 
     const { data: session } = useSession();
     const router = useRouter()
@@ -77,14 +74,14 @@ const myReviews = ({
                             return filter?.includes(review.status)
                         }))
             } catch (e) {
-                console.log("Handle error", e)
+                console.error("Handle error", e)
             }
         }
 
     useEffect(() => {
-        setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN))
+        setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN) ?? false )
         getReviews()
-    },[filter])
+    },[filter, session?.user?.roles, getReviews])
 
     const handleApprove = async (id: String) => {
         const res = await fetch(`../api/review/${id || ''}`, {
@@ -116,7 +113,7 @@ const myReviews = ({
                             { //!isAdmin &&
                                 <Chip 
                                     size="small"
-                                    color={ReviewStatusConvert.toColor(review.status)}
+                                    color={ReviewStatusConvert.toColor(review.status, false)}
                                     label={ReviewStatusConvert.toText(review.status)}
                                 />
                             }
@@ -160,5 +157,5 @@ const myReviews = ({
 );
 }
 
-const Reviews = withAuth(myReviews);
+const Reviews = WithAuth(MyReviews);
 export default Reviews;

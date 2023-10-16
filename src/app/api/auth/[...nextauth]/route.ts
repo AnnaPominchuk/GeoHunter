@@ -42,7 +42,7 @@ async function patchUser(token: string, email: string, roles: string[]) {
     });
 }
 
-export const authOptions = {
+const authOptions = {
   providers: [
     Auth0Provider({
       clientId: process.env.AUTH0_CLIENT_ID ?? '',
@@ -71,14 +71,14 @@ export const authOptions = {
       if (params.token?.roles) {
         params.session.user.roles = params.token.roles
         // TO DO: change this with Auth0 action after deploing
-        await patchUser(params.token.accessToken, params.session.user.email, params.token.roles)
+        await patchUser(params.token.accessToken, params.session.user.email ?? '', params.token.roles)
       }
   
       return params.session;
     },
     async jwt(params: { token: JWT, user?: User | AdapterUser | undefined; account?: Account | null | undefined; profile?: Profile | undefined; isNewUser?: boolean | undefined }) {
       if (params.account) {
-        params.token.accessToken = params.account.access_token;
+        params.token.accessToken = params.account.access_token ?? '';
       }
 
       if (params.profile) {

@@ -1,18 +1,13 @@
 'use client'
 
-import CsvInput from '../components/CsvInput'
-import {withAuthAdmin} from '../components/withAuth';
-import { Locale } from '../../../../i18n.config'
+import CsvInput from '@/components/CsvInput'
+import { WithAuthAdmin } from '@/components/WithAuth'
+import { Props } from '@/utils/Props'
+import React from 'react'
 
-const myPage = ({
-  params : { lang }
-}: {
-  params: { lang: Locale }
-}) => {
-  return (
-    <CsvInput params={{lang}}/>
-  )
+const UploadMapPage = (props: Props) => {
+    return <CsvInput {...props} />
 }
 
-const Page = withAuthAdmin(myPage);
-export default Page;
+const Page = WithAuthAdmin(UploadMapPage)
+export default Page
