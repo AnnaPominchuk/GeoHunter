@@ -30,30 +30,8 @@ import RateReviewIcon from '@mui/icons-material/RateReview'
 
 import UserRole from '@/utils/UserRole'
 
-import { makeStyles } from "@mui/styles"
-import useTheme from "@mui/material/styles/useTheme"
-import clsx from "clsx"
-
 const drawerWidth = 240
 const headerHeight = 64
-
-const useStyles = makeStyles((theme: Theme) => {
-  return ({
-  content: {
-    transition: (theme: Theme) => theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: 500
-    }),
-    marginLeft:  `calc(${theme.spacing(7)} + 1px)` ,
-  },
-  contentOpenDrawer: {
-    transition: (theme: Theme) => theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: 500
-    }),
-    marginLeft:   drawerWidth,
-  }
-})})
 
 const openedMixin = (customTheme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -130,9 +108,6 @@ const AdminMenu = ({params, children} :  PropsWithChildren<Props>) => {
     setDrawerOpen(false)
   }
 
-  const customTheme = useTheme()
-  const classes = useStyles(customTheme)
-
   const menuItems: { 
     text: string
     onClickHandler: React.MouseEventHandler<HTMLDivElement>
@@ -191,8 +166,24 @@ const AdminMenu = ({params, children} :  PropsWithChildren<Props>) => {
         </Drawer>
        </Box>
 
-       <main className= {clsx(classes.content, {[classes.contentOpenDrawer]: isDrawerOpen})} >
+       <main>
+        <Box sx={[
+          {
+          transition: (theme: Theme) => theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: 500
+          }),
+        },
+        !isDrawerOpen && {
+          marginLeft: (theme: Theme) => `calc(${theme.spacing(7)} + 1px)` 
+        },
+        isDrawerOpen && {
+          marginLeft: `${drawerWidth}px`
+        }
+      ]}
+       >
         { children }
+        </Box>
        </main>
     </>
   )
