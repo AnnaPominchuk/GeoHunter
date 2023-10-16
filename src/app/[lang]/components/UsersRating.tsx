@@ -13,8 +13,6 @@ import {
     Typography
 } from '@mui/material';
 
-import theme from '@/utils/Theme'
-
 import ProfilePhoto from '../components/ProfilePhoto';
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';

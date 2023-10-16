@@ -67,7 +67,7 @@ const Nav = ( { params } : Props ) => {
 
               <Box >
                 <Image
-                  src="/../../logo-feher.png"
+                  src="/../../images/logo-feher.png"
                   alt='logo'
                   width={150}
                   height={70}

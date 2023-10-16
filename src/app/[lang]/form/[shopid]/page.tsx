@@ -71,6 +71,10 @@ function ShopForm ({params} : Props) {
             setDictionary(dict)
         }   
 
+        setDict()
+    }, [params.lang])
+
+    useEffect(() => {
         const setUserLoc = async () => {
             await navigator.geolocation.getCurrentPosition( 
                 position => { 
@@ -85,9 +89,8 @@ function ShopForm ({params} : Props) {
             )
         }
 
-        setDict()
         setUserLoc(); 
-    }, [params.lang, updateAddress, updateMarker])
+    }, [])
 
     const { data: session } = useSession();
     const router = useRouter()
@@ -320,6 +323,7 @@ function ShopForm ({params} : Props) {
                         </Button>
                         <Button
                             variant="contained"
+                            component="label"
                             onClick={onCancel}>
                             { dictionary ? dictionary.form.cancel : '' }
                         </Button>
