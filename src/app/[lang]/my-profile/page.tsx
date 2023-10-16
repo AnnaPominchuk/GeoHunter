@@ -5,7 +5,9 @@ import {
     Button,
     ButtonGroup,
     Typography,
-    Rating
+    Rating,
+    TextField,
+    InputAdornment
 } from '@mui/material';
 
 import Image from "next/image";
@@ -18,12 +20,14 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Reviews from '../components/Reviews';
+import ProfilePhoto from '../components/ProfilePhoto';
 
 import UserRole from '../../../utils/UserRole'
 import User from '../../../model/User'
 
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining';
 import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput';
 import { getDictionary } from '@/lib/dictionary'
@@ -64,11 +68,13 @@ const myPage = ({
     const { data: session } = useSession();
 
     const [user, setUser] = useState<User|null>(null)
+    const [updProfilePhotoKey, setProfilePhotoKey] = useState<{key: string} | null>(null)
 
-    const [profilePhotoKey, setProfilePhotoKey] = useState<{key: string} | null>(null)
+    const [isEditing, setIsEditing] = useState<Boolean>(false)
+    const [textInput, setTextInput] = useState('');
 
     useEffect(() => {
-        setProfilePhotoKey({ key: user?.profilePhoto ?? '' })
+        setProfilePhotoKey({ key: user?.profilePhotoKey ?? '' })
     }, [user])
 
     const handleProfilePhotoChange = async (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -120,45 +126,42 @@ const myPage = ({
         getUser()
     },[])
 
+    const handleTextInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+        setTextInput(event.target.value);
+    };
+
+    const handleNameChange = async () => {
+        await fetch(`../api/user/${session?.user?.email}`, {
+            method: 'PATCH',
+            body: JSON.stringify({name: textInput})
+        })
+        .then(res => res.json())
+        .then(users => {
+            if (users.status != 200) 
+                return Promise.reject('No users found')
+            
+            return fetch(`../api/user/${session?.user?.email}`, {
+                method: 'GET'
+            });
+        })
+        .then(res => res.json())
+        .then(user => {
+            if (user.status != 200) 
+                return Promise.reject('No users found')
+                
+            setUser(user.data.users)
+        }).finally(() => {
+            setIsEditing(false)
+        }).catch(error => console.log(error))
+    }
+    
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-around',  flexDirection: {xs:'column', sm:'column', md:'row'}}} bgcolor="secondary.main">
 
         {/* Left */}
         <Box sx={{ margin: "50px"}} bgcolor="secondary.main">
             <div style={{ borderRadius: '50%', overflow: 'hidden', width: '200px', height: '200px' }}>
-               {
-                user && 
-                (
-                    user.useGooglePhoto ? 
-                    <img
-                        src={`${user?.profilePhotoURL}`}
-                        alt=""
-                        width={200}
-                        height={200}    
-                        
-                    /> : 
-                    (
-                        profilePhotoKey && 
-                        ( 
-                        profilePhotoKey.key?.length ?
-                        <img
-                            src={`../api/profile-photo/${profilePhotoKey.key}`}
-                            alt=""
-                            width={200}
-                            height={200}    
-                            loading="lazy"
-                        /> 
-                        : <img
-                            src='/../../no-pic-prof.jpeg'
-                            alt=""
-                            width={200}
-                            height={200}    
-                            loading="lazy"
-                        />
-                        ) 
-                    )
-                )
-                }
+               <ProfilePhoto params={{user, updProfilePhotoKey}}/>
             </div>
 
             <StyledButtonGroup
@@ -171,16 +174,39 @@ const myPage = ({
                 </Button>
             </StyledButtonGroup>
 
-            <Typography variant='subtitle2'color={grey['700']} sx={{ marginTop: '8px' }}>
-                {user?.name}
-            </Typography>
+            { isEditing ? 
+                <Typography variant='subtitle2' sx={{ marginTop: '8px' }}>
+                   <TextField 
+                        size="small"
+                        sx={{maxWidth:"195px"}}
+                        value= {textInput}
+                        onChange= {handleTextInputChange}
+                        InputProps={{
+                            style: {
+                                padding: 0
+                            },
+                            endAdornment: 
+                            <InputAdornment position="end">
+                                <Button size='small' onClick={handleNameChange}>
+                                    OK
+                                </Button>
+                            </ InputAdornment>
+                        }} 
+                   />
+                   
+                 </Typography>
+               : <Typography variant='subtitle2' color={grey['700']} sx={{ marginTop: '8px' }}>
+                    {user?.name}
+                    <ModeEditIcon sx={{ fontSize: "20px", marginLeft: "10px" }} onClick={()=>{setIsEditing(true)}} />
+                </Typography>
+            }
             <Typography variant='subtitle2'color={grey['700']} sx={{ marginTop: '4px' }}>
                 {user?.email}
             </Typography>
             <Typography variant='subtitle2'color={grey['700']} sx={{ marginTop: '4px' }}>
                 {session?.user?.roles || ""}
             </Typography>
-            <StyledRating
+            {   !session?.user?.roles?.includes(UserRole.ADMIN) && <StyledRating
                     name="rating"
                     defaultValue={user?.rating}
                     readOnly
@@ -189,7 +215,8 @@ const myPage = ({
                     sx={{ marginTop: '4px' }}
                     icon={<BakeryDiningIcon fontSize="inherit" />}
                     emptyIcon={<BakeryDiningOutlinedIcon fontSize="inherit" />}
-            />
+                />
+            }
         </Box>
 
         {/* Right */}
