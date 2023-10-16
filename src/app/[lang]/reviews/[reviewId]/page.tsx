@@ -1,6 +1,6 @@
 'use client'
 
-import { WithAuthAdmin } from '@/components/WithAuth'
+import { WithAuth } from '@/components/WithAuth'
 import Images from '@/components/Images'
 
 import { 
@@ -21,10 +21,12 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import {useRouter} from 'next/navigation'
 
 import { Convert, Review, ReviewStatus, ReviewStatusConvert } from '@/model/Review'
+import UserRole from '@/utils/UserRole'
 
 import { getDictionary } from '@/lib/dictionary'
 import { Locale } from '@/config/i18n.config'
@@ -73,12 +75,14 @@ const ReviewPage = ({
 
     const router = useRouter()
 
+    const { data: session } = useSession();
     const [review, setReview] = useState<Review|null>(null)
     const [openDialog, setOpen] = useState(false);
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null);
     const [rate, setRate] = useState(0);
     const [saveAddress, setSaveAddress] = useState<boolean>(true);
     const openHint = Boolean(hintAnchor);
+    const [isAdmin, setIsAdmin] = useState<Boolean>(false)
 
     async function getReview() {
             try {
@@ -95,8 +99,9 @@ const ReviewPage = ({
     }
 
     useEffect(() => {
+        setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN) ?? false )
         getReview()
-    },[getReview])
+    },[session?.user?.roles, getReview])
 
     const handleApprove = async (id: String) => {
         const res = await fetch(`../../api/review/${id || ''}`, {
@@ -180,7 +185,7 @@ const ReviewPage = ({
                     </Stack>
                 </Stack>        
 
-                <Stack direction="row" spacing={2} sx={{marginTop: '30px', marginBottom: '30px'}} justifyContent={'flex-end'} >
+               {  isAdmin && <Stack direction="row" spacing={2} sx={{marginTop: '30px', marginBottom: '30px'}} justifyContent={'flex-end'} >
                     { review.status != 'Rejected' && <Button size='small' aria-label="fingerprint" color="primary"  startIcon={<BlockIcon />}
                             onClick={() => handleReject(review?._id)}
                             variant="outlined"
@@ -188,14 +193,15 @@ const ReviewPage = ({
                             { dictionary ? dictionary.reviews.rejectButton : '' }
                         </Button>
                     }
-                    { review.status != 'Approved' && <Button size='small' variant="contained" aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
+                    { review.status != 'Approved' && <Button size='small' component="label" variant="contained" aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
                             onClick={handleClickOpen}
                         >
                             { dictionary ? dictionary.reviews.approveButton : '' }
                         </Button>
                     }
 
-                </Stack>
+                  </Stack>
+                }
 
                 <Dialog 
                     open={openDialog} 
@@ -237,7 +243,7 @@ const ReviewPage = ({
                         <Button onClick={handleClose}>
                             { dictionary ? dictionary.reviews.cancelButton : '' }
                         </Button>
-                        <Button onClick={() => handleApprove(review?._id)} variant="contained">
+                        <Button onClick={() => handleApprove(review?._id)} variant="contained" component="label">
                             { dictionary ? dictionary.reviews.approveButton : '' }
                         </Button>
                     </DialogActions>
@@ -248,5 +254,5 @@ const ReviewPage = ({
     </Box>
   )
 }
-const Page = WithAuthAdmin(ReviewPage);
+const Page = WithAuth(ReviewPage);
 export default Page;
