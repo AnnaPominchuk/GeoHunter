@@ -87,6 +87,7 @@ const Nav = ({ params }: Props) => {
                     >
                         {dictionary ? dictionary.navigation.openMapButton : ''}
                     </Link>
+
                 </Typography>
                 <Typography variant="button" sx={{ ml: 1, mr: 5, flexGrow: 1 }}>
                     <Link

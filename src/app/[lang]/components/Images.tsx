@@ -95,9 +95,9 @@ export default function Images( props:any ) {
                 })}
 
                 { !imageData.length && 
-                    <ImageListItem key={"../../nopic.jpeg"} cols={4} rows={2}>
+                    <ImageListItem key={"../../images/nopic.jpeg"} cols={4} rows={2}>
                         <img
-                            {...srcset("../../nopic.jpeg", 100)}
+                            {...srcset("../../images/nopic.jpeg", 100)}
                             alt={"undifined"}
                             loading="lazy"
                         />

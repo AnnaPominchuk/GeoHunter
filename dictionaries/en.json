@@ -31,7 +31,7 @@
         "hint": "The content of the Popup"
     },
     "rating": {
-        "rate": "Rate"
+        "leaderboard": "leaderboard"
     },
     "form": {
         "submittedMessage": "Form is submitted successfully",

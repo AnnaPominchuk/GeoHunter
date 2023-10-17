@@ -54,7 +54,6 @@ const MyReviews = ({
     const { data: session } = useSession();
     const router = useRouter()
     const [reviews, setReviews] = useState<Review[]>([])
-    const [isAdmin, setIsAdmin] = useState<Boolean>(false)
 
     async function getReviews() {
             try {
@@ -79,23 +78,8 @@ const MyReviews = ({
         }
 
     useEffect(() => {
-        setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN) ?? false )
         getReviews()
     },[filter, session?.user?.roles, getReviews])
-
-    const handleApprove = async (id: String) => {
-        const res = await fetch(`../api/review/${id || ''}`, {
-                        method: 'PATCH',
-                        body: JSON.stringify({status: ReviewStatus.Approved})
-                    }).then( () => getReviews() );
-    }
-
-    const handleReject = async (id: String) => {
-        const res = await fetch(`../api/review/${id || ''}`, {
-                        method: 'PATCH',
-                        body: JSON.stringify({status: ReviewStatus.Rejected})
-                    }).then( () => getReviews() );
-    }
 
     return (
         <>
@@ -110,39 +94,22 @@ const MyReviews = ({
                                 <Typography>{review.review}</Typography>
                             </Stack>
 
-                            { //!isAdmin &&
-                                <Chip 
-                                    size="small"
-                                    color={ReviewStatusConvert.toColor(review.status, false)}
-                                    label={ReviewStatusConvert.toText(review.status)}
-                                />
-                            }
+                            <Chip 
+                                size="small"
+                                color={ReviewStatusConvert.toColor(review.status, false)}
+                                label={ReviewStatusConvert.toText(review.status)}
+                            />
 
                         </Stack>
 
-                            {
-                                isAdmin && 
-                                <Stack direction="row" spacing={1} sx={{marginTop: '10px'}} justifyContent={'flex-end'} >
-                                    {/* <Button size='small' aria-label="fingerprint" color="primary" startIcon={<CheckCircleIcon />}
-                                        onClick={() => handleApprove(review._id)}
-                                    >
-                                        { dictionary ? dictionary.reviews.approveButton : '' }
-                                     </Button>
-                                    <Button size='small' aria-label="fingerprint" color="primary"  startIcon={<BlockIcon />}
-                                        onClick={() => handleReject(review._id)}
-                                    >
-                                        { dictionary ? dictionary.reviews.rejectButton : '' }
-                                    </Button> */}
-
-                                    <Button size='small' aria-label="fingerprint" color="primary" 
-                                        endIcon={<ArrowForwardIcon />}
-                                            onClick={() => router.push(`/${lang}/reviews/${review._id}`)}
-                                    >
-                                        { dictionary ? dictionary.reviews.seeMore : '' }
-                                    </Button>
-                                </Stack>
-                            }
-
+                            <Stack direction="row" spacing={1} sx={{marginTop: '10px'}} justifyContent={'flex-end'} >
+                                <Button size='small' aria-label="fingerprint" color="primary" 
+                                    endIcon={<ArrowForwardIcon />}
+                                        onClick={() => router.push(`/${lang}/reviews/${review._id}`)}
+                                >
+                                    { dictionary ? dictionary.reviews.seeMore : '' }
+                                </Button>
+                            </Stack>
                         
                         </Item>
                 )) 

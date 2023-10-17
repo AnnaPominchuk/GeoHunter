@@ -183,17 +183,20 @@ export default function Map({ params }: Props) {
                                     : ''}
                             </Button>
 
-                            <Button
-                                onClick={() =>
-                                    router.push(
-                                        `/${params.lang}/form/${selectedShop._id}`
-                                    )
-                                }
-                            >
-                                {dictionary
-                                    ? dictionary.map.uploadInfoButton
-                                    : ''}
-                            </Button>
+                            {!session?.user?.roles?.includes(UserRole.ADMIN) && (
+                              <Button
+                                  onClick={() =>
+                                      router.push(
+                                          `/${params.lang}/form/${selectedShop._id}`
+                                      )
+                                  }
+                              >
+                                  {dictionary
+                                      ? dictionary.map.uploadInfoButton
+                                      : ''}
+                              </Button>
+                           )}
+                                
                         </StyledButtonGroup>
                     </Box>
                 </Box>

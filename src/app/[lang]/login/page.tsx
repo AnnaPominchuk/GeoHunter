@@ -54,7 +54,7 @@ const Login = ({ params }: Props) => {
             </div>
 
             <Image
-                src="/../../parlament.png"
+                src="/../../images/parlament.png"
                 fill={true}
                 alt=""
                 className="img-bg small-hidden"

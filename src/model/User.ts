@@ -4,10 +4,9 @@ export default interface User{
     _id: string,
     email: string,
     name: string,
-    lastname: string,
     rating: number,
     useGooglePhoto: boolean,
-    profilePhoto: string,
+    profilePhotoKey: string,
     profilePhotoURL: string,
     roles: UserRole[]
 }

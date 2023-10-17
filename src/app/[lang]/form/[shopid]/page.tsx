@@ -23,6 +23,8 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 import { getDictionary } from '@/lib/dictionary'
 import React from 'react'
 
+import $ from 'jquery'
+
 type FormValues = {
     name: string
     address: string
@@ -85,7 +87,10 @@ function ShopForm({ params }: Props) {
             const dict = await getDictionary(params.lang)
             setDictionary(dict)
         }
+        setDict()
+    }, [params.lang])
 
+    useEffect(() => {
         const setUserLoc = async () => {
             await navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -103,9 +108,8 @@ function ShopForm({ params }: Props) {
             )
         }
 
-        setDict()
         setUserLoc()
-    }, [params.lang, updateAddress, updateMarker])
+    }, [])
 
     const { data: session } = useSession()
     const router = useRouter()
@@ -369,7 +373,8 @@ function ShopForm({ params }: Props) {
                     >
                         <Button
                             variant="contained"
-                            type="submit"
+                            onClick={() => { $('#submitbtn').trigger("click"); }}
+                            component="label"
                             disabled={
                                 !(
                                     dirtyFields.name &&
@@ -380,7 +385,14 @@ function ShopForm({ params }: Props) {
                         >
                             {dictionary ? dictionary.form.save : ''}
                         </Button>
-                        <Button variant="contained" onClick={onCancel}>
+
+                        <Button id="submitbtn" type='submit' hidden></Button> 
+
+                        <Button
+                            variant="contained"
+                            component="label"
+                            onClick={onCancel}
+                        >
                             {dictionary ? dictionary.form.cancel : ''}
                         </Button>
                     </Stack>
