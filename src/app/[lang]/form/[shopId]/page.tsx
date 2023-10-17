@@ -386,6 +386,7 @@ function ShopForm({ params }: Props) {
                         >
                            { dictionary ? dictionary.form.save : '' }
                         </Button> 
+                        {/* TO DO: remove this then MUI bug fixed */}
                         <Button id="submitbtn" type='submit' hidden></Button> 
 
                         <Button
