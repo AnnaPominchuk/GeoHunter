@@ -216,12 +216,6 @@ function ShopForm ({params} : Props) {
         setCurrentAddress(e.target.value || '')
     }
 
-    const SubmitButton = (props) => ( <Button {...props}
-                            variant="contained"
-                            component="label"
-                            disabled={!(dirtyFields.name && dirtyFields.review && marker)} 
-                        > { dictionary ? dictionary.form.save : '' } </Button>);
-
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
             <Stack sx={{ padding: '40px 20px' }} bgcolor={'secondary.main'} alignItems={'center'} justifyContent={'center'}>
