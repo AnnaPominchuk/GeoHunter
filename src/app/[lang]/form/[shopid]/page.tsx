@@ -21,6 +21,8 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 
 import { getDictionary } from '@/lib/dictionary'
+import { purple } from '@mui/material/colors'
+import $ from 'jquery'
 
 type FormValues = {
     name: string
@@ -367,11 +369,13 @@ function ShopForm({ params }: Props) {
                     <Stack
                         direction="row"
                         spacing={2}
-                        justifyContent={'center'}
+                       justifyContent={'center'}
                     >
+
                         <Button
                             variant="contained"
-                            type="submit"
+                            onClick={() => { $('#submitbtn').trigger("click"); }}
+                            component="label"
                             disabled={
                                 !(
                                     dirtyFields.name &&
@@ -380,8 +384,10 @@ function ShopForm({ params }: Props) {
                                 )
                             }
                         >
-                            {dictionary ? dictionary.form.save : ''}
-                        </Button>
+                           { dictionary ? dictionary.form.save : '' }
+                        </Button> 
+                        <Button id="submitbtn" type='submit' hidden></Button> 
+
                         <Button
                             variant="contained"
                             component="label"
