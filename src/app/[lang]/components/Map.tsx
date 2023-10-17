@@ -12,12 +12,12 @@ import { Box, Typography, Button, ButtonGroup } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { Props } from '@/utils/Props'
 import { getDictionary } from '@/lib/dictionary'
-import UserRole from '@/utils/UserRole'
 
 import { useSession } from 'next-auth/react'
 
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
+import React from 'react'
 
 const StyledButtonGroup = styled(ButtonGroup)({
     '& .MuiButtonGroup-grouped': {
@@ -76,7 +76,7 @@ export default function Map({ params }: Props) {
     }
 
     const markerIcon: L.Icon = new L.Icon({
-        iconUrl: '../marker.png',
+        iconUrl: '../images/marker.png',
         iconSize: [30, 30],
     })
 
@@ -182,19 +182,21 @@ export default function Map({ params }: Props) {
                                     ? dictionary.navigation.goBackButton
                                     : ''}
                             </Button>
-                            {session?.user?.roles?.includes(UserRole.ADMIN) && (
-                                <Button
-                                    onClick={() =>
-                                        router.push(
-                                            `/${params.lang}/form/${selectedShop._id}`
-                                        )
-                                    }
-                                >
-                                    {dictionary
-                                        ? dictionary.map.uploadInfoButton
-                                        : ''}
-                                </Button>
-                            )}
+
+                            {!session?.user?.roles?.includes(UserRole.ADMIN) && (
+                              <Button
+                                  onClick={() =>
+                                      router.push(
+                                          `/${params.lang}/form/${selectedShop._id}`
+                                      )
+                                  }
+                              >
+                                  {dictionary
+                                      ? dictionary.map.uploadInfoButton
+                                      : ''}
+                              </Button>
+                           )}
+                                
                         </StyledButtonGroup>
                     </Box>
                 </Box>

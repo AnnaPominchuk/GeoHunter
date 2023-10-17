@@ -18,10 +18,11 @@ import { useSession } from 'next-auth/react'
 import { useState, useEffect, useRef } from 'react'
 
 import L from 'leaflet'
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer } from 'react-leaflet'
 
 import { getDictionary } from '@/lib/dictionary'
-import { purple } from '@mui/material/colors'
+import React from 'react'
+
 import $ from 'jquery'
 
 type FormValues = {
@@ -86,7 +87,6 @@ function ShopForm({ params }: Props) {
             const dict = await getDictionary(params.lang)
             setDictionary(dict)
         }
-
         setDict()
     }, [params.lang])
 
@@ -204,7 +204,7 @@ function ShopForm({ params }: Props) {
     }
 
     const markerIcon: L.Icon = new L.Icon({
-        iconUrl: '../../marker.png',
+        iconUrl: '../../images/marker.png',
         iconSize: [30, 30],
     })
 
@@ -369,9 +369,8 @@ function ShopForm({ params }: Props) {
                     <Stack
                         direction="row"
                         spacing={2}
-                       justifyContent={'center'}
+                        justifyContent={'center'}
                     >
-
                         <Button
                             variant="contained"
                             onClick={() => { $('#submitbtn').trigger("click"); }}
@@ -384,8 +383,9 @@ function ShopForm({ params }: Props) {
                                 )
                             }
                         >
-                           { dictionary ? dictionary.form.save : '' }
-                        </Button> 
+                            {dictionary ? dictionary.form.save : ''}
+                        </Button>
+
                         <Button id="submitbtn" type='submit' hidden></Button> 
 
                         <Button
