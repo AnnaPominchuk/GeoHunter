@@ -20,6 +20,7 @@
         "autoprefixer": "10.4.15",
         "eslint-config-next": "13.4.19",
         "fslightbox-react": "^1.7.6",
+        "jquery": "^3.7.1",
         "leaflet": "^1.9.4",
         "mui-file-input": "^3.0.2",
         "next": "13.4.19",

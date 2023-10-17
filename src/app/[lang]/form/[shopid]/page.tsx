@@ -13,6 +13,8 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 
 import { getDictionary } from '@/lib/dictionary'
+import { purple } from '@mui/material/colors'
+import $ from 'jquery'
 
 type FormValues = {
     name: String,
@@ -214,6 +216,12 @@ function ShopForm ({params} : Props) {
         setCurrentAddress(e.target.value || '')
     }
 
+    const SubmitButton = (props) => ( <Button {...props}
+                            variant="contained"
+                            component="label"
+                            disabled={!(dirtyFields.name && dirtyFields.review && marker)} 
+                        > { dictionary ? dictionary.form.save : '' } </Button>);
+
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
             <Stack sx={{ padding: '40px 20px' }} bgcolor={'secondary.main'} alignItems={'center'} justifyContent={'center'}>
@@ -314,13 +322,19 @@ function ShopForm ({params} : Props) {
                         direction='row'
                         spacing={2}
                         justifyContent={'center'}>
+
+
                         <Button
                             variant="contained"
-                            type="submit"
+                          //  type='submit'
+                            onClick={() => { $('#submitbtn').trigger("click"); }}
+                            component="label"
                             disabled={!(dirtyFields.name && dirtyFields.review && marker)} 
                         >
                             { dictionary ? dictionary.form.save : '' }
-                        </Button>
+                        </Button> 
+                        <Button id="submitbtn" type='submit' hidden></Button> 
+
                         <Button
                             variant="contained"
                             component="label"
