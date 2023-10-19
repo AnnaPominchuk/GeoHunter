@@ -14,32 +14,31 @@ import {
 import Image from 'next/image'
 
 import { useState, useEffect } from 'react'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 
 import { useRouter } from 'next/navigation'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import ProfileIcon from '@mui/icons-material/AccountCircleOutlined'
 import { Props } from '@/utils/Props'
-import { getDictionary } from '@/lib/dictionary'
+import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
 import LangSwitch from './LangSwitch'
 
 import '@/styles/global.css'
 import React from 'react'
 
 const Nav = ({ params }: Props) => {
-    const [dictionary, setDictionary] = useState<any>()
+    const [dictionary, setDictionary] = useState<Dictionary>()
     useEffect(() => {
         const setDict = async () => {
             const dict = await getDictionary(params.lang)
-            setDictionary(dict)
+            setDictionary(ConvertDictionary.toDictionary(JSON.stringify(dict)))
         }
 
         setDict()
     }, [params.lang])
 
     const router = useRouter()
-    const { data: session } = useSession()
 
     const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
     const profileMenuOpen = Boolean(profileAnchor)

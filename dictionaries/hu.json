@@ -18,13 +18,17 @@
         "reviewsCaption": "Vélemények",
         "approveButton": "Jóváhagyás",
         "rejectButton": "Visszautasítás",
+        "cancelButton": "Mégsem",
         "applyButton": "Alkalmaz",
         "inReview": "Felülvizsgálat alatt",
         "approved": "Jóváhagyva",
         "rejected": "Elutasítva",
         "seeMore": "További részletek",
         "noReviews": "Nincs még értékelés",
-        "reviewDetails": "Vélemények áttekintése"
+        "reviewDetails": "Vélemények áttekintése",
+        "rateReview": "Kérlek értékeld a véleményt",
+        "saveAddress": "Cím mentése",
+        "hint": "A felugró ablak tartalma"
     },
     "rating": {
         "leaderboard": "leaderboard"
