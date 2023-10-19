@@ -37,7 +37,8 @@
         "submittedMessage": "Form is submitted successfully",
         "save": "Save",
         "cancel": "Cancel",
-        "review": "Review"
+        "review": "Review",
+        "backendError": "Internal server error. Try again later"
     },
     "login": {
         "appName": "GeoHunter",
@@ -45,7 +46,7 @@
         "joinUs": "Join the Community of Truth-Seekers Discover, Document, & Dismantle Corruption",
         "joinUsLong": "Join GeoHunter and become a beacon of truth in your community. Let’s build a world that values transparency and fairness, one discovery at a time.",
         "logIn": "Log In"
-    }, 
+    },
     "profile": {
         "uploadPhotobButton": "Update profile photo",
         "myReviews": "My Reviews"
@@ -57,7 +58,8 @@
         "profile": "My Profile",
         "logOut": "Log Out",
         "openMapButton": "VIEW MAP",
-        "openRatingButton": "ACTIVISTS RATING"
+        "openRatingButton": "ACTIVISTS RATING",
+        "aboutButton": "ABOUT"
     },
     "common": {
         "name": "Name"

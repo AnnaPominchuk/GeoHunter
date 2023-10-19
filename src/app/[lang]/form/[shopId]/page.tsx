@@ -113,6 +113,7 @@ function ShopForm({ params }: Props) {
 
     const { data: session } = useSession()
     const router = useRouter()
+    const [containsErrors, setContainsErrors] = useState<boolean>(false)
 
     const form = useForm<FormValues>({
         defaultValues: {
@@ -122,7 +123,7 @@ function ShopForm({ params }: Props) {
         },
     })
     const { register, handleSubmit, formState, resetField } = form
-    const { errors, dirtyFields, isSubmitted } = formState
+    const { dirtyFields, isSubmitted } = formState
 
     const [images, setImages] = useState<File[]>([])
     const [marker, setMarker] = useState<L.Marker | null>(null)
@@ -186,12 +187,29 @@ function ShopForm({ params }: Props) {
                     body: formData,
                 })
             })
-            .catch((error) => console.error(error))
+            .catch((error) => {
+                console.error(error)
+                setContainsErrors(true)
+            })
             .finally(() => {
                 resetField('address')
                 resetField('name')
                 resetField('review')
                 setImages([])
+                return navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        updateAddress(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        )
+
+                        updateMarker(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        )
+                    },
+                    (err) => console.error(err)
+                )
             })
     }
 
@@ -263,17 +281,17 @@ function ShopForm({ params }: Props) {
                     justifyContent={'center'}
                 >
                     <Stack>
-                        <Typography variant="h5" color="primary">
+                        <Typography variant='h5' color='primary'>
                             {`Do you have any information about this object? Let us know and gain your points!`}
                         </Typography>
                     </Stack>
 
-                    {isSubmitted && (
+                    {isSubmitted && !containsErrors && (
                         <Alert
                             action={
                                 <Button
-                                    color="inherit"
-                                    size="small"
+                                    color='inherit'
+                                    size='small'
                                     onClick={() => router.back()}
                                 >
                                     {dictionary
@@ -286,18 +304,37 @@ function ShopForm({ params }: Props) {
                         </Alert>
                     )}
 
-                    <Stack direction="row" spacing={2}>
+                    {isSubmitted && containsErrors && (
+                        <Alert
+                            severity='error'
+                            action={
+                                <Button
+                                    color='error'
+                                    size='small'
+                                    onClick={() => router.back()}
+                                >
+                                    {dictionary
+                                        ? dictionary.navigation.goBackButton
+                                        : ''}
+                                </Button>
+                            }
+                        >
+                            {dictionary ? dictionary.form.backendError : ''}
+                        </Alert>
+                    )}
+
+                    <Stack direction='row' spacing={2}>
                         <TextField
                             label={dictionary ? dictionary.common.name : ''}
-                            variant="outlined"
-                            color="primary"
-                            type="text"
+                            variant='outlined'
+                            color='primary'
+                            type='text'
                             {...register('name')}
                             required
                         />
                     </Stack>
 
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction='row' spacing={2}>
                         <Autocomplete
                             freeSolo
                             filterOptions={(x) => x}
@@ -316,10 +353,10 @@ function ShopForm({ params }: Props) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label=""
-                                    variant="outlined"
-                                    color="primary"
-                                    type="text"
+                                    label=''
+                                    variant='outlined'
+                                    color='primary'
+                                    type='text'
                                     {...register('address')}
                                     onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
                                     sx={{ width: '100%' }}
@@ -330,7 +367,7 @@ function ShopForm({ params }: Props) {
                     </Stack>
 
                     <Box
-                        bgcolor="secondary.main"
+                        bgcolor='secondary.main'
                         sx={{ height: '50vh', display: 'flex' }}
                     >
                         <MapContainer
@@ -342,7 +379,7 @@ function ShopForm({ params }: Props) {
                         >
                             <TileLayer
                                 attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-                                url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm"
+                                url='https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm'
                             />
                         </MapContainer>
                     </Box>
@@ -356,25 +393,27 @@ function ShopForm({ params }: Props) {
                     <Stack>
                         <TextField
                             label={dictionary ? dictionary.form.review : ''}
-                            variant="outlined"
-                            color="primary"
+                            variant='outlined'
+                            color='primary'
                             multiline
-                            minRows="8"
-                            maxRows="8"
+                            minRows='8'
+                            maxRows='8'
                             {...register('review')}
                             required
                         />
                     </Stack>
 
                     <Stack
-                        direction="row"
+                        direction='row'
                         spacing={2}
                         justifyContent={'center'}
                     >
                         <Button
-                            variant="contained"
-                            onClick={() => { $('#submitbtn').trigger("click"); }}
-                            component="label"
+                            variant='contained'
+                            onClick={() => {
+                                $('#submitbtn').trigger('click')
+                            }}
+                            component='label'
                             disabled={
                                 !(
                                     dirtyFields.name &&
@@ -386,11 +425,11 @@ function ShopForm({ params }: Props) {
                             {dictionary ? dictionary.form.save : ''}
                         </Button>
 
-                        <Button id="submitbtn" type='submit' hidden></Button> 
+                        <Button id='submitbtn' type='submit' hidden></Button>
 
                         <Button
-                            variant="contained"
-                            component="label"
+                            variant='contained'
+                            component='label'
                             onClick={onCancel}
                         >
                             {dictionary ? dictionary.form.cancel : ''}

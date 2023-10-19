@@ -41,7 +41,7 @@
         "joinUs": "Csatlakozz az Igazságkeresők Közösségéhez - Fedezd fel, Dokumentáld & Számolj le a Korrupcióval",
         "joinUsLong": "Csatlakozz a GeoHunter-hez és légy az igazság jelzőfénye a közösségedben. Építsünk egy világot, amely értékeli az átláthatóságot és a méltányosságot, egy felfedezés lépésről lépésre",
         "logIn": "Bejelentkezés"
-    }, 
+    },
     "profile": {
         "uploadPhotobButton": "Profilkép frissítése",
         "myReviews": "Saját értékeléseim"
@@ -53,7 +53,8 @@
         "profile": "Profilom",
         "logOut": "Kilépés",
         "openMapButton": "TÉRKÉP MEGNYITÁSA",
-        "openRatingButton": "AKTIVISTA ÉRTÉKELÉSEK"
+        "openRatingButton": "AKTIVISTA ÉRTÉKELÉSEK",
+        "aboutButton": "RÓLUNK"
     },
     "common": {
         "name": "Név"
