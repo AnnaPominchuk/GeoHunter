@@ -11,7 +11,7 @@ import Images from './Images'
 import { Box, Typography, Button, ButtonGroup } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { Props } from '@/utils/Props'
-import { getDictionary } from '@/lib/dictionary'
+import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
 
 import { useSession } from 'next-auth/react'
 
@@ -28,11 +28,11 @@ const StyledButtonGroup = styled(ButtonGroup)({
 })
 
 export default function Map({ params }: Props) {
-    const [dictionary, setDictionary] = useState<any>()
+    const [dictionary, setDictionary] = useState<Dictionary>()
     useEffect(() => {
         const setDict = async () => {
             const dict = await getDictionary(params.lang)
-            setDictionary(dict)
+            setDictionary(ConvertDictionary.toDictionary(JSON.stringify(dict)))
         }
 
         setDict()
@@ -85,9 +85,9 @@ export default function Map({ params }: Props) {
     const position: L.LatLngExpression = [47.497913, 19.040236]
     return (
         // TO DO: sizing
-        <Box bgcolor="secondary.main" sx={{ height: '92vh', display: 'flex' }}>
+        <Box bgcolor='secondary.main' sx={{ height: '92vh', display: 'flex' }}>
             <Box
-                bgcolor="secondary.main"
+                bgcolor='secondary.main'
                 sx={{ flex: { xs: selectedShop ? '0' : '2', sm: '2' } }}
             >
                 <MapContainer
@@ -99,7 +99,7 @@ export default function Map({ params }: Props) {
                 >
                     <TileLayer
                         attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-                        url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm"
+                        url='https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm'
                     />
                     {shops.map((shop, index) => (
                         <Marker
@@ -110,12 +110,12 @@ export default function Map({ params }: Props) {
                             <Popup>
                                 <Box>
                                     <Box sx={{ padding: '10px' }}>
-                                        <Typography variant="subtitle1">
+                                        <Typography variant='subtitle1'>
                                             {dictionary
                                                 ? dictionary.map.requestor
                                                 : ''}
                                         </Typography>
-                                        <Typography variant="caption">
+                                        <Typography variant='caption'>
                                             {shop.name}
                                         </Typography>
                                     </Box>
@@ -157,18 +157,18 @@ export default function Map({ params }: Props) {
                         <Images shopId={selectedShop._id} />
 
                         {/* Text */}
-                        <Typography variant="h5" color={grey['800']}>
+                        <Typography variant='h5' color={grey['800']}>
                             {selectedShop.name}
                         </Typography>
                         <Typography
-                            variant="subtitle1"
+                            variant='subtitle1'
                             color={grey['700']}
                             sx={{ marginBottom: '10px' }}
                         >
                             {dictionary ? dictionary.map.requestor : ''}
                         </Typography>
                         <Typography
-                            variant="subtitle2"
+                            variant='subtitle2'
                             color={grey['700']}
                             sx={{ marginBottom: '30px' }}
                         >
@@ -177,7 +177,7 @@ export default function Map({ params }: Props) {
 
                         <StyledButtonGroup
                             sx={{ marginBottom: 5 }}
-                            variant="text"
+                            variant='text'
                         >
                             <Button onClick={closeDetails}>
                                 {dictionary
@@ -185,20 +185,21 @@ export default function Map({ params }: Props) {
                                     : ''}
                             </Button>
 
-                            {!session?.user?.roles?.includes(UserRole.ADMIN) && (
-                              <Button
-                                  onClick={() =>
-                                      router.push(
-                                          `/${params.lang}/form/${selectedShop._id}`
-                                      )
-                                  }
-                              >
-                                  {dictionary
-                                      ? dictionary.map.uploadInfoButton
-                                      : ''}
-                              </Button>
-                           )}
-                                
+                            {!session?.user?.roles?.includes(
+                                UserRole.ADMIN
+                            ) && (
+                                <Button
+                                    onClick={() =>
+                                        router.push(
+                                            `/${params.lang}/form/${selectedShop._id}`
+                                        )
+                                    }
+                                >
+                                    {dictionary
+                                        ? dictionary.map.uploadInfoButton
+                                        : ''}
+                                </Button>
+                            )}
                         </StyledButtonGroup>
                     </Box>
                 </Box>

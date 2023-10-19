@@ -20,7 +20,7 @@ import { useState, useEffect, useRef } from 'react'
 import L from 'leaflet'
 import { MapContainer, TileLayer } from 'react-leaflet'
 
-import { getDictionary } from '@/lib/dictionary'
+import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
 import React from 'react'
 
 import $ from 'jquery'
@@ -81,11 +81,11 @@ function ShopForm({ params }: Props) {
         }
     }
 
-    const [dictionary, setDictionary] = useState<any>()
+    const [dictionary, setDictionary] = useState<Dictionary>()
     useEffect(() => {
         const setDict = async () => {
             const dict = await getDictionary(params.lang)
-            setDictionary(dict)
+            setDictionary(ConvertDictionary.toDictionary(JSON.stringify(dict)))
         }
         setDict()
     }, [params.lang])

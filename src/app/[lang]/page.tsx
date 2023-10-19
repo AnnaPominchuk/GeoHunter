@@ -5,8 +5,20 @@ import { Props } from '@/utils/Props'
 import React from 'react'
 import { Box, Typography } from '@mui/material'
 import { grey } from '@mui/material/colors'
+import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
+import { useState, useEffect } from 'react'
 
-const myHome = (props: Props) => {
+const MyHome = ({ params }: Props) => {
+    const [dictionary, setDictionary] = useState<Dictionary>()
+    useEffect(() => {
+        const setDict = async () => {
+            const dict = await getDictionary(params.lang)
+            setDictionary(ConvertDictionary.toDictionary(JSON.stringify(dict)))
+        }
+
+        setDict()
+    }, [params.lang])
+
     return (
         <Box
             sx={{
@@ -65,5 +77,5 @@ const myHome = (props: Props) => {
     )
 }
 
-const Home = WithAuth(myHome)
+const Home = WithAuth(MyHome)
 export default Home

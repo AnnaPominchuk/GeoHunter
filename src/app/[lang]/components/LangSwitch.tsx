@@ -7,6 +7,7 @@ import { Link, Stack } from '@mui/material'
 import { i18n } from '@/config/i18n.config'
 
 import { useRouter } from 'next/navigation'
+import React from 'react'
 
 export default function LangSwitch() {
     const pathName = usePathname()
