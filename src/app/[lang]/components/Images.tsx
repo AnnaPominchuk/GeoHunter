@@ -29,15 +29,9 @@ const imagePosition = [
     },
 ]
 
-export default function Images(props: any) {
+export default function Images( props : { shopId: string | undefined | null, reviewId: string | undefined | null }) {
     const [imageData, setImageData] = useState<string[]>([])
     const [toggle, setToggle] = useState<boolean>(false)
-    const [sIndex, setSIndex] = useState(0)
-    // Handler
-    const lightBoxHandler = (state: any, sIndex: any) => {
-        setToggle(state)
-        setSIndex(sIndex)
-    }
 
     useEffect(() => {
         async function getImages() {
@@ -77,7 +71,7 @@ export default function Images(props: any) {
         }
 
         getImages()
-    }, [props.reviewId, props.shopId])
+    }, []) // props.reviewId, props.shopId
 
     return (
         <>
@@ -98,7 +92,7 @@ export default function Images(props: any) {
                                 cols={pos.cols || 1}
                                 rows={pos.rows || 1}
                             >
-                                <img src={item} alt={item} loading='lazy' />
+                                <img src={item} alt={item} loading='lazy' onClick={() => setToggle(!toggle)} />
                             </ImageListItem>
                         )
                     })}
@@ -118,7 +112,7 @@ export default function Images(props: any) {
                 )}
             </ImageList>
 
-            <Box>
+            <Box sx={{position:'fixed', zIndex:'1001'}}>
                 <FsLightbox toggler={toggle} sources={imageData} type='image' />
             </Box>
         </>

@@ -38,3 +38,11 @@
 #hint {
   z-index: 100000;
 }
+
+.fadding-text {
+  background: -webkit-linear-gradient(bottom, #eee, #707070, #707070);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  overflow: "hidden";
+  text-overflow: "ellipsis";
+}

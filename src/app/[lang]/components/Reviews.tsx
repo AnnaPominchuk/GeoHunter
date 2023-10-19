@@ -77,7 +77,7 @@ const MyReviews = ({
 
     useEffect(() => {
         getReviews()
-    }, [filter, session?.user?.roles, getReviews])
+    }, [filter, session?.user?.roles])
 
     return (
         <>
@@ -85,7 +85,7 @@ const MyReviews = ({
                 reviews?.map((review: Review) => (
                     <Item key={review._id}>
                         <Stack direction='row' justifyContent='space-between'>
-                            <Stack direction='column'>
+                            <Stack direction='column' maxHeight={170}>
                                 <Typography
                                     variant='h6'
                                     color={grey['800']}
@@ -93,7 +93,7 @@ const MyReviews = ({
                                 >
                                     {review.name}
                                 </Typography>
-                                <Typography>{review.review}</Typography>
+                                <Typography className={ review.review.length > 400 ? 'fadding-text' : ''}>{review.review}</Typography>
                             </Stack>
 
                             <Chip

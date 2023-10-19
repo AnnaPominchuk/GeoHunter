@@ -49,8 +49,12 @@ function ShopForm({ params }: Props) {
         setAddressList([resJson.display_name])
     }
 
-    const handleMarkerDrag = async (event: any) => {
+    const handleMarkerDrag = async (event: L.DragEndEvent) => {
+        console.log(event)
+
         const newMarker = event.target
+
+         console.log({newMarker:newMarker})
         const position = newMarker.getLatLng()
         newMarker.setLatLng(new L.LatLng(position.lat, position.lng), {
             draggable: 'true',
@@ -124,6 +128,7 @@ function ShopForm({ params }: Props) {
     })
     const { register, handleSubmit, formState, resetField } = form
     const { dirtyFields, isSubmitted } = formState
+    const topRef = useRef<HTMLFormElement>(null)
 
     const [images, setImages] = useState<File[]>([])
     const [marker, setMarker] = useState<L.Marker | null>(null)
@@ -132,7 +137,7 @@ function ShopForm({ params }: Props) {
 
     const position: L.LatLngExpression = [47.497913, 19.040236]
 
-    const map = useRef(null)
+    const map = useRef<L.Map>(null)
 
     const handleImagesChange = (newValue: File[]) => {
         setImages(newValue)
@@ -196,6 +201,8 @@ function ShopForm({ params }: Props) {
                 resetField('name')
                 resetField('review')
                 setImages([])
+
+                topRef.current?.scrollIntoView()  
                 return navigator.geolocation.getCurrentPosition(
                     (position) => {
                         updateAddress(
@@ -227,10 +234,10 @@ function ShopForm({ params }: Props) {
     })
 
     const handleLocationChange = async (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.FocusEvent<HTMLDivElement, Element> | React.FocusEvent<HTMLInputElement, Element>
     ) => {
         const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`,
+            `https://nominatim.openstreetmap.org/search?format=json&q=${(e.target as HTMLInputElement).value}`,
             {
                 method: 'GET',
                 headers: header,
@@ -244,10 +251,10 @@ function ShopForm({ params }: Props) {
     }
 
     const handleAutocomplete = async (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.KeyboardEvent<HTMLInputElement>
     ) => {
         const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${e.target.value}`,
+            `https://nominatim.openstreetmap.org/search?format=json&q=${(e.target as HTMLInputElement).value}`,
             {
                 method: 'GET',
                 headers: header,
@@ -264,11 +271,11 @@ function ShopForm({ params }: Props) {
             )
         }
 
-        setCurrentAddress(e.target.value || '')
+        setCurrentAddress((e.target as HTMLInputElement).value || '')
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
+        <form ref={topRef} onSubmit={handleSubmit(onSubmit, onError)} noValidate>
             <Stack
                 sx={{ padding: '40px 20px' }}
                 bgcolor={'secondary.main'}
@@ -340,8 +347,8 @@ function ShopForm({ params }: Props) {
                             filterOptions={(x) => x}
                             options={addressList}
                             value={currentAddress}
-                            onKeyUp={handleAutocomplete}
-                            onBlur={handleLocationChange}
+                            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleAutocomplete(e)}
+                            onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => handleLocationChange(e)}
                             sx={{ width: '100%' }}
                             renderOption={(props, option) => {
                                 return (
@@ -358,7 +365,7 @@ function ShopForm({ params }: Props) {
                                     color='primary'
                                     type='text'
                                     {...register('address')}
-                                    onBlur={handleLocationChange} // onBlur insted of onChange to fire handler only when input loses focus
+                                    onBlur={(e: React.FocusEvent<HTMLInputElement, Element>) => handleLocationChange(e)} // onBlur insted of onChange to fire handler only when input loses focus
                                     sx={{ width: '100%' }}
                                     required
                                 />
