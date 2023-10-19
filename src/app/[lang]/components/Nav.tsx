@@ -63,23 +63,23 @@ const Nav = ({ params }: Props) => {
         setMenuAnchor(null)
     }
     return (
-        <AppBar position="fixed" sx={{ zIndex: 'tooltip', height: 64 }}>
+        <AppBar position='fixed' sx={{ zIndex: 'tooltip', height: 64 }}>
             <Toolbar>
                 <Box>
                     <Image
-                        src="/../../images/logo-feher.png"
-                        alt="logo"
+                        src='/../../images/logo-feher.png'
+                        alt='logo'
                         width={150}
                         height={70}
                     />
                 </Box>
 
-                <Typography variant="button" sx={{ ml: 5, mr: 1 }}>
+                <Typography variant='button' sx={{ ml: 5, mr: 1 }}>
                     <Link
-                        color="inherit"
-                        component="button"
-                        variant="body2"
-                        underline="none"
+                        color='inherit'
+                        component='button'
+                        variant='body2'
+                        underline='none'
                         sx={{
                             display: { xs: 'none', sm: 'none', md: 'block' },
                         }}
@@ -87,14 +87,13 @@ const Nav = ({ params }: Props) => {
                     >
                         {dictionary ? dictionary.navigation.openMapButton : ''}
                     </Link>
-
                 </Typography>
-                <Typography variant="button" sx={{ ml: 1, mr: 5, flexGrow: 1 }}>
+                <Typography variant='button' sx={{ ml: 1, mr: 1 }}>
                     <Link
-                        color="inherit"
-                        component="button"
-                        variant="body2"
-                        underline="none"
+                        color='inherit'
+                        component='button'
+                        variant='body2'
+                        underline='none'
                         sx={{
                             display: { xs: 'none', sm: 'none', md: 'block' },
                         }}
@@ -106,19 +105,34 @@ const Nav = ({ params }: Props) => {
                     </Link>
                 </Typography>
 
+                <Typography variant='button' sx={{ ml: 1, mr: 5, flexGrow: 1 }}>
+                    <Link
+                        color='inherit'
+                        component='button'
+                        variant='body2'
+                        underline='none'
+                        sx={{
+                            display: { xs: 'none', sm: 'none', md: 'block' },
+                        }}
+                        onClick={() => router.push(`/${params.lang}`)}
+                    >
+                        {dictionary ? dictionary.navigation.aboutButton : ''}
+                    </Link>
+                </Typography>
+
                 <LangSwitch />
 
                 <IconButton
-                    color="inherit"
-                    size="large"
-                    id="profile-button"
+                    color='inherit'
+                    size='large'
+                    id='profile-button'
                     onClick={handleProfileClick}
                 >
                     <ProfileIcon />
                 </IconButton>
 
                 <Menu
-                    id="profile-menu"
+                    id='profile-menu'
                     anchorEl={profileAnchor}
                     open={profileMenuOpen}
                     slotProps={{ paper: { sx: { width: '150px' } } }}
@@ -140,9 +154,9 @@ const Nav = ({ params }: Props) => {
                 </Menu>
 
                 <IconButton
-                    color="inherit"
-                    size="large"
-                    id="menu-mobile-button"
+                    color='inherit'
+                    size='large'
+                    id='menu-mobile-button'
                     onClick={handleMenuClick}
                     sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}
                 >
@@ -150,7 +164,7 @@ const Nav = ({ params }: Props) => {
                 </IconButton>
 
                 <Menu
-                    id="mobile-menu"
+                    id='mobile-menu'
                     anchorEl={menuAnchor}
                     open={mobileMenuOpen}
                     onClose={() => {
