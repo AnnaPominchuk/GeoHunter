@@ -266,7 +266,7 @@ function ShopForm({ params }: Props) {
         if (resJson.length) {
             setAddressList(
                 Array.from(
-                    new Set(resJson.map((item: any) => item.display_name))
+                    new Set(resJson.map((item: {display_name: string}) => item.display_name))
                 )
             )
         }
