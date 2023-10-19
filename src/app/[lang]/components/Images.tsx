@@ -71,7 +71,7 @@ export default function Images( props : { shopId: string | undefined | null, rev
         }
 
         getImages()
-    }, []) // props.reviewId, props.shopId
+    }, [props.reviewId, props.shopId])
 
     return (
         <>
