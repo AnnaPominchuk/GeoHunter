@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import getSessionHeader from "@/utils/SessionHeader";
+import { NextRequest, NextResponse } from 'next/server'
+import getSessionHeader from '@/utils/SessionHeader'
 
-export const POST = async (req:NextRequest) => {
+export const POST = async (req: NextRequest) => {
     try {
         const data = await req.json()
 
@@ -11,13 +11,17 @@ export const POST = async (req:NextRequest) => {
         const obj = {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         }
         const res = await fetch(url, obj)
         const json = await res.json()
 
-        return new NextResponse(JSON.stringify({status : res.status, reviewId: json.reviewId}))
-    } catch(error) {
-        return new NextResponse(JSON.stringify({error: 'Faild to fetch', status : 500}))
+        return new NextResponse(
+            JSON.stringify({ status: res.status, reviewId: json.reviewId })
+        )
+    } catch (error) {
+        return new NextResponse(
+            JSON.stringify({ error: 'Faild to fetch', status: 500 })
+        )
     }
 }

@@ -54,7 +54,7 @@ function ShopForm({ params }: Props) {
 
         const newMarker = event.target
 
-         console.log({newMarker:newMarker})
+        console.log({ newMarker: newMarker })
         const position = newMarker.getLatLng()
         newMarker.setLatLng(new L.LatLng(position.lat, position.lng), {
             draggable: 'true',
@@ -202,7 +202,7 @@ function ShopForm({ params }: Props) {
                 resetField('review')
                 setImages([])
 
-                topRef.current?.scrollIntoView()  
+                topRef.current?.scrollIntoView()
                 return navigator.geolocation.getCurrentPosition(
                     (position) => {
                         updateAddress(
@@ -234,10 +234,14 @@ function ShopForm({ params }: Props) {
     })
 
     const handleLocationChange = async (
-        e: React.FocusEvent<HTMLDivElement, Element> | React.FocusEvent<HTMLInputElement, Element>
+        e:
+            | React.FocusEvent<HTMLDivElement, Element>
+            | React.FocusEvent<HTMLInputElement, Element>
     ) => {
         const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${(e.target as HTMLInputElement).value}`,
+            `https://nominatim.openstreetmap.org/search?format=json&q=${
+                (e.target as HTMLInputElement).value
+            }`,
             {
                 method: 'GET',
                 headers: header,
@@ -254,7 +258,9 @@ function ShopForm({ params }: Props) {
         e: React.KeyboardEvent<HTMLInputElement>
     ) => {
         const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${(e.target as HTMLInputElement).value}`,
+            `https://nominatim.openstreetmap.org/search?format=json&q=${
+                (e.target as HTMLInputElement).value
+            }`,
             {
                 method: 'GET',
                 headers: header,
@@ -266,7 +272,12 @@ function ShopForm({ params }: Props) {
         if (resJson.length) {
             setAddressList(
                 Array.from(
-                    new Set(resJson.map((item: {display_name: string}) => item.display_name))
+                    new Set(
+                        resJson.map(
+                            (item: { display_name: string }) =>
+                                item.display_name
+                        )
+                    )
                 )
             )
         }
@@ -275,7 +286,11 @@ function ShopForm({ params }: Props) {
     }
 
     return (
-        <form ref={topRef} onSubmit={handleSubmit(onSubmit, onError)} noValidate>
+        <form
+            ref={topRef}
+            onSubmit={handleSubmit(onSubmit, onError)}
+            noValidate
+        >
             <Stack
                 sx={{ padding: '40px 20px' }}
                 bgcolor={'secondary.main'}
@@ -347,8 +362,12 @@ function ShopForm({ params }: Props) {
                             filterOptions={(x) => x}
                             options={addressList}
                             value={currentAddress}
-                            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => handleAutocomplete(e)}
-                            onBlur={(e: React.FocusEvent<HTMLDivElement, Element>) => handleLocationChange(e)}
+                            onKeyUp={(
+                                e: React.KeyboardEvent<HTMLInputElement>
+                            ) => handleAutocomplete(e)}
+                            onBlur={(
+                                e: React.FocusEvent<HTMLDivElement, Element>
+                            ) => handleLocationChange(e)}
                             sx={{ width: '100%' }}
                             renderOption={(props, option) => {
                                 return (
@@ -365,7 +384,12 @@ function ShopForm({ params }: Props) {
                                     color='primary'
                                     type='text'
                                     {...register('address')}
-                                    onBlur={(e: React.FocusEvent<HTMLInputElement, Element>) => handleLocationChange(e)} // onBlur insted of onChange to fire handler only when input loses focus
+                                    onBlur={(
+                                        e: React.FocusEvent<
+                                            HTMLInputElement,
+                                            Element
+                                        >
+                                    ) => handleLocationChange(e)} // onBlur insted of onChange to fire handler only when input loses focus
                                     sx={{ width: '100%' }}
                                     required
                                 />

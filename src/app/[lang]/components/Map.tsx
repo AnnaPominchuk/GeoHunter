@@ -185,9 +185,7 @@ export default function Map({ params }: Props) {
                                     : ''}
                             </Button>
 
-                            {session?.user?.roles?.includes(
-                                UserRole.ADMIN
-                            ) && (
+                            {session?.user?.roles?.includes(UserRole.ADMIN) && (
                                 <Button
                                     onClick={() =>
                                         router.push(

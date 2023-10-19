@@ -1,16 +1,14 @@
 'use client'
 
-import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from "@mui/material";
+import { SessionProvider } from 'next-auth/react'
+import { ThemeProvider } from '@mui/material'
 
-import customTheme from "@/utils/Theme";
+import customTheme from '@/utils/Theme'
 
-export default function Provider({children}: {children: React.ReactNode}) {
+export default function Provider({ children }: { children: React.ReactNode }) {
     return (
-      <SessionProvider>
-        <ThemeProvider theme={customTheme}>
-          {children}
-        </ThemeProvider>
-      </SessionProvider>
-);
+        <SessionProvider>
+            <ThemeProvider theme={customTheme}>{children}</ThemeProvider>
+        </SessionProvider>
+    )
 }
