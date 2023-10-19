@@ -45,7 +45,7 @@ export default function Map({ params }: Props) {
     )
     const { data: session } = useSession()
 
-    const mapRef = useRef(null)
+    const mapRef = useRef<L.Map>(null)
 
     useEffect(() => {
         async function getShops() {
@@ -70,7 +70,7 @@ export default function Map({ params }: Props) {
 
     function openDetails(shop: Shop) {
         setSelectedShop(shop)
-        mapRef.current.closePopup()
+        mapRef.current?.closePopup()
     }
 
     function closeDetails() {
@@ -154,7 +154,7 @@ export default function Map({ params }: Props) {
                         }}
                     >
                         {/* Images */}
-                        <Images shopId={selectedShop._id} />
+                        <Images shopId={selectedShop._id} reviewId={null} />
 
                         {/* Text */}
                         <Typography variant='h5' color={grey['800']}>
@@ -185,7 +185,7 @@ export default function Map({ params }: Props) {
                                     : ''}
                             </Button>
 
-                            {!session?.user?.roles?.includes(
+                            {session?.user?.roles?.includes(
                                 UserRole.ADMIN
                             ) && (
                                 <Button

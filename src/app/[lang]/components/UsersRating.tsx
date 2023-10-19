@@ -103,7 +103,7 @@ const UsersRating = ({ params }: Props) => {
                                             height: '50px',
                                         }}
                                     >
-                                        <ProfilePhoto params={{ user }} />
+                                        <ProfilePhoto params={{ user: user, updProfilePhotoKey: null }} />
                                     </div>
                                 </TableCell>
                                 <TableCell align='left'>{user.name}</TableCell>

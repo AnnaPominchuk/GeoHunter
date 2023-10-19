@@ -135,11 +135,12 @@ const ReviewPage = ({
         setOpen(false)
     }
 
-    const handleChange = (e: any) => {
-        if (e.target.value > 10) e.target.value = 10
-        if (e.target.value < 1) e.target.value = 1
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const valNumber = parseInt(e.target.value)
+        if (valNumber > 10) e.target.value = (10).toString()
+        if (valNumber < 1) e.target.value = (1).toString()
 
-        setRate(e.target.value)
+        setRate(valNumber)
     }
 
     const handleChangCheckbox = (
@@ -229,7 +230,7 @@ const ReviewPage = ({
                             }}
                         >
                             <Stack sx={{ maxWidth: 2 / 3 }}>
-                                <Images reviewId={review?._id} />
+                                <Images reviewId={review?._id} shopId={null} />
                             </Stack>
                         </Stack>
 
