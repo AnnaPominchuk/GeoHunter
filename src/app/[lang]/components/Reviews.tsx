@@ -93,7 +93,15 @@ const MyReviews = ({
                                 >
                                     {review.name}
                                 </Typography>
-                                <Typography className={ review.review.length > 400 ? 'fadding-text' : ''}>{review.review}</Typography>
+                                <Typography
+                                    className={
+                                        review.review.length > 400
+                                            ? 'fadding-text'
+                                            : ''
+                                    }
+                                >
+                                    {review.review}
+                                </Typography>
                             </Stack>
 
                             <Chip

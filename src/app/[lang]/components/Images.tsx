@@ -29,7 +29,10 @@ const imagePosition = [
     },
 ]
 
-export default function Images( props : { shopId: string | undefined | null, reviewId: string | undefined | null }) {
+export default function Images(props: {
+    shopId: string | undefined | null
+    reviewId: string | undefined | null
+}) {
     const [imageData, setImageData] = useState<string[]>([])
     const [toggle, setToggle] = useState<boolean>(false)
 
@@ -92,7 +95,12 @@ export default function Images( props : { shopId: string | undefined | null, rev
                                 cols={pos.cols || 1}
                                 rows={pos.rows || 1}
                             >
-                                <img src={item} alt={item} loading='lazy' onClick={() => setToggle(!toggle)} />
+                                <img
+                                    src={item}
+                                    alt={item}
+                                    loading='lazy'
+                                    onClick={() => setToggle(!toggle)}
+                                />
                             </ImageListItem>
                         )
                     })}
@@ -112,7 +120,7 @@ export default function Images( props : { shopId: string | undefined | null, rev
                 )}
             </ImageList>
 
-            <Box sx={{position:'fixed', zIndex:'1001'}}>
+            <Box sx={{ position: 'fixed', zIndex: '1001' }}>
                 <FsLightbox toggler={toggle} sources={imageData} type='image' />
             </Box>
         </>
