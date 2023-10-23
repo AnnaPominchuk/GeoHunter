@@ -96,9 +96,9 @@ const UsersRating = ({ params }: Props) => {
 
             <TableContainer component={Paper} sx={{ width: '90%', mt: '20px' }}>
                 <Table
-                    sx={{ minWidth: 650 }}
+                    sx={{ minWidth: { m: 650, sm: 0 } }}
                     size='small'
-                    aria-label='a dense table'
+                    aria-label='leaderboard'
                 >
                     <TableBody>
                         {users?.map((user, pos) => (

@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-import { Typography, Paper, Stack, Chip, Button } from '@mui/material'
+import { Typography, Paper, Stack, Chip, Button, Hidden } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
@@ -85,11 +85,20 @@ const MyReviews = ({
                 reviews?.map((review: Review) => (
                     <Item key={review._id}>
                         <Stack direction='row' justifyContent='space-between'>
-                            <Stack direction='column' maxHeight={170}>
+                            <Stack 
+                                direction='column' 
+                                maxHeight={170}
+                                overflow={"hidden"}
+                            >
                                 <Typography
                                     variant='h6'
                                     color={grey['800']}
                                     sx={{ marginBottom: '10px' }}
+                                    className={
+                                        review.review.length > 80
+                                            ? 'fadding-text-h'
+                                            : ''
+                                    }
                                 >
                                     {review.name}
                                 </Typography>
@@ -112,6 +121,7 @@ const MyReviews = ({
                                 label={ReviewStatusConvert.toText(
                                     review.status
                                 )}
+                                sx={{marginLeft:"5px"}}
                             />
                         </Stack>
 

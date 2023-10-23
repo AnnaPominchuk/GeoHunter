@@ -23,8 +23,6 @@ import ProfilePhoto from '@/components/ProfilePhoto'
 import UserRole from '@/utils/UserRole'
 import {User, Convert} from '@/model/User'
 
-import BakeryDiningIcon from '@mui/icons-material/BakeryDining'
-import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 
 import VisuallyHiddenInput from '@/utils/VisuallyHiddenInput'
@@ -34,15 +32,6 @@ import { Props } from '@/utils/Props'
 const StyledButtonGroup = styled(ButtonGroup)({
     '& .MuiButtonGroup-grouped:not(:last-of-type)': {
         borderColor: 'white',
-    },
-})
-
-const StyledRating = styled(Rating)({
-    '& .MuiRating-iconFilled': {
-        color: '#ff6d75',
-    },
-    '& .MuiRating-iconHover': {
-        color: '#ff3d47',
     },
 })
 
@@ -121,6 +110,8 @@ const Profile = ({ params }: Props) => {
                     JSON.stringify(users.data.users)
                 )
 
+                console.log({user: user})
+
                 if (users.status == 200) setUser(user)
             } catch (e) {
                 console.error('Handle error', e)
@@ -165,8 +156,10 @@ const Profile = ({ params }: Props) => {
         <Box
             sx={{
                 display: 'flex',
-                justifyContent: 'space-around',
+                justifyContent: { xs: 'center', sm: 'center', md: 'space-around' },
+                alignItems: { xs: 'center', sm: 'center' },
                 flexDirection: { xs: 'column', sm: 'column', md: 'row' },
+                marginBottom: '30px'
             }}
             bgcolor='secondary.main'
         >
@@ -254,20 +247,13 @@ const Profile = ({ params }: Props) => {
                     {session?.user?.roles || ''}
                 </Typography>
                 {!session?.user?.roles?.includes(UserRole.ADMIN) && (
-                    <StyledRating
-                        name='rating'
-                        defaultValue={user?.rating}
-                        readOnly
-                        getLabelText={(value: number) =>
-                            `${value} Rating${value !== 1 ? 's' : ''}`
-                        }
-                        precision={0.5}
+                    <Typography
+                        variant='subtitle2'
+                        color={grey['700']}
                         sx={{ marginTop: '4px' }}
-                        icon={<BakeryDiningIcon fontSize='inherit' />}
-                        emptyIcon={
-                            <BakeryDiningOutlinedIcon fontSize='inherit' />
-                        }
-                    />
+                    >
+                        {dictionary ? dictionary.profile.rating : ''} {": "} {user?.rating}
+                    </Typography>
                 )}
             </Box>
 

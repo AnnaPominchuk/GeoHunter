@@ -48,7 +48,8 @@
     },
     "profile": {
         "uploadPhotobButton": "Profilkép frissítése",
-        "myReviews": "Saját értékeléseim"
+        "myReviews": "Saját értékeléseim",
+        "rating": "Rating"
     },
     "navigation": {
         "goBackButton": "Vissza",
