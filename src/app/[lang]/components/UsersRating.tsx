@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import User from '@/model/User'
+import { User, Convert } from '@/model/User'
 
 import {
     Box,
@@ -46,12 +46,21 @@ const UsersRating = ({ params }: Props) => {
 
             const obj = await res.json()
 
-            if (obj.status == 200)
+            if (obj.status == 200) {
+                const usersList: User[] = []
+                for (const userData of obj.data.users) {
+                    const user: User = Convert.toUser(
+                        JSON.stringify(userData)
+                    )
+                    usersList.push(user)
+                }
+
                 setUsers(
-                    obj.data.users.filter((user: User) => {
+                    usersList.filter((user: User) => {
                         return !user.roles?.includes(UserRole.ADMIN)
                     })
                 )
+            }
         }
 
         geUsers()
@@ -60,7 +69,7 @@ const UsersRating = ({ params }: Props) => {
             if (l.rating === r.rating) return 0
             return l.rating > r.rating ? 1 : -1
         })
-    }, [users])
+    }, [])
 
     const getCupIconStyle = (
         pos: number

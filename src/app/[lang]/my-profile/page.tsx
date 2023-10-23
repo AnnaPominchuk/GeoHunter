@@ -21,7 +21,7 @@ import Reviews from '@/components/Reviews'
 import ProfilePhoto from '@/components/ProfilePhoto'
 
 import UserRole from '@/utils/UserRole'
-import User from '@/model/User'
+import {User, Convert} from '@/model/User'
 
 import BakeryDiningIcon from '@mui/icons-material/BakeryDining'
 import BakeryDiningOutlinedIcon from '@mui/icons-material/BakeryDiningOutlined'
@@ -116,7 +116,12 @@ const Profile = ({ params }: Props) => {
                 )
 
                 const users = await resUser.json()
-                if (users.status == 200) setUser(users.data.users)
+
+                const user:User = Convert.toUser(
+                    JSON.stringify(users.data.users)
+                )
+
+                if (users.status == 200) setUser(user)
             } catch (e) {
                 console.error('Handle error', e)
             }
