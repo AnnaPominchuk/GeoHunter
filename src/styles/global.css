@@ -46,3 +46,11 @@
   overflow: "hidden";
   text-overflow: "ellipsis";
 }
+
+.fadding-text-h {
+  background: -webkit-linear-gradient(right, #eee, #707070, #707070);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  overflow: "hidden";
+  text-overflow: "ellipsis";
+}
