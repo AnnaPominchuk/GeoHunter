@@ -12,7 +12,8 @@
     },
     "map": {
         "uploadInfoButton": "Információ feltöltése",
-        "requestor": "Kérelmező"
+        "requestor": "Kérelmező",
+        "address": "Lakcim"
     },
     "reviews": {
         "reviewsCaption": "Vélemények",

@@ -58,6 +58,7 @@ interface Login {
 interface Map {
     uploadInfoButton: string
     requestor: string
+    address: string
 }
 
 interface Navigation {

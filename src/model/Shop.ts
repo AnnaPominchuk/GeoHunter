@@ -9,7 +9,7 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-import {cast, uncast, o, u, r} from '@/model/Converter'
+import { cast, uncast, o, u, r } from '@/model/Converter'
 
 export interface Shop {
     address: string
@@ -19,6 +19,7 @@ export interface Shop {
     longitude: number
     m_id?: number
     name: string
+    requestor: string
     t_id?: number
     _id: string
 }
@@ -32,7 +33,8 @@ const typeMap: any = {
             { json: 'latitude', js: 'latitude', typ: 3.14 },
             { json: 'longitude', js: 'longitude', typ: 3.14 },
             { json: 'm_id', js: 'm_id', typ: u(0, undefined) },
-            { json: 'name', js: 'name', typ: '' },
+            { json: 'name', js: 'name', typ: u(undefined, '') },
+            { json: 'requestor', js: 'requestor', typ: '' },
             { json: 't_id', js: 't_id', typ: u(0, undefined) },
             { json: '_id', js: '_id', typ: '' },
         ],

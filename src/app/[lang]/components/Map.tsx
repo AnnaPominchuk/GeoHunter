@@ -109,16 +109,25 @@ export default function Map({ params }: Props) {
                         >
                             <Popup>
                                 <Box>
-                                    <Box sx={{ padding: '10px' }}>
-                                        <Typography variant='subtitle1'>
-                                            {dictionary
-                                                ? dictionary.map.requestor
-                                                : ''}
-                                        </Typography>
-                                        <Typography variant='caption'>
-                                            {shop.name}
-                                        </Typography>
-                                    </Box>
+                                    {!shop.name && (
+                                        <Box sx={{ padding: '10px' }}>
+                                            <Typography variant='subtitle1'>
+                                                {dictionary
+                                                    ? dictionary.map.requestor
+                                                    : ''}
+                                            </Typography>
+                                            <Typography variant='caption'>
+                                                {shop.requestor}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                    {shop.name && (
+                                        <Box sx={{ padding: '10px' }}>
+                                            <Typography variant='subtitle1'>
+                                                {shop.name}
+                                            </Typography>
+                                        </Box>
+                                    )}
                                     <Box>
                                         <Button
                                             onClick={() => openDetails(shop)}
@@ -157,22 +166,40 @@ export default function Map({ params }: Props) {
                         <Images shopId={selectedShop._id} reviewId={null} />
 
                         {/* Text */}
-                        <Typography variant='h5' color={grey['800']}>
+                        <Typography
+                            variant='h5'
+                            color={grey['800']}
+                            sx={{ marginBottom: 1 }}
+                        >
                             {selectedShop.name}
                         </Typography>
                         <Typography
                             variant='subtitle1'
                             color={grey['700']}
-                            sx={{ marginBottom: '10px' }}
+                            sx={{ marginBottom: 1 }}
                         >
                             {dictionary ? dictionary.map.requestor : ''}
                         </Typography>
                         <Typography
                             variant='subtitle2'
                             color={grey['700']}
-                            sx={{ marginBottom: '30px' }}
+                            sx={{ marginBottom: 2 }}
                         >
-                            {selectedShop.name}
+                            {selectedShop.requestor}
+                        </Typography>
+                        <Typography
+                            variant='subtitle1'
+                            color={grey['700']}
+                            sx={{ marginBottom: 1 }}
+                        >
+                            {dictionary ? dictionary.map.address : ''}
+                        </Typography>
+                        <Typography
+                            variant='subtitle2'
+                            color={grey['700']}
+                            sx={{ marginBottom: 3 }}
+                        >
+                            {selectedShop.address}
                         </Typography>
 
                         <StyledButtonGroup
@@ -185,7 +212,9 @@ export default function Map({ params }: Props) {
                                     : ''}
                             </Button>
 
-                            {!session?.user?.roles?.includes(UserRole.ADMIN) && (
+                            {!session?.user?.roles?.includes(
+                                UserRole.ADMIN
+                            ) && (
                                 <Button
                                     onClick={() =>
                                         router.push(

@@ -12,7 +12,8 @@
     },
     "map": {
         "uploadInfoButton": "Upload info",
-        "requestor": "Requestor"
+        "requestor": "Requestor",
+        "address": "Address"
     },
     "reviews": {
         "reviewsCaption": "Reviews",
