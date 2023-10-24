@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 GeoHunter: Unveil the Hidden Truth
 
 Overview
@@ -12,11 +10,11 @@ Project Objective
 
 The primary goal of GeoHunter is to empower a community of truth-seekers who will take on the task of investigating subsidies granted to various businesses across villages nationwide. By leveraging the power of crowdsourced information and geolocation technology, users can:
 
-    Discover: Identify stores and establishments listed in government subsidy records. Navigate through scattered data and piece together the information to locate these entities.
+Discover: Identify stores and establishments listed in government subsidy records. Navigate through scattered data and piece together the information to locate these entities.
 
-    Document: Gather evidence regarding the existence and operations of these businesses. This could range from physical visits to these sites, photographic evidence, or testimonials from locals.
+Document: Gather evidence regarding the existence and operations of these businesses. This could range from physical visits to these sites, photographic evidence, or testimonials from locals.
 
-    Dismantle Corruption: By verifying the legitimacy of these subsidy recipients, the community aids in exposing potential misappropriation of funds, holding the government accountable for ensuring that public funds are duly serving the community.
+Dismantle Corruption: By verifying the legitimacy of these subsidy recipients, the community aids in exposing potential misappropriation of funds, holding the government accountable for ensuring that public funds are duly serving the community.
 
 Through this collaborative effort, GeoHunter aims to ensure that every penny earmarked for the development of these villages reaches its rightful place, contributing to a system where transparency isn't just an ideal but a lived reality.
 Join the Movement, Join the Revolution
