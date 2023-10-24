@@ -23,18 +23,22 @@ const MyHome = ({ params }: Props) => {
         <Box
             sx={{
                 display: 'flex',
-                justifyContent: 'space-around',
+                justifyContent: { xs: 'center', sm: 'center', md: 'space-around' },
                 flexDirection: { xs: 'column', sm: 'column', md: 'row' },
                 alignItems: 'center',
+                marginBottom: "30px"
             }}
         >
-            <Box sx={{ marginTop: '94px', marginBottom: '30px', marginLeft: '30px', alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ marginTop: '94px', marginBottom: '30px', alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
                 <img width={300} src='../../images/logo-big.png' />
-                <Typography color={grey['700']} variant='h4' sx={{marginTop:5}}>
+                <Typography color={grey['700']} variant='h5' sx={{marginTop:5}}>
                     Welcome to GeoHunter
                 </Typography>
+                <Typography color={grey['700']} variant='body1' sx={{display: {xs:'block', sm: 'block', md: 'none'}}}>
+                   {dictionary ? dictionary.login.slogan : ''}
+                </Typography>
             </Box>
-            <Box sx={{ marginTop: '94px', marginBottom: '30px', maxWidth: 1/2 }}>
+            <Box sx={{ marginTop: '94px', marginBottom: '30px', maxWidth: 1/2, display: {xs:'none', sm: 'none', md: 'block'}}}>
                 <Typography color={grey['700']} variant='h4'>
                    {dictionary ? dictionary.login.slogan : ''}
                 </Typography>
