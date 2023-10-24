@@ -9,8 +9,12 @@ const theme = createTheme({
         },
         secondary: {
             main: '#FFFFFF',
+            contrastText: config.mainColor,
         },
     },
+    typography: {
+        "fontFamily": "Montserrat",
+   }
 })
 
 export default theme
