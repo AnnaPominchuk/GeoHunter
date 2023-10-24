@@ -178,8 +178,6 @@ const ReviewPage = ({
                     >
                         <ArrowBackIcon />
                     </IconButton>
-
-                    {/* <Typography variant='h6' color={grey['800']}> { dictionary ? dictionary.reviews.reviewDetails : ''  </Typography> */}
                 </Stack>
 
                 {review && (
@@ -188,7 +186,7 @@ const ReviewPage = ({
                             <Typography
                                 variant='h6'
                                 color={grey['800']}
-                                sx={{ marginBottom: '2px' }}
+                                sx={{ marginBottom: '2px', wordWrap: "break-word" }}
                             >
                                 {review?.name}
                             </Typography>
@@ -216,7 +214,7 @@ const ReviewPage = ({
                             >
                                 {review?.address}
                             </Typography>
-                            <Typography sx={{ marginTop: '5px' }}>
+                            <Typography sx={{ marginTop: '5px', wordWrap: "break-word" }}>
                                 {review?.review}
                             </Typography>
                         </Stack>
