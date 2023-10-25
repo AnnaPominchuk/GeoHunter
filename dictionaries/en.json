@@ -12,7 +12,8 @@
     },
     "map": {
         "uploadInfoButton": "Upload info",
-        "requestor": "Requestor"
+        "requestor": "Requestor",
+        "address": "Address"
     },
     "reviews": {
         "reviewsCaption": "Reviews",
@@ -49,7 +50,8 @@
     },
     "profile": {
         "uploadPhotobButton": "Update profile photo",
-        "myReviews": "My Reviews"
+        "myReviews": "My Reviews",
+        "rating": "Rating"
     },
     "navigation": {
         "goBackButton": "Go Back",

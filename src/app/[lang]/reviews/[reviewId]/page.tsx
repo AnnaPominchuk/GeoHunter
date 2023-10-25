@@ -83,7 +83,7 @@ const ReviewPage = ({
     const [review, setReview] = useState<Review | null>(null)
     const [openDialog, setOpen] = useState(false)
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null)
-    const [rate, setRate] = useState(0)
+    const [rate, setRate] = useState(1)
     const [saveAddress, setSaveAddress] = useState<boolean>(true)
     const openHint = Boolean(hintAnchor)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
@@ -178,8 +178,6 @@ const ReviewPage = ({
                     >
                         <ArrowBackIcon />
                     </IconButton>
-
-                    {/* <Typography variant='h6' color={grey['800']}> { dictionary ? dictionary.reviews.reviewDetails : ''  </Typography> */}
                 </Stack>
 
                 {review && (
@@ -188,7 +186,7 @@ const ReviewPage = ({
                             <Typography
                                 variant='h6'
                                 color={grey['800']}
-                                sx={{ marginBottom: '2px' }}
+                                sx={{ marginBottom: '2px', wordWrap: "break-word" }}
                             >
                                 {review?.name}
                             </Typography>
@@ -216,7 +214,7 @@ const ReviewPage = ({
                             >
                                 {review?.address}
                             </Typography>
-                            <Typography sx={{ marginTop: '5px' }}>
+                            <Typography sx={{ marginTop: '5px', wordWrap: "break-word" }}>
                                 {review?.review}
                             </Typography>
                         </Stack>

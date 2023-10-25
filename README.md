@@ -1,34 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+GeoHunter: Unveil the Hidden Truth
 
-## Getting Started
+Overview
 
-First, run the development server:
+In an environment where governmental corruption is rampant and transparency is often thwarted, there's an urgent need for a vigilant community to keep the essence of democracy - accountability - alive. That's why we've launched GeoHunter, an initiative dedicated to unmasking the truth behind government subsidies that appear to be siphoned off under dubious circumstances.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Governments might obscure the truth, providing fragmented data, hiding crucial details like the exact locations or nature of businesses receiving these funds. This project rises from the need to validate that these subsidies are reaching their intended destinations and are not part of a corruption scheme.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Project Objective
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The primary goal of GeoHunter is to empower a community of truth-seekers who will take on the task of investigating subsidies granted to various businesses across villages nationwide. By leveraging the power of crowdsourced information and geolocation technology, users can:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Discover: Identify stores and establishments listed in government subsidy records. Navigate through scattered data and piece together the information to locate these entities.
 
-## Learn More
+Document: Gather evidence regarding the existence and operations of these businesses. This could range from physical visits to these sites, photographic evidence, or testimonials from locals.
 
-To learn more about Next.js, take a look at the following resources:
+Dismantle Corruption: By verifying the legitimacy of these subsidy recipients, the community aids in exposing potential misappropriation of funds, holding the government accountable for ensuring that public funds are duly serving the community.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Through this collaborative effort, GeoHunter aims to ensure that every penny earmarked for the development of these villages reaches its rightful place, contributing to a system where transparency isn't just an ideal but a lived reality.
+Join the Movement, Join the Revolution
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+We invite you to be part of this revolutionary journey. Contribute to a transparent world, hold power accountable, and protect public funds from being plundered. It's not just about unearthing corruption; it's about safeguarding the future of our communities.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Become a GeoHunter today. Together, we can weave a narrative of honesty and thwart the plans of those who seek to benefit at the expense of society. The quest for truth starts with you.

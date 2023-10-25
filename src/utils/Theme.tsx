@@ -1,16 +1,20 @@
-import {createTheme} from '@mui/material'
+import { createTheme } from '@mui/material'
 import config from '../../appconfig.json'
 
 const theme = createTheme({
     palette: {
         primary: {
             main: config.mainColor,
-            light: config.additionalColor
+            light: config.additionalColor,
         },
         secondary: {
-            main: "#FFFFFF"
-        }
-    }
-});
+            main: '#FFFFFF',
+            contrastText: config.mainColor,
+        },
+    },
+    typography: {
+        "fontFamily": "Montserrat",
+   }
+})
 
-export default theme;
+export default theme
