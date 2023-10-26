@@ -456,7 +456,7 @@ function ShopForm({ params }: Props) {
                             {dictionary ? dictionary.form.save : ''}
                         </Button>
 
-                        <Button id='submitbtn' type='submit' hidden></Button>
+                        <Button id='submitbtn' type='submit' sx={{display:"none"}}></Button>
 
                         <Button
                             variant='contained'
