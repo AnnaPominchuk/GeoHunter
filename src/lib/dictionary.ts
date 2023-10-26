@@ -58,7 +58,8 @@ interface Login {
 interface Map {
     uploadInfoButton: string
     requestor: string
-    address: string
+    address: string,
+    shopsCount: string
 }
 
 interface Navigation {
@@ -74,7 +75,8 @@ interface Navigation {
 
 interface Profile {
     uploadPhotobButton: string
-    myReviews: string
+    myReviews: string,
+    rating: string
 }
 
 interface Rating {

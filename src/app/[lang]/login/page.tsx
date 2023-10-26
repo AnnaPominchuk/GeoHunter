@@ -49,7 +49,7 @@ const Login = ({ params }: Props) => {
                     {dictionary ? dictionary.login.appName : ''}
                 </Typography>
                 <Typography fontWeight='700' fontSize='2.9rem' sx={{paddingTop: 0, paddingBottom: '0.5rem'}}>
-                    {dictionary ? dictionary.login.slogan : ''}{' '}
+                    {dictionary ? dictionary.login.slogan : ''}
                 </Typography>
 
                  <Typography fontWeight='700' fontSize='1.1rem' sx={{paddingTop: 0, paddingBottom: "2rem", maxWidth: "42rem"}}>

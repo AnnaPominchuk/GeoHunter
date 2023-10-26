@@ -13,7 +13,8 @@
     "map": {
         "uploadInfoButton": "Upload info",
         "requestor": "Requestor",
-        "address": "Address"
+        "address": "Address",
+        "shopsCount": "Number of objects located here"
     },
     "reviews": {
         "reviewsCaption": "Reviews",

@@ -2,7 +2,7 @@
 
 import Nav from './Nav'
 import AdminMenu from './AdminMenu'
-import { WithAuthComponent } from './WithAuth'
+import { WithAuthComponent } from './withAuth'
 import { PropsWithChildren } from 'react'
 import { Props } from '@/utils/Props'
 

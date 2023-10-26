@@ -9,7 +9,7 @@ import {
     Box,
     Autocomplete,
 } from '@mui/material'
-import { WithAuth } from '@/components/WithAuth'
+import { WithAuth } from '@/components/withAuth'
 import { Props } from '@/utils/Props'
 import { useForm, FieldErrors } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
