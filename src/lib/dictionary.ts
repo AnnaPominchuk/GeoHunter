@@ -75,7 +75,8 @@ interface Navigation {
 
 interface Profile {
     uploadPhotobButton: string
-    myReviews: string
+    myReviews: string,
+    rating: string
 }
 
 interface Rating {

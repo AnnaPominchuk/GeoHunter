@@ -1,6 +1,6 @@
 'use client'
 
-import { WithAuth } from '@/components/WithAuth'
+import { WithAuth } from '@/components/withAuth'
 import { Props } from '@/utils/Props'
 const MapLayout = dynamic(() => import('@/components/Map'))
 import dynamic from 'next/dynamic'

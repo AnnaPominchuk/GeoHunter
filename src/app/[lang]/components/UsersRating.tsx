@@ -90,8 +90,7 @@ const UsersRating = ({ params }: Props) => {
             bgcolor='secondary.main'
         >
             <Typography variant='button' sx={{ marginTop: '25px' }}>
-                {' '}
-                {dictionary ? dictionary.rating.leaderboard : ''}{' '}
+                {dictionary ? dictionary.rating.leaderboard : ''}
             </Typography>
 
             <TableContainer component={Paper} sx={{ width: '90%', mt: '20px' }}>
@@ -116,6 +115,7 @@ const UsersRating = ({ params }: Props) => {
                                             params={{
                                                 user: user,
                                                 updProfilePhotoKey: null,
+                                                width: 50
                                             }}
                                         />
                                     </div>

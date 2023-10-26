@@ -128,11 +128,9 @@ const AdminMenu = ({ params, children }: PropsWithChildren<Props>) => {
     if (!session?.user?.roles?.includes(UserRole.ADMIN))
         return (
             <main>
-                {' '}
                 <Box sx={{ marginTop: `${headerHeight}px` }}>
-                    {' '}
-                    {children}{' '}
-                </Box>{' '}
+                    {children}
+                </Box>
             </main>
         )
 

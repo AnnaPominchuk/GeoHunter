@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react'
 
-import User from '../../../model/User'
+import { User } from '../../../model/User'
+
+import Image from 'next/image'
 
 export default function ProfilePhoto({
-    params: { user, updProfilePhotoKey },
+    params: { user, updProfilePhotoKey, width },
 }: {
-    params: { user: User | null; updProfilePhotoKey: { key: string } | null }
+    params: { user: User | null; updProfilePhotoKey: { key: string } | null; width: number }
 }) {
     const [profilePhotoKey, setProfilePhotoKey] = useState<{
         key: string
@@ -22,28 +24,28 @@ export default function ProfilePhoto({
         <>
             {user &&
                 (user.useGooglePhoto ? (
-                    <img
+                    <Image
                         src={`${user?.profilePhotoURL}`}
                         alt=''
-                        width={200}
-                        height={200}
+                        width={width}
+                        height={width}
                     />
                 ) : (
                     profilePhotoKey &&
                     (profilePhotoKey.key?.length ? (
-                        <img
+                        <Image
                             src={`../api/profile-photo/${profilePhotoKey.key}`}
                             alt=''
-                            width={200}
-                            height={200}
+                            width={width}
+                            height={width}
                             loading='lazy'
                         />
                     ) : (
-                        <img
+                        <Image
                             src='/../../images/no-pic-prof.jpeg'
                             alt=''
-                            width={200}
-                            height={200}
+                            width={width}
+                            height={width}
                             loading='lazy'
                         />
                     ))

@@ -5,7 +5,6 @@ import {
     Button,
     ButtonGroup,
     Typography,
-    Rating,
     TextField,
     InputAdornment,
 } from '@mui/material'
@@ -13,7 +12,7 @@ import {
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 
-import { WithAuth } from '@/components/WithAuth'
+import { WithAuth } from '@/components/withAuth'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 
@@ -173,7 +172,7 @@ const Profile = ({ params }: Props) => {
                         height: '200px',
                     }}
                 >
-                    <ProfilePhoto params={{ user, updProfilePhotoKey }} />
+                    <ProfilePhoto params={{ user, updProfilePhotoKey, width: 200 }} />
                 </div>
 
                 <StyledButtonGroup sx={{ marginTop: '10px' }} variant='text'>

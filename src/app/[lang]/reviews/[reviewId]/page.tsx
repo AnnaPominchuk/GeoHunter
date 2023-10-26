@@ -1,6 +1,6 @@
 'use client'
 
-import { WithAuth } from '@/components/WithAuth'
+import { WithAuth } from '@/components/withAuth'
 import Images from '@/components/Images'
 
 import {

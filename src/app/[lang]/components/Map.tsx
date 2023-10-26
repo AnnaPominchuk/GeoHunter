@@ -39,7 +39,14 @@ type Coord = {
     lon: number
 }
 
+type MarkerProps = {
+    position: string,
+    icon: string,
+    key: string
+}
+
 type Address2Shops = Map<string, Shop[]>
+type pageElementType = ReactElement<MarkerProps, typeof Marker>
 
 export default function MapLayout({ params }: Props) {
     const [dictionary, setDictionary] = useState<Dictionary>()
@@ -54,7 +61,7 @@ export default function MapLayout({ params }: Props) {
 
     const router = useRouter()
     const [shops, setShops] = useState<Address2Shops>(new Map())
-    const [pageElements, setPageElement] = useState<ReactElement<any, any>[]>([])
+    const [pageElements, setPageElement] = useState<pageElementType[]>([])
     const [selectedShop, setSelectedShop] = useState<Shop | undefined>(
         undefined
     )
@@ -91,7 +98,7 @@ export default function MapLayout({ params }: Props) {
     }, [selectedShop])
 
     const shopsToPageElement = (shopsMap: Address2Shops) => {
-        const elements: ReactElement<any, any>[] = []
+        const elements: pageElementType[] = []
         let index: number = 0
         for (const address2Shops of shopsMap)
         {
@@ -101,37 +108,37 @@ export default function MapLayout({ params }: Props) {
                 const shop = shopsList[0]
                 elements.push(
                     <Marker
-                            position={[coord.lat, coord.lon]}
-                            icon={markerIcon}
-                            key={`${index++}`}
-                        >
-                            <Popup>
-                                <Box>
-                                    {shop.address && (
-                                        <Box sx={{ padding: '10px' }}>
-                                            <Typography variant='subtitle1'>
-                                                {shop.address}
-                                            </Typography>
-                                            <Typography variant='caption'>
-                                                {dictionary ? dictionary.map.shopsCount : '' }
-                                                {": "}
-                                                {shopsList.length}
-                                            </Typography>
-                                        </Box>
-                                    )}
-                                    <Box>
-                                        <Button
-                                            onClick={() => openList(shopsList)}
-                                        >
-                                            {dictionary
-                                                ? dictionary.navigation
-                                                      .detailsButton
-                                                : ''}
-                                        </Button>
+                        position={[coord.lat, coord.lon]}
+                        icon={markerIcon}
+                        key={`${index++}`}
+                    >
+                        <Popup>
+                            <Box>
+                                {shop.address && (
+                                    <Box sx={{ padding: '10px' }}>
+                                        <Typography variant='subtitle1'>
+                                            {shop.address}
+                                        </Typography>
+                                        <Typography variant='caption'>
+                                            {dictionary ? dictionary.map.shopsCount : '' }
+                                            {": "}
+                                             {shopsList.length}
+                                        </Typography>
                                     </Box>
+                                )}
+                                <Box>
+                                    <Button
+                                        onClick={() => openList(shopsList)}
+                                    >
+                                        {dictionary
+                                            ? dictionary.navigation
+                                                    .detailsButton
+                                            : ''}
+                                    </Button>
                                 </Box>
-                            </Popup>
-                        </Marker>       
+                            </Box>
+                        </Popup>
+                    </Marker>       
                 )
             }
             else {
@@ -214,7 +221,7 @@ export default function MapLayout({ params }: Props) {
     const position: L.LatLngExpression = [47.497913, 19.040236]
     return (
         // TO DO: sizing
-        <Box bgcolor='secondary.main' sx={{ height: '92vh', display: 'flex' }}>
+        <Box bgcolor='secondary.main' sx={{ height: 'calc(100vh - 64px)', display: 'flex' }}>
             <Box
                 bgcolor='secondary.main'
                 sx={{ flex: { xs: selectedShop || selectedList ? '0' : '2', sm: '2' } }}
@@ -354,7 +361,7 @@ export default function MapLayout({ params }: Props) {
                                             variant='caption'
                                             color={grey['800']}
                                         >
-                                            {shop.requestor}
+                                            { shop.name? shop.name : shop.requestor }
                                         </Typography>
                                      </React.Fragment>}
                                 />
