@@ -24,7 +24,7 @@ export default function ProfilePhoto({
         <>
             {user &&
                 (user.useGooglePhoto ? (
-                    <Image
+                    <img
                         src={`${user?.profilePhotoURL}`}
                         alt=''
                         width={width}
@@ -33,15 +33,15 @@ export default function ProfilePhoto({
                 ) : (
                     profilePhotoKey &&
                     (profilePhotoKey.key?.length ? (
-                        <Image
-                            src={`/../api/profile-photo/${profilePhotoKey.key}`}
+                        <img
+                            src={`../api/profile-photo/${profilePhotoKey.key}`}
                             alt=''
                             width={width}
                             height={width}
                             loading='lazy'
                         />
                     ) : (
-                        <Image
+                        <img
                             src='/../../images/no-pic-prof.jpeg'
                             alt=''
                             width={width}
