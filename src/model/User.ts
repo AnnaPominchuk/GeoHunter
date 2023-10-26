@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // To parse this data:
 //
 //   import { Convert, User } from "./file";

@@ -1,7 +1,7 @@
 'use client'
 
 import CsvInput from '@/components/CsvInput'
-import { WithAuthAdmin } from '@/components/WithAuth'
+import { WithAuthAdmin } from '@/components/withAuth'
 import { Props } from '@/utils/Props'
 import React from 'react'
 

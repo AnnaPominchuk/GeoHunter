@@ -1,6 +1,6 @@
 'use client'
 
-import { WithAuth } from '@/components/WithAuth'
+import { WithAuth } from '@/components/withAuth'
 import { Props } from '@/utils/Props'
 import React from 'react'
 import { Box, Typography } from '@mui/material'

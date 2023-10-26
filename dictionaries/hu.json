@@ -13,7 +13,8 @@
     "map": {
         "uploadInfoButton": "Információ feltöltése",
         "requestor": "Kérelmező",
-        "address": "Lakcim"
+        "address": "Lakcim",
+        "shopsCount": "Number of objects located here"
     },
     "reviews": {
         "reviewsCaption": "Vélemények",

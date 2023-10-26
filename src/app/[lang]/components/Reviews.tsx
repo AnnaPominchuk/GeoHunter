@@ -1,11 +1,11 @@
 'use client'
 
-import { WithAuth } from './WithAuth'
+import { WithAuth } from './withAuth'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-import { Typography, Paper, Stack, Chip, Button, Hidden } from '@mui/material'
+import { Typography, Paper, Stack, Chip, Button } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'

@@ -69,7 +69,7 @@ const Nav = ({ params }: Props) => {
                         src='/../../images/logo-feher.png'
                         alt='logo'
                         width={150}
-                        height={70}
+                        height={28}
                     />
                 </Box>
 

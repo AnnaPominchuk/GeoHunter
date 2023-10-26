@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
     const prettyTyp = prettyTypeName(typ)
     const parentText = parent ? ` on ${parent}` : ''

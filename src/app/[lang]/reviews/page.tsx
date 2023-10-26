@@ -1,6 +1,6 @@
 'use client'
 
-import { WithAuthAdmin } from '@/components/WithAuth'
+import { WithAuthAdmin } from '@/components/withAuth'
 
 import {
     Box,
@@ -73,11 +73,10 @@ const ReviewsPage = ({ params: { lang } }: { params: { lang: Locale } }) => {
                     justifyContent='space-between'
                     sx={{ marginBottom: '10px' }}
                 >
-                    <Typography variant='h5' color={grey['800']}>
-                        {' '}
+                    <Typography variant='h5' color={grey['800']}>  
                         {dictionary
                             ? dictionary.reviews.reviewsCaption
-                            : ''}{' '}
+                            : ''}
                     </Typography>
                     <IconButton aria-label='filter' onClick={handleFilterClick}>
                         <FilterAltIcon />
@@ -138,8 +137,7 @@ const ReviewsPage = ({ params: { lang } }: { params: { lang: Locale } }) => {
                         />
                     </FormGroup>
                     <Button onClick={() => setFilterAnchor(null)}>
-                        {' '}
-                        {dictionary ? dictionary.reviews.applyButton : ''}{' '}
+                        {dictionary ? dictionary.reviews.applyButton : ''}
                     </Button>
                 </Menu>
 

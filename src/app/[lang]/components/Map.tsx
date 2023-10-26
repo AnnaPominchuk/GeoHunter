@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, ReactElement } from 'react'
 import { Convert, Shop } from '@/model/Shop'
 
 import L from 'leaflet'
@@ -8,7 +8,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import Images from './Images'
 
-import { Box, Typography, Button, ButtonGroup } from '@mui/material'
+import { Box, Typography, Button, ButtonGroup, List, ListItem, ListItemText, Divider } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { Props } from '@/utils/Props'
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
@@ -21,13 +21,36 @@ import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 import React from 'react'
 
+import config from '@/config/appconfig.json'
+
 const StyledButtonGroup = styled(ButtonGroup)({
     '& .MuiButtonGroup-grouped': {
         borderColor: 'white',
     },
 })
 
-export default function Map({ params }: Props) {
+const StyledListItem = styled(ListItem)({
+  '&.MuiListItem-root:hover': {
+      cursor: "pointer",
+      background : grey[100],
+  }
+})
+
+type Coord = {
+    lat: number,
+    lon: number
+}
+
+type MarkerProps = {
+    position: string,
+    icon: string,
+    key: string
+}
+
+type Address2Shops = Map<string, Shop[]>
+type pageElementType = ReactElement<MarkerProps, typeof Marker>
+
+export default function MapLayout({ params }: Props) {
     const [dictionary, setDictionary] = useState<Dictionary>()
     useEffect(() => {
         const setDict = async () => {
@@ -39,8 +62,12 @@ export default function Map({ params }: Props) {
     }, [params.lang])
 
     const router = useRouter()
-    const [shops, setShops] = useState<Shop[]>([])
+    const [shops, setShops] = useState<Address2Shops>(new Map())
+    const [pageElements, setPageElement] = useState<pageElementType[]>([])
     const [selectedShop, setSelectedShop] = useState<Shop | undefined>(
+        undefined
+    )
+    const [selectedList, setSelectedList] = useState<Shop[] | undefined>(
         undefined
     )
     const { data: session } = useSession()
@@ -55,10 +82,14 @@ export default function Map({ params }: Props) {
                 })
                 const data = await res.json()
 
-                const shopsList: Shop[] = []
+                const shopsList: Address2Shops = new Map()
                 for (const shopData of data.shops.shops) {
                     const shop: Shop = Convert.toShop(JSON.stringify(shopData))
-                    shopsList.push(shop)
+                    const coord: Coord = {lat: shop.latitude, lon: shop.longitude}
+
+                    const shopsArray = shopsList.get(JSON.stringify(coord))
+                    if (shopsArray) shopsArray.push(shop)
+                    else shopsList.set(JSON.stringify(coord), [shop])
                 }
                 setShops(shopsList)
             } catch (e) {
@@ -68,44 +99,57 @@ export default function Map({ params }: Props) {
         getShops()
     }, [selectedShop])
 
-    function openDetails(shop: Shop) {
-        setSelectedShop(shop)
-        mapRef.current?.closePopup()
-    }
-
-    function closeDetails() {
-        setSelectedShop(undefined)
-    }
-
-    const markerIcon: L.Icon = new L.Icon({
-        iconUrl: '../images/marker.png',
-        iconSize: [30, 30],
-    })
-
-    const position: L.LatLngExpression = [47.497913, 19.040236]
-    return (
-        // TO DO: sizing
-        <Box bgcolor='secondary.main' sx={{ height: '92vh', display: 'flex' }}>
-            <Box
-                bgcolor='secondary.main'
-                sx={{ flex: { xs: selectedShop ? '0' : '2', sm: '2' } }}
-            >
-                <MapContainer
-                    center={position}
-                    zoom={8}
-                    scrollWheelZoom={true}
-                    style={{ height: '100%', width: '100%' }}
-                    ref={mapRef}
-                >
-                    <TileLayer
-                        attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-                        url='https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm'
-                    />
-                    {shops.map((shop, index) => (
-                        <Marker
-                            position={[shop.latitude, shop.longitude]}
+    const shopsToPageElement = (shopsMap: Address2Shops) => {
+        const elements: pageElementType[] = []
+        let index: number = 0
+        for (const address2Shops of shopsMap)
+        {
+            const coord = JSON.parse(address2Shops[0])
+            const shopsList = address2Shops[1]
+            if (shopsList.length > 1) {
+                const shop = shopsList[0]
+                elements.push(
+                    <Marker
+                        position={[coord.lat, coord.lon]}
+                        icon={markerIcon}
+                        key={`${index++}`}
+                    >
+                        <Popup>
+                            <Box>
+                                {shop.address && (
+                                    <Box sx={{ padding: '10px' }}>
+                                        <Typography variant='subtitle1'>
+                                            {shop.address}
+                                        </Typography>
+                                        <Typography variant='caption'>
+                                            {dictionary ? dictionary.map.shopsCount : '' }
+                                            {": "}
+                                             {shopsList.length}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                <Box>
+                                    <Button
+                                        onClick={() => openList(shopsList)}
+                                    >
+                                        {dictionary
+                                            ? dictionary.navigation
+                                                    .detailsButton
+                                            : ''}
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Popup>
+                    </Marker>       
+                )
+            }
+            else {
+                const shop = shopsList[0]
+                elements.push(
+                     <Marker
+                            position={[coord.lat, coord.lon]}
                             icon={markerIcon}
-                            key={`${shop.name}-${shop.amount}-${index}`}
+                            key={`${shop.name}-${shop.amount}-${index++}`}
                         >
                             <Popup>
                                 <Box>
@@ -140,8 +184,63 @@ export default function Map({ params }: Props) {
                                     </Box>
                                 </Box>
                             </Popup>
-                        </Marker>
-                    ))}
+                        </Marker>                
+                )
+            }
+        }
+        setPageElement(elements)
+    }
+
+    useEffect(() => {
+        shopsToPageElement(shops)
+    }, [shops])
+
+    function openDetails(shop: Shop) {
+        setSelectedShop(shop)
+        closeList()
+        mapRef.current?.closePopup()
+    }
+
+    function closeDetails() {
+        setSelectedShop(undefined)
+    }
+
+    function openList(shops: Shop[]) {
+        setSelectedList(shops)
+        closeDetails()
+        mapRef.current?.closePopup()
+    }
+
+    function closeList() {
+        setSelectedList(undefined)
+    }
+
+    const markerIcon: L.Icon = new L.Icon({
+        iconUrl: '../images/marker.png',
+        iconSize: [30, 30],
+    })
+
+    const position: L.LatLngExpression = [47.497913, 19.040236]
+    return (
+        <Box bgcolor='secondary.main' sx={{ height: `calc(100vh - ${config.headerHeight})`, display: 'flex' }}>
+            <Box
+                bgcolor='secondary.main'
+                sx={{ flex: { xs: selectedShop || selectedList ? '0' : '2', sm: '2' } }}
+            >
+                <MapContainer
+                    center={position}
+                    zoom={8}
+                    scrollWheelZoom={true}
+                    style={{ height: '100%', width: '100%' }}
+                    ref={mapRef}
+                >
+                    <TileLayer
+                        attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+                        url='https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=QLskrq94oAxIjpIUI8Pm'
+                    />
+                    { 
+                        pageElements.map((element) => element)
+                    }
                 </MapContainer>
             </Box>
             {selectedShop && (
@@ -231,6 +330,50 @@ export default function Map({ params }: Props) {
                     </Box>
                 </Box>
             )}
+            {selectedList && !selectedShop && (
+                <Box
+                    sx={{
+                        height: '100%',
+                        zIndex: '1000',
+                        flex: '1',
+                        boxShadow: 10,
+                        display: 'flex',
+                        overflowY: 'scroll',
+                    }}
+                >
+                    <List
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                        }}
+                    >
+                        {  selectedList.map((shop, index) => 
+                            <>
+                              <StyledListItem 
+                                key={index}
+                                onClick={() => setSelectedShop(shop)}
+                              >
+                                <ListItemText
+                                    sx={{ padding: '5% 10%' }}
+                                    primary={shop.name}
+                                    secondary={
+                                      <React.Fragment>
+                                        <Typography
+                                            variant='caption'
+                                            color={grey['800']}
+                                        >
+                                            { shop.name? shop.name : shop.requestor }
+                                        </Typography>
+                                     </React.Fragment>}
+                                />
+                              </StyledListItem>
+                              <Divider variant="inset" component="li" />
+                            </>
+                        )}
+                    </List>
+                </Box>
+                )
+            }
         </Box>
     )
 }
