@@ -34,7 +34,7 @@ export default function ProfilePhoto({
                     profilePhotoKey &&
                     (profilePhotoKey.key?.length ? (
                         <Image
-                            src={`../api/profile-photo/${profilePhotoKey.key}`}
+                            src={`/../api/profile-photo/${profilePhotoKey.key}`}
                             alt=''
                             width={width}
                             height={width}

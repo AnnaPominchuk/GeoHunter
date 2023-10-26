@@ -24,7 +24,7 @@ const WithAuth = <T extends Props>(
             if (currentPath !== `/${lang}/login`) {
                 redirect(`/${lang}/login`)
             }
-            return <Login params={{ lang: lang }} /> // TO DO: return null
+            return <Login params={{ lang: lang }} />
         }
 
         return <WrappedComponent {...props} />
@@ -58,7 +58,7 @@ const WithAuthComponent = <T extends PropsWithChildren<Props>>(
             if (currentPath !== `/${lang}/login`) {
                 redirect(`/${lang}/login`)
             }
-            return <Login params={{ lang: lang }} /> // TO DO: return null
+            return <Login params={{ lang: lang }} />
         }
 
         return <WrappedComponent {...props} />

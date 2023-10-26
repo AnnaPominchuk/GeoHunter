@@ -28,8 +28,9 @@ import RateReviewIcon from '@mui/icons-material/RateReview'
 
 import UserRole from '@/utils/UserRole'
 
+import config from '@/config/appconfig.json'
+
 const drawerWidth = 240
-const headerHeight = 64
 
 const openedMixin = (customTheme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -38,7 +39,7 @@ const openedMixin = (customTheme: Theme): CSSObject => ({
         duration: customTheme.transitions.duration.enteringScreen,
     }),
     overflowX: 'hidden',
-    marginTop: headerHeight,
+    marginTop: config.headerHeight,
 })
 
 const closedMixin = (customTheme: Theme): CSSObject => ({
@@ -51,7 +52,7 @@ const closedMixin = (customTheme: Theme): CSSObject => ({
     [customTheme.breakpoints.up('sm')]: {
         width: `calc(${customTheme.spacing(8)} + 1px)`,
     },
-    marginTop: headerHeight, // necessary for content to be below app bar
+    marginTop: config.headerHeight, // necessary for content to be below app bar
 })
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -128,7 +129,7 @@ const AdminMenu = ({ params, children }: PropsWithChildren<Props>) => {
     if (!session?.user?.roles?.includes(UserRole.ADMIN))
         return (
             <main>
-                <Box sx={{ marginTop: `${headerHeight}px` }}>
+                <Box sx={{ marginTop: `${config.headerHeight}` }}>
                     {children}
                 </Box>
             </main>

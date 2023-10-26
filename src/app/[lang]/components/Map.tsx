@@ -21,6 +21,8 @@ import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 import React from 'react'
 
+import config from '@/config/appconfig.json'
+
 const StyledButtonGroup = styled(ButtonGroup)({
     '& .MuiButtonGroup-grouped': {
         borderColor: 'white',
@@ -220,8 +222,7 @@ export default function MapLayout({ params }: Props) {
 
     const position: L.LatLngExpression = [47.497913, 19.040236]
     return (
-        // TO DO: sizing
-        <Box bgcolor='secondary.main' sx={{ height: 'calc(100vh - 64px)', display: 'flex' }}>
+        <Box bgcolor='secondary.main' sx={{ height: `calc(100vh - ${config.headerHeight})`, display: 'flex' }}>
             <Box
                 bgcolor='secondary.main'
                 sx={{ flex: { xs: selectedShop || selectedList ? '0' : '2', sm: '2' } }}
