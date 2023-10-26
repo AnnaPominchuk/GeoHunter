@@ -136,9 +136,9 @@ const ReviewPage = ({
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const valNumber = parseInt(e.target.value)
-        if (valNumber > 10) e.target.value = (10).toString()
-        if (valNumber < 1) e.target.value = (1).toString()
+        let valNumber = parseInt(e.target.value)
+        if (valNumber > 10) valNumber = 10
+        if (valNumber < 1) valNumber = 1
 
         setRate(valNumber)
     }
@@ -299,6 +299,7 @@ const ReviewPage = ({
                                     placeholder='Enter rating'
                                     onChange={handleChange}
                                     defaultValue={1}
+                                    value={rate}
                                     inputProps={{ min: 1, max: 10 }}
                                 />
                                 <Popup
