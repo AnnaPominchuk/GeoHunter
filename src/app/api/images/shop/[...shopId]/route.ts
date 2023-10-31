@@ -23,7 +23,7 @@ export const GET = async (
         return new NextResponse(JSON.stringify({ status: res.status, data }))
     } catch (error) {
         return new NextResponse(
-            JSON.stringify({ error: 'Faild to fetch', status: 500 })
+            JSON.stringify({ error: 'Failed to fetch', status: 500 })
         )
     }
 }

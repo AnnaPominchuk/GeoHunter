@@ -19,6 +19,7 @@ async function sendTokenToBackend(message: Message) {
     const body = {
         email: message.user.email,
         name: message.user.name,
+        auth0Id: message.profile?.id,
         photoURL: message.user.image,
     }
     return await fetch(url, {
