@@ -5,15 +5,6 @@ import { useState, useEffect } from 'react'
 import { ImageList, ImageListItem, Box } from '@mui/material'
 import FsLightbox from 'fslightbox-react'
 
-function srcset(image: string, size: number, rows = 1, cols = 1) {
-    return {
-        src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-        srcSet: `${image}?w=${size * cols}&h=${
-            size * rows
-        }&fit=crop&auto=format&dpr=2 2x`,
-    }
-}
-
 const imagePosition = [
     {
         rows: 2,
@@ -80,7 +71,7 @@ export default function Images(props: {
         <>
             {/* Images */}
             <ImageList
-                sx={{ width: 1, height: 1 / 2, marginBottom: '20px' }}
+                sx={{ width: 1, height: 350, marginBottom: '20px' }}
                 variant='quilted'
                 cols={4}
                 rowHeight={121}
@@ -109,10 +100,10 @@ export default function Images(props: {
                     <ImageListItem
                         key={'../../images/nopic.jpeg'}
                         cols={4}
-                        rows={2}
+                        rows={2.8}
                     >
                         <img
-                            {...srcset('../../images/nopic.jpeg', 100)}
+                            src='../../images/nopic.jpeg'
                             alt={'undifined'}
                             loading='lazy'
                         />
