@@ -262,8 +262,7 @@ const Profile = ({ params }: Props) => {
                     sx={{
                         marginTop: '50px',
                         marginX: { xs: '50px', sm: '50px', md: 0 },
-                        minWidth: 1 / 2,
-                        maxWidth: 2 / 3,
+                        width: 2/3,
                     }}
                     bgcolor='secondary.main'
                 >
