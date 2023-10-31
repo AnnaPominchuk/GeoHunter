@@ -268,7 +268,7 @@ export default function MapLayout({ params }: Props) {
                         <Typography
                             variant='h5'
                             color={grey['800']}
-                            sx={{ marginBottom: 1 }}
+                            sx={{ marginBottom: 1, marginTop: '20px' }}
                         >
                             {selectedShop.name}
                         </Typography>

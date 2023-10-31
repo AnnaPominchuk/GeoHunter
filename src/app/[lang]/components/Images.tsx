@@ -71,7 +71,7 @@ export default function Images(props: {
         <>
             {/* Images */}
             <ImageList
-                sx={{ width: 1, height: 350, marginBottom: '20px' }}
+                sx={{ width: 1, height: 350, margin: 0 }}
                 variant='quilted'
                 cols={4}
                 rowHeight={121}
