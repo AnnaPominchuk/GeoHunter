@@ -55,3 +55,7 @@
   overflow: "hidden";
   text-overflow: "ellipsis";
 }
+
+.img-fit {
+  object-fit: cover
+}

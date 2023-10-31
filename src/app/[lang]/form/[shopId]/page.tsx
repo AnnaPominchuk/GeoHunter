@@ -50,25 +50,22 @@ function ShopForm({ params }: Props) {
     }
 
     const handleMarkerDrag = async (event: L.DragEndEvent) => {
-        console.log(event)
-
         const newMarker = event.target
 
-        console.log({ newMarker: newMarker })
         const position = newMarker.getLatLng()
         newMarker.setLatLng(new L.LatLng(position.lat, position.lng), {
             draggable: 'true',
         })
         map.current?.panTo(new L.LatLng(position.lat, position.lng))
 
-        setMarker(newMarker)
+        marker.current = newMarker
 
         await updateAddress(position.lat, position.lng)
     }
 
     const updateMarker = (lat: number | null, lon: number | null) => {
-        if (marker) {
-            map.current?.removeLayer(marker)
+        if (marker.current) {
+            map.current?.removeLayer(marker.current)
         }
 
         if (lat != null && lon != null) {
@@ -79,9 +76,9 @@ function ShopForm({ params }: Props) {
             mar.on('dragend', handleMarkerDrag)
 
             map.current?.addLayer(mar)
-            setMarker(mar)
+            marker.current = mar
         } else {
-            setMarker(null)
+            marker.current = null
         }
     }
 
@@ -131,13 +128,13 @@ function ShopForm({ params }: Props) {
     const topRef = useRef<HTMLFormElement>(null)
 
     const [images, setImages] = useState<File[]>([])
-    const [marker, setMarker] = useState<L.Marker | null>(null)
     const [addressList, setAddressList] = useState<string[]>([])
     const [currentAddress, setCurrentAddress] = useState<string>('')
 
     const position: L.LatLngExpression = [47.497913, 19.040236]
 
     const map = useRef<L.Map>(null)
+    const marker = useRef<L.Marker | null>(null)
 
     const handleImagesChange = (newValue: File[]) => {
         setImages(newValue)
@@ -268,7 +265,6 @@ function ShopForm({ params }: Props) {
         )
 
         const resJson = await res.json()
-        console.log({ resJson: resJson })
         if (resJson.length) {
             setAddressList(
                 Array.from(
@@ -449,7 +445,7 @@ function ShopForm({ params }: Props) {
                                 !(
                                     dirtyFields.name &&
                                     dirtyFields.review &&
-                                    marker
+                                    marker.current
                                 )
                             }
                         >
