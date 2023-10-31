@@ -12,6 +12,7 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
+    Alert
 } from '@mui/material'
 
 import Dialog from '@mui/material/Dialog'
@@ -81,6 +82,7 @@ const ReviewPage = ({
 
     const { data: session } = useSession()
     const [review, setReview] = useState<Review | null>(null)
+    const [errorMsg, setErrorMsg] = useState<string>('')
     const [openDialog, setOpen] = useState(false)
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null)
     const [rate, setRate] = useState(1)
@@ -95,8 +97,13 @@ const ReviewPage = ({
             })
             const data = await res.json()
 
-            const r: Review = Convert.toReview(JSON.stringify(data.review))
-            setReview(r)
+            if (data.status == 200) {
+                const r: Review = Convert.toReview(JSON.stringify(data.review))
+                setReview(r)
+            }
+            else {
+                setErrorMsg(data.review.error)
+            }
         } catch (e) {
             console.error('Handle error', e)
         }
@@ -105,7 +112,7 @@ const ReviewPage = ({
     useEffect(() => {
         setIsAdmin(session?.user?.roles?.includes(UserRole.ADMIN) ?? false)
         getReview()
-    }, [session?.user?.roles, getReview])
+    }, [session?.user?.roles])
 
     const handleApprove = async (id: string) => {
         await fetch(`../../api/review/${id || ''}`, {
@@ -150,6 +157,11 @@ const ReviewPage = ({
     }
 
     return (
+        errorMsg ? 
+        <Alert severity="error">
+            {errorMsg}
+        </Alert>
+        :
         <Box
             sx={{
                 display: 'flex',

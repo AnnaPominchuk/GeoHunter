@@ -21,6 +21,6 @@ export const POST = async (req: NextRequest) => {
 
         return NextResponse.json({ body: res.body }, { status: res.status })
     } catch (error) {
-        return NextResponse.json({ error: 'Faild to fetch' }, { status: 500 })
+        return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 })
     }
 }

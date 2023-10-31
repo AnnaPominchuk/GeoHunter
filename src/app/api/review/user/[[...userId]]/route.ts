@@ -25,7 +25,7 @@ export const GET = async (
         )
     } catch (error) {
         return new NextResponse(
-            JSON.stringify({ error: 'Faild to fetch', status: 500 })
+            JSON.stringify({ error: 'Failed to fetch', status: 500 })
         )
     }
 }
