@@ -141,7 +141,7 @@ function ShopForm({ params }: Props) {
     }
 
     const onSubmit = async (data: FormValues) => {
-        await fetch(`../../../api/user/${session?.user?.email}`, {
+        await fetch(`../../../api/user/email/${session?.user?.email}`, {
             method: 'GET',
         })
             .then((res) => res.json())

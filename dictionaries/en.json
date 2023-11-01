@@ -22,6 +22,8 @@
         "rejectButton": "Reject",
         "cancelButton": "Cancel",
         "applyButton": "Apply",
+        "blockAuthor": "Block author",
+        "unblockAuthor": "Unblock author",
         "inReview": "In Review",
         "approved": "Approved",
         "rejected": "Rejected",
