@@ -74,7 +74,7 @@ export default function Images(props: {
                 sx={{ width: 1, height: 350, margin: 0 }}
                 variant='quilted'
                 cols={4}
-                rowHeight={121}
+                rowHeight={110}
             >
                 {imageData &&
                     imageData.map((item, index) => {
@@ -100,7 +100,7 @@ export default function Images(props: {
                     <ImageListItem
                         key={'../../images/nopic.jpeg'}
                         cols={4}
-                        rows={2.8}
+                        rows={3}
                     >
                         <img
                             src='../../images/nopic.jpeg'

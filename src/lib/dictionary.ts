@@ -89,6 +89,8 @@ interface Reviews {
     rejectButton: string
     cancelButton: string
     applyButton: string
+    blockAuthor: string
+    unblockAuthor: string
     inReview: string
     approved: string
     rejected: string

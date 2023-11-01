@@ -68,7 +68,7 @@ function transform(
             try {
                 return transform(val, typ, getProps, typeMap)
             } catch (err) {
-                console.log(err)
+            //    console.log(err)
             }
         }
         return invalidValue(typs, val, key, parent)

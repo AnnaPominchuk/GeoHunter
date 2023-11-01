@@ -15,13 +15,14 @@ import { cast, uncast, o, u, r, a } from '@/model/Converter'
 export interface User {
     _id: string
     email: string
-    auth0Id: string
+    authId: string
     name: string
     rating: number
     useGooglePhoto: boolean
     profilePhotoKey: string
     profilePhotoURL: string
     roles: UserRole[]
+    blocked: boolean
 }
 
 const typeMap: any = {
@@ -29,7 +30,7 @@ const typeMap: any = {
         [
             { json: '_id', js: '_id', typ: '' },
             { json: 'email', js: 'email', typ: '' },
-            { json: 'auth0Id', js: 'auth0Id', typ: '' },
+            { json: 'authId', js: 'authId', typ: '' },
             { json: 'name', js: 'name', typ: '' },
             { json: 'rating', js: 'rating', typ: 0 },
             { json: 'useGooglePhoto', js: 'useGooglePhoto', typ: true },
@@ -44,6 +45,7 @@ const typeMap: any = {
                 typ: u(undefined, ''),
             },
             { json: 'roles', js: 'roles', typ: a('') },
+            { json: 'blocked', js: 'blocked', typ: true },
         ],
         0
     ),

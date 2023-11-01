@@ -22,6 +22,8 @@
         "rejectButton": "Visszautasítás",
         "cancelButton": "Mégsem",
         "applyButton": "Alkalmaz",
+        "blockAuthor": "Block author",
+        "unblockAuthor": "Unblock author",
         "inReview": "Felülvizsgálat alatt",
         "approved": "Jóváhagyva",
         "rejected": "Elutasítva",

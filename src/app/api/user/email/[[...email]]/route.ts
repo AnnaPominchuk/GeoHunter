@@ -8,7 +8,7 @@ export const GET = async (
     try {
         const headers = await getSessionHeader(req)
         headers.set('Content-Type', 'application/json')
-        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${
+        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/email/${
             params.email || ''
         }`
 
@@ -37,13 +37,11 @@ export const PATCH = async (
     try {
         const headers = await getSessionHeader(req)
         headers.set('Content-Type', 'application/json')
-        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${
+        const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/email/${
             params.email || ''
         }`
 
         const body = await req.json()
-
-        console.log({ body: body })
 
         const obj = {
             method: 'PATCH',

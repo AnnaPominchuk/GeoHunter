@@ -62,7 +62,7 @@ const Profile = ({ params }: Props) => {
     const handleProfilePhotoChange = async (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        await fetch(`../api/user/${session?.user?.email}`, {
+        await fetch(`../api/user/email/${session?.user?.email}`, {
             method: 'GET',
         })
             .then((res) => res.json())
@@ -97,7 +97,7 @@ const Profile = ({ params }: Props) => {
         async function getUser() {
             try {
                 const resUser = await fetch(
-                    `../api/user/${session?.user?.email}`,
+                    `../api/user/email/${session?.user?.email}`,
                     {
                         method: 'GET',
                     }
@@ -127,7 +127,7 @@ const Profile = ({ params }: Props) => {
     }
 
     const handleNameChange = async () => {
-        await fetch(`../api/user/${session?.user?.email}`, {
+        await fetch(`../api/user/email/${session?.user?.email}`, {
             method: 'PATCH',
             body: JSON.stringify({ name: textInput }),
         })
@@ -135,7 +135,7 @@ const Profile = ({ params }: Props) => {
             .then((users) => {
                 if (users.status != 200) return Promise.reject('No users found')
 
-                return fetch(`../api/user/${session?.user?.email}`, {
+                return fetch(`../api/user/email/${session?.user?.email}`, {
                     method: 'GET',
                 })
             })

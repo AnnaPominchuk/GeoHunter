@@ -12,7 +12,8 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
-    Alert
+    Alert,
+    ButtonGroup
 } from '@mui/material'
 
 import Dialog from '@mui/material/Dialog'
@@ -32,6 +33,8 @@ import {
     ReviewStatus,
     ReviewStatusConvert,
 } from '@/model/Review'
+
+import {User, Convert as UserConvert} from '@/model/User'
 import UserRole from '@/utils/UserRole'
 
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
@@ -89,6 +92,7 @@ const ReviewPage = ({
     const [saveAddress, setSaveAddress] = useState<boolean>(true)
     const openHint = Boolean(hintAnchor)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
+    const [author, setAuthor] = useState<User|null>(null)
 
     async function getReview() {
         try {
@@ -127,6 +131,31 @@ const ReviewPage = ({
         setOpen(false)
     }
 
+    async function getUser() {
+        try {
+            if (!review) return
+                     
+            const resUser = await fetch(
+                `../../api/user/${review.userId || ''}`,
+                {
+                    method: 'GET',
+                }
+            )
+
+            const users = await resUser.json()
+
+            const user:User = UserConvert.toUser(
+                JSON.stringify(users.data.users)
+            )
+
+            if (users.status == 200) setAuthor(user)
+        } catch (e) {
+            console.error('Handle error', e)
+        }
+    }
+
+    useEffect(() => { getUser() }, [review])
+
     const handleReject = async (id: string) => {
         await fetch(`../../api/review/${id || ''}`, {
             method: 'PATCH',
@@ -154,6 +183,14 @@ const ReviewPage = ({
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setSaveAddress(event.target.checked)
+    }
+
+    const handleBlockAuthor = async (blocked: boolean) => {
+        await fetch(`../../api/user/block/${review?.userId || ''}`, {
+            method: 'PATCH',
+            body: JSON.stringify({blocked: blocked})
+        })
+        .then(() => getUser())
     }
 
     return (
@@ -247,41 +284,79 @@ const ReviewPage = ({
                         {isAdmin && (
                             <Stack
                                 direction='row'
-                                spacing={2}
-                                sx={{ marginTop: '30px', marginBottom: '30px' }}
-                                justifyContent={'flex-end'}
+                                sx={{ marginTop: '30px', marginBottom: '30px', justifyContent: 'space-between' }}
                             >
-                                {review.status != 'Rejected' && (
-                                    <Button
-                                        size='small'
-                                        aria-label='fingerprint'
-                                        color='primary'
-                                        startIcon={<BlockIcon />}
-                                        onClick={() =>
-                                            handleReject(review?._id)
-                                        }
-                                        variant='outlined'
-                                    >
-                                        {dictionary
-                                            ? dictionary.reviews.rejectButton
-                                            : ''}
-                                    </Button>
-                                )}
-                                {review.status != 'Approved' && (
+                                <Stack>
+                                  { author?.blocked ? 
                                     <Button
                                         size='small'
                                         component='label'
-                                        variant='contained'
+                                        variant='text'
                                         aria-label='fingerprint'
-                                        color='primary'
-                                        startIcon={<CheckCircleIcon />}
-                                        onClick={handleClickOpen}
+                                        color='error'
+                                        onClick={() => handleBlockAuthor(false)}
                                     >
                                         {dictionary
-                                            ? dictionary.reviews.approveButton
-                                            : ''}
+                                            ? dictionary.reviews.unblockAuthor
+                                            : ''
+                                        }
                                     </Button>
-                                )}
+                                    :
+                                    <Button
+                                        size='small'
+                                        component='label'
+                                        variant='text'
+                                        aria-label='fingerprint'
+                                        color='error'
+                                        onClick={() => handleBlockAuthor(true)}
+                                    >
+                                        {dictionary
+                                            ? dictionary.reviews.blockAuthor
+                                            : ''
+                                        }
+                                    </Button>
+                                }
+                                </Stack>
+
+                                <Stack
+                                    direction='row'
+                                    spacing={2}
+                                    sx={{justifyContent: 'flex-end'}} 
+                                >
+                                    {review.status != 'Rejected' && (
+                                        <Button
+                                            size='small'
+                                            aria-label='fingerprint'
+                                            color='primary'
+                                            startIcon={<BlockIcon />}
+                                            onClick={() =>
+                                                handleReject(review?._id)
+                                            }
+                                            variant='outlined'
+                                        >
+                                            {dictionary
+                                                ? dictionary.reviews.rejectButton
+                                                : ''
+                                            }
+                                        </Button>
+                                    )}
+                                    {review.status != 'Approved' && (
+                                        <Button
+                                            size='small'
+                                            component='label'
+                                            variant='contained'
+                                            aria-label='fingerprint'
+                                            color='primary'
+                                            startIcon={<CheckCircleIcon />}
+                                            onClick={handleClickOpen}
+                                        >
+                                            {dictionary
+                                                ? dictionary.reviews.approveButton
+                                                : ''
+                                            }
+                                        </Button>
+                                    )}
+                                </Stack>
                             </Stack>
                         )}
 
