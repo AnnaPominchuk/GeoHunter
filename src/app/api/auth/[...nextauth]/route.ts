@@ -30,7 +30,7 @@ async function sendTokenToBackend(message: Message) {
 }
 
 async function patchUser(token: string, email: string, roles: string[]) {
-    const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/${email}`
+    const url = `${process.env.NEXT_PUBLIC_DEV_URL}/user/email/${email}`
     const headers = new Headers({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
