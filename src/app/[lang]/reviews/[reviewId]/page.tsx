@@ -13,9 +13,8 @@ import {
     Checkbox,
     FormControlLabel,
     Alert,
-    ButtonGroup,
 } from '@mui/material'
-
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -257,6 +256,25 @@ const ReviewPage = ({
                                 </Typography>
                             )}
 
+                            <Stack direction='row'>
+                                <PriorityHighIcon
+                                    color='error'
+                                    sx={{ marginTop: '20px' }}
+                                />
+                                <Typography
+                                    color={grey['700']}
+                                    sx={{ marginTop: '20px' }}
+                                >
+                                    {dictionary
+                                        ? review.hasSupportBoard == true
+                                            ? dictionary.reviews
+                                                  .supportBoardPresentText
+                                            : dictionary.reviews
+                                                  .noSupportBoardText
+                                        : ''}
+                                </Typography>
+                            </Stack>
+
                             <Typography
                                 color={grey['700']}
                                 sx={{ marginTop: '20px' }}
@@ -281,7 +299,7 @@ const ReviewPage = ({
                                 overflow: 'auto',
                             }}
                         >
-                            <Stack sx={{ maxWidth: 2 / 3 }}>
+                            <Stack sx={{ width: 2 / 3 }}>
                                 <Images reviewId={review?._id} shopId={null} />
                             </Stack>
                         </Stack>

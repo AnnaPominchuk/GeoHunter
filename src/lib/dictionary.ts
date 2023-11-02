@@ -45,6 +45,14 @@ interface Form {
     cancel: string
     review: string
     backendError: string
+    dropDownOption1: string
+    dropDownOption2: string
+    dropDownOption3: string
+    overallRating: string
+    hasSupportBoadrText: string
+    provideSBPhotoText: string
+    provideMorePhotosText: string
+    address: string
 }
 
 interface Login {
@@ -58,8 +66,11 @@ interface Login {
 interface Map {
     uploadInfoButton: string
     requestor: string
-    address: string,
+    address: string
     shopsCount: string
+    supportBoardPresentText: string
+    noSupportBoardText: string
+    noInfoAboutSB: string
 }
 
 interface Navigation {
@@ -75,7 +86,7 @@ interface Navigation {
 
 interface Profile {
     uploadPhotobButton: string
-    myReviews: string,
+    myReviews: string
     rating: string
 }
 
@@ -100,6 +111,8 @@ interface Reviews {
     rateReview: string
     saveAddress: string
     hint: string
+    supportBoardPresentText: string
+    noSupportBoardText: string
 }
 
 export class ConvertDictionary {

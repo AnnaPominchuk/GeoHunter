@@ -14,7 +14,10 @@
         "uploadInfoButton": "Információ feltöltése",
         "requestor": "Kérelmező",
         "address": "Lakcim",
-        "shopsCount": "Number of objects located here"
+        "shopsCount": "Number of objects located here",
+        "supportBoardPresentText": "The shop has varified supporting board",
+        "noSupportBoardText": "Users claim there is no visible support board",
+        "noInfoAboutSB": "No information about supporting board"
     },
     "reviews": {
         "reviewsCaption": "Vélemények",
@@ -32,7 +35,9 @@
         "reviewDetails": "Vélemények áttekintése",
         "rateReview": "Kérlek értékeld a véleményt",
         "saveAddress": "Cím mentése",
-        "hint": "A felugró ablak tartalma"
+        "hint": "A felugró ablak tartalma",
+        "supportBoardPresentText": "A felhasználó azt állítja, hogy az üzletnek van támogatói táblája",
+        "noSupportBoardText": "A felhasználó azt állítja, hogy az üzletnek nincs látható támogatói táblája"
     },
     "rating": {
         "leaderboard": "leaderboard"
@@ -41,7 +46,15 @@
         "submittedMessage": "Az űrlap sikeresen elküldésre került",
         "save": "Mentés",
         "cancel": "Mégsem",
-        "review": "Áttekintés"
+        "review": "Áttekintés",
+        "dropDownOption1": "Minden rendben",
+        "dropDownOption2": "Gyanús",
+        "dropDownOption3": "Biztosan problémás",
+        "overallRating": "Összegző értékelés",
+        "hasSupportBoadrText": "Van látható, kihelyezett támogatói tábla?",
+        "provideSBPhotoText": "Kérlek tölts fel egy képet a támogató tábláról",
+        "provideMorePhotosText": "Kérlek tölts fel több képet a boltról",
+        "address": "Lakcim"
     },
     "login": {
         "appName": "GeoHunter",
