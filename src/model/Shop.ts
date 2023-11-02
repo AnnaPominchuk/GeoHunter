@@ -22,6 +22,7 @@ export interface Shop {
     requestor: string
     t_id?: number
     _id: string
+    hasSupportBoard: boolean
 }
 
 const typeMap: any = {
@@ -37,6 +38,11 @@ const typeMap: any = {
             { json: 'requestor', js: 'requestor', typ: '' },
             { json: 't_id', js: 't_id', typ: u(0, undefined) },
             { json: '_id', js: '_id', typ: '' },
+            {
+                json: 'hasSupportBoard',
+                js: 'hasSupportBoard',
+                typ: u(undefined, true),
+            },
         ],
         'any'
     ),

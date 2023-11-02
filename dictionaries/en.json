@@ -15,7 +15,7 @@
         "requestor": "Requestor",
         "address": "Address",
         "shopsCount": "Number of objects located here",
-        "supportBoardPresentText": "The shop has varified supporting board",
+        "supportBoardPresentText": "The shop has verified supporting board",
         "noSupportBoardText": "Users claim there is no visible support board",
         "noInfoAboutSB": "No information about supporting board"
     },

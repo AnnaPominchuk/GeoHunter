@@ -15,9 +15,9 @@
         "requestor": "Kérelmező",
         "address": "Lakcim",
         "shopsCount": "Number of objects located here",
-        "supportBoardPresentText": "The shop has varified supporting board",
-        "noSupportBoardText": "Users claim there is no visible support board",
-        "noInfoAboutSB": "No information about supporting board"
+        "supportBoardPresentText": "A bolt rendelkezik hiteles támogatói táblával",
+        "noSupportBoardText": "A felhasználók visszajelzése alapján nincs látható támogatói tábla",
+        "noInfoAboutSB": "Nincs hinformáció a támogatói táblára vonatkozóan"
     },
     "reviews": {
         "reviewsCaption": "Vélemények",

@@ -20,6 +20,7 @@ import {
     Stack,
 } from '@mui/material'
 import VerifiedIcon from '@mui/icons-material/Verified'
+import ErrorIcon from '@mui/icons-material/Error'
 import { useRouter } from 'next/navigation'
 import { Props } from '@/utils/Props'
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
@@ -230,6 +231,16 @@ export default function MapLayout({ params }: Props) {
         iconSize: [30, 30],
     })
 
+    function getSupportBoardText() {
+        return dictionary
+            ? selectedShop?.hasSupportBoard == undefined
+                ? dictionary.map.noInfoAboutSB
+                : selectedShop?.hasSupportBoard
+                ? dictionary.map.supportBoardPresentText
+                : dictionary.map.noSupportBoardText
+            : ''
+    }
+
     const position: L.LatLngExpression = [47.497913, 19.040236]
     return (
         <Box
@@ -303,14 +314,24 @@ export default function MapLayout({ params }: Props) {
                             alignItems={'center'}
                         >
                             <Typography color={grey['700']} variant='subtitle2'>
-                                The shop has varified supporting board
+                                {getSupportBoardText()}
                             </Typography>
-                            <VerifiedIcon
-                                sx={{
-                                    color: yellow[800],
-                                    fontSize: 'large',
-                                }}
-                            />
+                            {selectedShop.hasSupportBoard && (
+                                <VerifiedIcon
+                                    sx={{
+                                        color: yellow[800],
+                                        fontSize: 'large',
+                                    }}
+                                />
+                            )}
+                            {!selectedShop.hasSupportBoard && (
+                                <ErrorIcon
+                                    color='error'
+                                    sx={{
+                                        fontSize: 'large',
+                                    }}
+                                />
+                            )}
                         </Stack>
                         <Typography
                             variant='subtitle1'
