@@ -9,7 +9,7 @@ import {
     Box,
     Autocomplete,
 } from '@mui/material'
-import { WithAuth } from '@/components/withAuth'
+import { WithAuthActivist } from '@/components/withAuth'
 import { Props } from '@/utils/Props'
 import { useForm, FieldErrors } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
@@ -452,7 +452,11 @@ function ShopForm({ params }: Props) {
                             {dictionary ? dictionary.form.save : ''}
                         </Button>
 
-                        <Button id='submitbtn' type='submit' sx={{display:"none"}}></Button>
+                        <Button
+                            id='submitbtn'
+                            type='submit'
+                            sx={{ display: 'none' }}
+                        ></Button>
 
                         <Button
                             variant='contained'
@@ -468,5 +472,5 @@ function ShopForm({ params }: Props) {
     )
 }
 
-const Form = WithAuth(ShopForm)
+const Form = WithAuthActivist(ShopForm)
 export default Form

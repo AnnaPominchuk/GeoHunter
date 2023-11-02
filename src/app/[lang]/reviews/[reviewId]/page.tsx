@@ -13,7 +13,7 @@ import {
     Checkbox,
     FormControlLabel,
     Alert,
-    ButtonGroup
+    ButtonGroup,
 } from '@mui/material'
 
 import Dialog from '@mui/material/Dialog'
@@ -34,7 +34,7 @@ import {
     ReviewStatusConvert,
 } from '@/model/Review'
 
-import {User, Convert as UserConvert} from '@/model/User'
+import { User, Convert as UserConvert } from '@/model/User'
 import UserRole from '@/utils/UserRole'
 
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
@@ -92,7 +92,7 @@ const ReviewPage = ({
     const [saveAddress, setSaveAddress] = useState<boolean>(true)
     const openHint = Boolean(hintAnchor)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
-    const [author, setAuthor] = useState<User|null>(null)
+    const [author, setAuthor] = useState<User | null>(null)
 
     async function getReview() {
         try {
@@ -104,8 +104,7 @@ const ReviewPage = ({
             if (data.status == 200) {
                 const r: Review = Convert.toReview(JSON.stringify(data.review))
                 setReview(r)
-            }
-            else {
+            } else {
                 setErrorMsg(data.review.error)
             }
         } catch (e) {
@@ -134,7 +133,7 @@ const ReviewPage = ({
     async function getUser() {
         try {
             if (!review) return
-                     
+
             const resUser = await fetch(
                 `../../api/user/${review.userId || ''}`,
                 {
@@ -144,7 +143,7 @@ const ReviewPage = ({
 
             const users = await resUser.json()
 
-            const user:User = UserConvert.toUser(
+            const user: User = UserConvert.toUser(
                 JSON.stringify(users.data.users)
             )
 
@@ -154,7 +153,9 @@ const ReviewPage = ({
         }
     }
 
-    useEffect(() => { getUser() }, [review])
+    useEffect(() => {
+        getUser()
+    }, [review])
 
     const handleReject = async (id: string) => {
         await fetch(`../../api/review/${id || ''}`, {
@@ -188,17 +189,13 @@ const ReviewPage = ({
     const handleBlockAuthor = async (blocked: boolean) => {
         await fetch(`../../api/user/block/${review?.userId || ''}`, {
             method: 'PATCH',
-            body: JSON.stringify({blocked: blocked})
-        })
-        .then(() => getUser())
+            body: JSON.stringify({ blocked: blocked }),
+        }).then(() => getUser())
     }
 
-    return (
-        errorMsg ? 
-        <Alert severity="error">
-            {errorMsg}
-        </Alert>
-        :
+    return errorMsg ? (
+        <Alert severity='error'>{errorMsg}</Alert>
+    ) : (
         <Box
             sx={{
                 display: 'flex',
@@ -235,7 +232,10 @@ const ReviewPage = ({
                             <Typography
                                 variant='h6'
                                 color={grey['800']}
-                                sx={{ marginBottom: '2px', wordWrap: "break-word" }}
+                                sx={{
+                                    marginBottom: '2px',
+                                    wordWrap: 'break-word',
+                                }}
                             >
                                 {review?.name}
                             </Typography>
@@ -263,7 +263,12 @@ const ReviewPage = ({
                             >
                                 {review?.address}
                             </Typography>
-                            <Typography sx={{ marginTop: '5px', wordWrap: "break-word" }}>
+                            <Typography
+                                sx={{
+                                    marginTop: '5px',
+                                    wordWrap: 'break-word',
+                                }}
+                            >
                                 {review?.review}
                             </Typography>
                         </Stack>
@@ -284,44 +289,51 @@ const ReviewPage = ({
                         {isAdmin && (
                             <Stack
                                 direction='row'
-                                sx={{ marginTop: '30px', marginBottom: '30px', justifyContent: 'space-between' }}
+                                sx={{
+                                    marginTop: '30px',
+                                    marginBottom: '30px',
+                                    justifyContent: 'space-between',
+                                }}
                             >
                                 <Stack>
-                                  { author?.blocked ? 
-                                    <Button
-                                        size='small'
-                                        component='label'
-                                        variant='text'
-                                        aria-label='fingerprint'
-                                        color='error'
-                                        onClick={() => handleBlockAuthor(false)}
-                                    >
-                                        {dictionary
-                                            ? dictionary.reviews.unblockAuthor
-                                            : ''
-                                        }
-                                    </Button>
-                                    :
-                                    <Button
-                                        size='small'
-                                        component='label'
-                                        variant='text'
-                                        aria-label='fingerprint'
-                                        color='error'
-                                        onClick={() => handleBlockAuthor(true)}
-                                    >
-                                        {dictionary
-                                            ? dictionary.reviews.blockAuthor
-                                            : ''
-                                        }
-                                    </Button>
-                                }
+                                    {author?.blocked ? (
+                                        <Button
+                                            size='small'
+                                            component='label'
+                                            variant='text'
+                                            aria-label='fingerprint'
+                                            color='error'
+                                            onClick={() =>
+                                                handleBlockAuthor(false)
+                                            }
+                                        >
+                                            {dictionary
+                                                ? dictionary.reviews
+                                                      .unblockAuthor
+                                                : ''}
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            size='small'
+                                            component='label'
+                                            variant='text'
+                                            aria-label='fingerprint'
+                                            color='error'
+                                            onClick={() =>
+                                                handleBlockAuthor(true)
+                                            }
+                                        >
+                                            {dictionary
+                                                ? dictionary.reviews.blockAuthor
+                                                : ''}
+                                        </Button>
+                                    )}
                                 </Stack>
 
                                 <Stack
                                     direction='row'
                                     spacing={2}
-                                    sx={{justifyContent: 'flex-end'}} 
+                                    sx={{ justifyContent: 'flex-end' }}
                                 >
                                     {review.status != 'Rejected' && (
                                         <Button
@@ -335,9 +347,9 @@ const ReviewPage = ({
                                             variant='outlined'
                                         >
                                             {dictionary
-                                                ? dictionary.reviews.rejectButton
-                                                : ''
-                                            }
+                                                ? dictionary.reviews
+                                                      .rejectButton
+                                                : ''}
                                         </Button>
                                     )}
                                     {review.status != 'Approved' && (
@@ -351,9 +363,9 @@ const ReviewPage = ({
                                             onClick={handleClickOpen}
                                         >
                                             {dictionary
-                                                ? dictionary.reviews.approveButton
-                                                : ''
-                                            }
+                                                ? dictionary.reviews
+                                                      .approveButton
+                                                : ''}
                                         </Button>
                                     )}
                                 </Stack>

@@ -89,4 +89,28 @@ const WithAuthAdmin = <T extends Props>(
     }
 }
 
-export { WithAuth, WithAuthAdmin, WithAuthComponent }
+const WithAuthActivist = <T extends Props>(
+    WrappedComponent: React.ComponentType<T>
+) => {
+    return function WithAuthAdmin(props: T) {
+        const lang: Locale = props.params.lang
+        const { data: session } = useSession()
+        const currentPath = usePathname()
+
+        if (!session) {
+            console.log('no session ')
+            if (currentPath !== `/${lang}/login`) {
+                redirect(`/${lang}/login`)
+            }
+            return <Login params={{ lang: lang }} />
+        }
+
+        if (!session?.user?.roles?.includes(UserRole.ACTIVIST)) {
+            return <Login params={{ lang: lang }} />
+        }
+
+        return <WrappedComponent {...props} />
+    }
+}
+
+export { WithAuth, WithAuthAdmin, WithAuthComponent, WithAuthActivist }
