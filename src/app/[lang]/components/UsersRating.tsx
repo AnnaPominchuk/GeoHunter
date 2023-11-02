@@ -40,7 +40,7 @@ const UsersRating = ({ params }: Props) => {
 
     useEffect(() => {
         async function geUsers() {
-            const res = await fetch('../api/user', {
+            const res = await fetch('../api/user/email', {
                 method: 'GET',
             })
 
@@ -49,9 +49,7 @@ const UsersRating = ({ params }: Props) => {
             if (obj.status == 200) {
                 const usersList: User[] = []
                 for (const userData of obj.data.users) {
-                    const user: User = Convert.toUser(
-                        JSON.stringify(userData)
-                    )
+                    const user: User = Convert.toUser(JSON.stringify(userData))
                     usersList.push(user)
                 }
 
@@ -115,7 +113,7 @@ const UsersRating = ({ params }: Props) => {
                                             params={{
                                                 user: user,
                                                 updProfilePhotoKey: null,
-                                                width: 50
+                                                width: 50,
                                             }}
                                         />
                                     </div>
