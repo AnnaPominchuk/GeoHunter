@@ -9,7 +9,7 @@
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-import {cast, uncast, o, u, r, a} from '@/model/Converter'
+import { cast, uncast, o, u, r, a } from '@/model/Converter'
 
 export enum ReviewStatus {
     InReview = 'InReview',
@@ -17,11 +17,17 @@ export enum ReviewStatus {
     Rejected = 'Rejected',
 }
 
+export enum OverallRating {
+    Fine = 'Fine',
+    MaybeSuspicious = 'MaybeSuspicious',
+    ObviouslySuspicious = 'ObviouslySuspicious',
+}
+
 export interface Review {
     name: string
     latitude?: number
     longitude?: number
-    review: string
+    review?: string
     shopId: string
     userId: string
     status: ReviewStatus
@@ -29,6 +35,8 @@ export interface Review {
     _id: string
     rating: number
     address: string
+    overallRating: OverallRating
+    hasSupportBoard: boolean
 }
 
 const typeMap: any = {
@@ -37,7 +45,7 @@ const typeMap: any = {
             { json: 'name', js: 'name', typ: '' },
             { json: 'latitude', js: 'latitude', typ: u(null, 0) },
             { json: 'longitude', js: 'longitude', typ: u(null, 0) },
-            { json: 'review', js: 'review', typ: '' },
+            { json: 'review', js: 'review', typ: u(undefined, '') },
             { json: 'shopId', js: 'shopId', typ: '' },
             { json: 'userId', js: 'userId', typ: '' },
             { json: 'status', js: 'status', typ: '' },
@@ -45,7 +53,14 @@ const typeMap: any = {
             { json: '_id', js: '_id', typ: '' },
             { json: 'rating', js: 'rating', typ: u(null, undefined, 0) },
             { json: 'address', js: 'address', typ: u(undefined, '') },
-        ], 0
+            { json: 'overallRating', js: 'overallRating', typ: '' },
+            {
+                json: 'hasSupportBoard',
+                js: 'hasSupportBoard',
+                typ: u(undefined, true),
+            },
+        ],
+        0
     ),
 }
 

@@ -14,7 +14,10 @@
         "uploadInfoButton": "Upload info",
         "requestor": "Requestor",
         "address": "Address",
-        "shopsCount": "Number of objects located here"
+        "shopsCount": "Number of objects located here",
+        "supportBoardPresentText": "The shop has verified supporting board",
+        "noSupportBoardText": "Users claim there is no visible support board",
+        "noInfoAboutSB": "No information about supporting board"
     },
     "reviews": {
         "reviewsCaption": "Reviews",
@@ -32,7 +35,9 @@
         "reviewDetails": "Review details",
         "rateReview": "Please rate this review ",
         "saveAddress": "Save address",
-        "hint": "The content of the Popup"
+        "hint": "The content of the Popup",
+        "supportBoardPresentText": "User claims the shop has a support board",
+        "noSupportBoardText": "User claims there is no visible support board"
     },
     "rating": {
         "leaderboard": "leaderboard"
@@ -42,7 +47,15 @@
         "save": "Save",
         "cancel": "Cancel",
         "review": "Review",
-        "backendError": "Internal server error. Try again later"
+        "backendError": "Internal server error. Try again later",
+        "dropDownOption1": "Everything is fine",
+        "dropDownOption2": "Maybe suspicious",
+        "dropDownOption3": "Obviously suspicious",
+        "overallRating": "Overall rating",
+        "hasSupportBoadrText": "Does the shop have any visible support board?",
+        "provideSBPhotoText": "Please provide a supporting board photo",
+        "provideMorePhotosText": "Please provide more photos of the shop",
+        "address": "Address"
     },
     "login": {
         "appName": "GeoHunter",

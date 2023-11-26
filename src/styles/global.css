@@ -4,11 +4,11 @@
 }
 
 .bg-login {
-    background: linear-gradient(to top, #342456, #6E4CB5);
+    background: linear-gradient(to top, #342456, #6e4cb5);
 }
 
-.img-bg{
-    z-index:1;
+.img-bg {
+    z-index: 1;
 }
 
 .logo {
@@ -16,46 +16,49 @@
 }
 
 @media only screen and (max-width: 900px) {
-  .small-hidden{
-    display: none;
-  }
+    .small-hidden {
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 600px) {
-  .xs-hidden{
-    display: none;
-  }
+    .xs-hidden {
+        display: none;
+    }
 }
 
 .fslightbox-full-dimension {
-  margin: 10px !important;
+    margin-top: 10px !important;
 }
 
 .fslightbox-container {
-    background: linear-gradient(rgba(68, 60, 76, 0.9),#8173a9 1810%) !important;
+    background: linear-gradient(
+        rgba(68, 60, 76, 0.9),
+        #8173a9 1810%
+    ) !important;
     z-index: 0 !important;
 }
 
 #hint {
-  z-index: 100000;
+    z-index: 100000;
 }
 
 .fadding-text {
-  background: -webkit-linear-gradient(bottom, #eee, #707070, #707070);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  overflow: "hidden";
-  text-overflow: "ellipsis";
+    background: -webkit-linear-gradient(bottom, #eee, #707070, #707070);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: 'hidden';
+    text-overflow: 'ellipsis';
 }
 
 .fadding-text-h {
-  background: -webkit-linear-gradient(right, #eee, #707070, #707070);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  overflow: "hidden";
-  text-overflow: "ellipsis";
+    background: -webkit-linear-gradient(right, #eee, #707070, #707070);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: 'hidden';
+    text-overflow: 'ellipsis';
 }
 
 .img-fit {
-  object-fit: cover
+    object-fit: cover;
 }
