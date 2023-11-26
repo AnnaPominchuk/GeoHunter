@@ -16,6 +16,7 @@
         "address": "Address",
         "shopsCount": "Number of objects located here",
         "supportBoardPresentText": "The shop has verified supporting board",
+        "openingHoursPresentText": "The shop has the opening hours board",
         "noSupportBoardText": "Users claim there is no visible support board",
         "noInfoAboutSB": "No information about supporting board"
     },
@@ -35,8 +36,11 @@
         "reviewDetails": "Review details",
         "rateReview": "Please rate this review ",
         "saveAddress": "Save address",
+        "saveOverallRating": "Save overall rating",
+        "overallRating": "Overall shop rating is ",
         "hint": "The content of the Popup",
         "supportBoardPresentText": "User claims the shop has a support board",
+        "openingHoursPresentText": "User claims the review has an opening hours board uploaded",
         "noSupportBoardText": "User claims there is no visible support board"
     },
     "rating": {
@@ -54,6 +58,8 @@
         "overallRating": "Overall rating",
         "hasSupportBoadrText": "Does the shop have any visible support board?",
         "provideSBPhotoText": "Please provide a supporting board photo",
+        "hasOpenHoursText": "Does the shop have an opening hours board?",
+        "provideOpenHoursPhotoText": "Please provide an opening hours board photo",
         "provideMorePhotosText": "Please provide more photos of the shop",
         "address": "Address"
     },

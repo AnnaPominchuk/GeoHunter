@@ -21,6 +21,8 @@ import {
 } from '@mui/material'
 import VerifiedIcon from '@mui/icons-material/Verified'
 import ErrorIcon from '@mui/icons-material/Error'
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+
 import { useRouter } from 'next/navigation'
 import { Props } from '@/utils/Props'
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
@@ -161,7 +163,7 @@ export default function MapLayout({ params }: Props) {
                 elements.push(
                     <Marker
                         position={[coord.lat, coord.lon]}
-                        icon={markerIcon}
+                        icon={shop.overallRating.includes('Suspicious') ? suspiciousMarkerIcon : markerIcon}
                         key={`${shop.name}-${shop.amount}-${index++}`}
                     >
                         <Popup>
@@ -231,6 +233,11 @@ export default function MapLayout({ params }: Props) {
         iconSize: [30, 30],
     })
 
+    const suspiciousMarkerIcon: L.Icon = new L.Icon({
+        iconUrl: '../images/susp_marker.png',
+        iconSize: [30, 30],
+    })
+
     function getSupportBoardText() {
         return dictionary
             ? selectedShop?.hasSupportBoard == undefined
@@ -238,6 +245,12 @@ export default function MapLayout({ params }: Props) {
                 : selectedShop?.hasSupportBoard
                 ? dictionary.map.supportBoardPresentText
                 : dictionary.map.noSupportBoardText
+            : ''
+    }
+
+    function getOpeningHoursText() {
+        return dictionary
+            ? dictionary.map.openingHoursPresentText
             : ''
     }
 
@@ -308,9 +321,6 @@ export default function MapLayout({ params }: Props) {
                         <Stack
                             direction='row'
                             spacing={1}
-                            sx={{
-                                marginBottom: 1,
-                            }}
                             alignItems={'center'}
                         >
                             <Typography color={grey['700']} variant='subtitle2'>
@@ -333,6 +343,18 @@ export default function MapLayout({ params }: Props) {
                                 />
                             )}
                         </Stack>
+                        {selectedShop.hasOpenHoursAdded && (
+                        <Stack
+                            direction='row'
+                            spacing={1}
+                            alignItems={'center'}
+                            sx={{marginBottom: 1}}
+                        >
+                            <Typography color={grey['700']} variant='subtitle2'>
+                                {getOpeningHoursText()}
+                            </Typography>
+                            <AccessTimeIcon sx={{fontSize: 'large'}} />
+                        </Stack>)}
                         <Typography
                             variant='subtitle1'
                             color={grey['700']}

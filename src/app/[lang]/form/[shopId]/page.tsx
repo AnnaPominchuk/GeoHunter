@@ -38,6 +38,7 @@ type FormValues = {
     review: string
     userId: string
     hasSupportBoard: boolean
+    hasOpenHoursAdded: boolean
     overallRating: string
 }
 
@@ -149,6 +150,7 @@ function ShopForm({ params }: Props) {
             address: '',
             review: '',
             hasSupportBoard: false,
+            hasOpenHoursAdded: false,
             overallRating: '',
         },
     })
@@ -158,6 +160,9 @@ function ShopForm({ params }: Props) {
 
     const [images, setImages] = useState<File[]>([])
     const [supportingBoardImages, setSupportingBoardImages] = useState<File[]>(
+        []
+    )
+    const [openingHoursImages, setOpeningHoursImages] = useState<File[]>(
         []
     )
     const [addressList, setAddressList] = useState<string[]>([])
@@ -209,6 +214,7 @@ function ShopForm({ params }: Props) {
                     shopId: params.shopId,
                     overallRating: data.overallRating,
                     hasSupportBoard: data.hasSupportBoard,
+                    hasOpenHoursAdded: data.hasOpenHoursAdded
                 })
                 console.log(body)
                 return fetch('../../../api/review/upload', {
@@ -223,6 +229,9 @@ function ShopForm({ params }: Props) {
                     formData.append('images', image)
                 })
                 supportingBoardImages.forEach((image) => {
+                    formData.append('images', image)
+                })
+                openingHoursImages.forEach((image) => {
                     formData.append('images', image)
                 })
 
@@ -242,6 +251,7 @@ function ShopForm({ params }: Props) {
                 resetField('name')
                 resetField('review')
                 resetField('hasSupportBoard')
+                resetField('hasOpenHoursAdded')
                 resetField('overallRating')
                 setLabelText(getLabelForValue(''))
                 setImages([])
@@ -335,6 +345,7 @@ function ShopForm({ params }: Props) {
             marker.current &&
             dirtyFields.overallRating &&
             (!dirtyFields.hasSupportBoard || supportingBoardImages.length) &&
+            (!dirtyFields.hasOpenHoursAdded || openingHoursImages.length) &&
             (dirtyFields.review ||
                 form.getValues('overallRating') === OverallRating.Fine)
         )
@@ -437,6 +448,38 @@ function ShopForm({ params }: Props) {
                             />
                         </Stack>
                     )}
+
+                    <Stack spacing={1}>
+                        <Typography variant='body1' color={grey['700']}>
+                            {dictionary
+                                ? dictionary.form.hasOpenHoursText
+                                : ''}
+                        </Typography>
+                        <FormControl>
+                            <Switch
+                                color='primary'
+                                size='medium'
+                                {...register('hasOpenHoursAdded')}
+                            />
+                        </FormControl>
+                    </Stack>
+                    {form.getValues('hasOpenHoursAdded') && (
+                        <Stack spacing={2}>
+                            <Typography variant='body1' color={grey['700']}>
+                                {dictionary
+                                    ? `${dictionary.form.provideOpenHoursPhotoText}*`
+                                    : ''}
+                            </Typography>
+                            <MuiFileInput
+                                multiple
+                                value={openingHoursImages}
+                                onChange={(newValue: File[]) => setOpeningHoursImages(newValue)}
+                                inputProps={{ accept: 'image/*' }}
+                                onDrop={(e) => e.preventDefault()}
+                            />
+                        </Stack>
+                    )}
+
                     <Stack direction='row' spacing={2}>
                         <Autocomplete
                             freeSolo

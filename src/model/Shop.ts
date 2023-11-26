@@ -11,6 +11,11 @@
 
 import { cast, uncast, o, u, r } from '@/model/Converter'
 
+enum OverallRating {
+    Fine = 'Fine',
+    MaybeSuspicious = 'MaybeSuspicious',
+    ObviouslySuspicious = 'ObviouslySuspicious',
+}
 export interface Shop {
     address: string
     amount: number
@@ -22,7 +27,9 @@ export interface Shop {
     requestor: string
     t_id?: number
     _id: string
-    hasSupportBoard: boolean
+    hasSupportBoard: boolean,
+    hasOpenHoursAdded: boolean,
+    overallRating: OverallRating
 }
 
 const typeMap: any = {
@@ -43,6 +50,12 @@ const typeMap: any = {
                 js: 'hasSupportBoard',
                 typ: u(undefined, true),
             },
+            {
+                json: 'hasOpenHoursAdded',
+                js: 'hasOpenHoursAdded',
+                typ: u(undefined, true),
+            },
+            { json: 'overallRating', js: 'overallRating', typ: '' },
         ],
         'any'
     ),

@@ -22,7 +22,7 @@ import DialogContentText from '@mui/material/DialogContentText'
 
 import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -39,11 +39,12 @@ import UserRole from '@/utils/UserRole'
 import { getDictionary, Dictionary, ConvertDictionary } from '@/lib/dictionary'
 import { Locale } from '@/config/i18n.config'
 
-import { grey } from '@mui/material/colors'
+import { grey, orange, green } from '@mui/material/colors'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import BlockIcon from '@mui/icons-material/Block'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import { styled, css } from '@mui/system'
 
@@ -64,6 +65,31 @@ const StyledPopperDiv = styled('div')(
         margin: 0.25rem 0;
     `
 )
+
+interface OptionAction {
+  type: string;
+}
+
+type Options = {
+    saveAddress: boolean, 
+    saveOverallRating:boolean 
+}
+
+function reducer(state:Options, action:OptionAction) {
+    if (action.type === 'upd_save_address') {
+        return {
+            ...state,
+            saveAddress: !state.saveAddress
+        };
+    }
+    else if (action.type === 'upd_save_rating') {
+        return {
+            ...state,
+            saveOverallRating: !state.saveOverallRating
+        };
+    }
+    throw Error('Unknown action.');
+}
 
 const ReviewPage = ({
     params: { lang, reviewId },
@@ -88,7 +114,10 @@ const ReviewPage = ({
     const [openDialog, setOpen] = useState(false)
     const [hintAnchor, setAnchor] = useState<null | SVGSVGElement>(null)
     const [rate, setRate] = useState(1)
-    const [saveAddress, setSaveAddress] = useState<boolean>(true)
+    const [options, dispatch] = useReducer(reducer, {
+        saveAddress: true,
+        saveOverallRating: true
+    });
     const openHint = Boolean(hintAnchor)
     const [isAdmin, setIsAdmin] = useState<boolean>(false)
     const [author, setAuthor] = useState<User | null>(null)
@@ -122,7 +151,7 @@ const ReviewPage = ({
             body: JSON.stringify({
                 status: ReviewStatus.Approved,
                 rating: rate || 0,
-                options: { saveAddress: saveAddress },
+                options: options,
             }),
         }).then(() => getReview())
 
@@ -177,12 +206,6 @@ const ReviewPage = ({
         if (valNumber < 1) valNumber = 1
 
         setRate(valNumber)
-    }
-
-    const handleChangCheckbox = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setSaveAddress(event.target.checked)
     }
 
     const handleBlockAuthor = async (blocked: boolean) => {
@@ -256,6 +279,19 @@ const ReviewPage = ({
                                 </Typography>
                             )}
 
+                            <Typography
+                                color={grey['700']}
+                                sx={{ marginTop: '20px' }}
+                            >
+                                {dictionary? dictionary.reviews.overallRating: ''}
+                                <Typography
+                                    color={review?.overallRating.includes('Suspicious') ? orange['700'] : green['700']}
+                                    sx={{display:'inline'}}
+                                >
+                                    {review?.overallRating}
+                                </Typography>
+                            </Typography>
+
                             <Stack direction='row'>
                                 <PriorityHighIcon
                                     color='error'
@@ -275,9 +311,24 @@ const ReviewPage = ({
                                 </Typography>
                             </Stack>
 
+                            {review.hasOpenHoursAdded && (
+                            <Stack
+                                direction='row'
+                                spacing={1}
+                                alignItems={'center'}
+                                sx={{marginTop: '5px'}}
+                            >
+                                <AccessTimeIcon sx={{fontSize: 'large'}} />
+                                <Typography color={grey['700']} >
+                                    {dictionary
+                                        ? dictionary.reviews.openingHoursPresentText
+                                        : ''}
+                                </Typography>
+                            </Stack>)}
+
                             <Typography
                                 color={grey['700']}
-                                sx={{ marginTop: '20px' }}
+                                sx={{ marginTop: '25px' }}
                             >
                                 {review?.address}
                             </Typography>
@@ -435,8 +486,9 @@ const ReviewPage = ({
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                checked={saveAddress}
-                                                onChange={handleChangCheckbox}
+                                                name='saveAddress'
+                                                checked={options.saveAddress}
+                                                onChange={() => dispatch({ type: 'upd_save_address' })}
                                             />
                                         }
                                         label={
@@ -450,6 +502,26 @@ const ReviewPage = ({
                                         sx={{ marginTop: '20px' }}
                                     />
                                 )}
+
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='saveOverallRating'
+                                            checked={options.saveOverallRating}
+                                            onChange={() => dispatch({ type: 'upd_save_rating' })}
+                                        />
+                                    }
+                                    label={
+                                        <Typography color={grey['700']}>
+                                            {dictionary
+                                                ? dictionary.reviews
+                                                      .saveOverallRating
+                                                : ''}
+                                        </Typography>
+                                    }
+                                    sx={{ marginTop: '20px' }}
+                                />
+
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>
