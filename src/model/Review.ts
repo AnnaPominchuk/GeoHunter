@@ -37,6 +37,7 @@ export interface Review {
     address: string
     overallRating: OverallRating
     hasSupportBoard: boolean
+    hasOpenHoursAdded: boolean
 }
 
 const typeMap: any = {
@@ -57,6 +58,11 @@ const typeMap: any = {
             {
                 json: 'hasSupportBoard',
                 js: 'hasSupportBoard',
+                typ: u(undefined, true),
+            },
+            {
+                json: 'hasOpenHoursAdded',
+                js: 'hasOpenHoursAdded',
                 typ: u(undefined, true),
             },
         ],

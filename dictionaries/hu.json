@@ -16,6 +16,7 @@
         "address": "Lakcim",
         "shopsCount": "Number of objects located here",
         "supportBoardPresentText": "A bolt rendelkezik hiteles támogatói táblával",
+        "openingHoursPresentText": "The shop has the opening hours picture",
         "noSupportBoardText": "A felhasználók visszajelzése alapján nincs látható támogatói tábla",
         "noInfoAboutSB": "Nincs hinformáció a támogatói táblára vonatkozóan"
     },
@@ -35,6 +36,8 @@
         "reviewDetails": "Vélemények áttekintése",
         "rateReview": "Kérlek értékeld a véleményt",
         "saveAddress": "Cím mentése",
+        "saveOverallRating": "Save overall rating",
+        "overallRating": "Overall shop rating is ",
         "hint": "A felugró ablak tartalma",
         "supportBoardPresentText": "A felhasználó azt állítja, hogy az üzletnek van támogatói táblája",
         "noSupportBoardText": "A felhasználó azt állítja, hogy az üzletnek nincs látható támogatói táblája"
@@ -53,6 +56,8 @@
         "overallRating": "Összegző értékelés",
         "hasSupportBoadrText": "Van látható, kihelyezett támogatói tábla?",
         "provideSBPhotoText": "Kérlek tölts fel egy képet a támogató tábláról",
+        "hasOpenHoursText": "Does the shop have an opening hours board?",
+        "provideOpenHoursPhotoText": "Please provide an opening hours board photo",
         "provideMorePhotosText": "Kérlek tölts fel több képet a boltról",
         "address": "Lakcim"
     },

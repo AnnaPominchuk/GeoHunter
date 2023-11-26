@@ -51,6 +51,8 @@ interface Form {
     overallRating: string
     hasSupportBoadrText: string
     provideSBPhotoText: string
+    hasOpenHoursText: string
+    provideOpenHoursPhotoText: string
     provideMorePhotosText: string
     address: string
 }
@@ -69,6 +71,7 @@ interface Map {
     address: string
     shopsCount: string
     supportBoardPresentText: string
+    openingHoursPresentText: string
     noSupportBoardText: string
     noInfoAboutSB: string
 }
@@ -110,8 +113,11 @@ interface Reviews {
     reviewDetails: string
     rateReview: string
     saveAddress: string
+    saveOverallRating: string
+    overallRating: string
     hint: string
     supportBoardPresentText: string
+    openingHoursPresentText: string
     noSupportBoardText: string
 }
 
