@@ -105,9 +105,9 @@ const WithAuthActivist = <T extends Props>(
             return <Login params={{ lang: lang }} />
         }
 
-        if (!session?.user?.roles?.includes(UserRole.ACTIVIST)) {
+        /*if (!session?.user?.roles?.includes(UserRole.ACTIVIST)) {
             redirect(`/${lang}/`)
-        }
+        }*/
 
         return <WrappedComponent {...props} />
     }
